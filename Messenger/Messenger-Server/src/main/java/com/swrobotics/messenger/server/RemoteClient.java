@@ -53,18 +53,21 @@ public final class RemoteClient implements Client, Runnable {
             case LISTEN: {
                 String listenType = in.readUTF();
                 System.out.println("Client " + name + " listening to " + listenType);
+                MessengerServer.get().getLog().logEvent("_Listen", name, listenType);
                 listening.add(listenType);
                 break;
             }
             case UNLISTEN: {
                 String unlistenType = in.readUTF();
                 System.out.println("Client " + name + " no longer listening to " + unlistenType);
+                MessengerServer.get().getLog().logEvent("_Unlisten", name, unlistenType);
                 listening.remove(unlistenType);
                 break;
             }
             case DISCONNECT: {
                 connected = false;
                 System.out.println("Client " + name + " disconnected");
+                MessengerServer.get().getLog().logEvent("_Disconnect", name);
                 break;
             }
             default: {
@@ -91,6 +94,8 @@ public final class RemoteClient implements Client, Runnable {
                 // Check timeout
                 if (System.currentTimeMillis() - lastHeartbeatTime > TIMEOUT) {
                     System.out.println("Client " + name + " disconnected due to heartbeat timeout");
+
+                    MessengerServer.get().getLog().logEvent("_Timeout", name);
                     break;
                 }
 
@@ -101,6 +106,8 @@ public final class RemoteClient implements Client, Runnable {
                     } else {
                         name = in.readUTF();
                         identified = true;
+
+                        MessengerServer.get().getLog().logEvent("_Connect", name);
                     }
                 }
 
@@ -120,6 +127,8 @@ public final class RemoteClient implements Client, Runnable {
         } catch (IOException e) {
             System.err.println("Exception in remote client connection " + name + ":");
             e.printStackTrace();
+
+            MessengerServer.get().getLog().logEvent("_Error", name);
         }
 
         MessengerServer.get().removeClient(this);

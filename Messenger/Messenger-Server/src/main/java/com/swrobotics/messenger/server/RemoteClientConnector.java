@@ -5,14 +5,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public final class RemoteClientConnector implements Runnable {
-    private final int port;
-
-    public RemoteClientConnector(int port) {
-        this.port = port;
-    }
+    public RemoteClientConnector() {}
 
     @Override
     public void run() {
+        int port = MessengerServer.get().getConfig().getPort();
+
         System.out.println("Opening port " + port + " for Messenger");
 
         ServerSocket socket = null;
@@ -23,6 +21,8 @@ public final class RemoteClientConnector implements Runnable {
             e.printStackTrace();
             System.exit(1);
         }
+
+        System.out.println("Listening for incoming connections");
 
         while (true) {
             try {
