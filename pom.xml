@@ -27,7 +27,7 @@
     <repositories>
         <repository>
             <id>wpilib-repo</id>
-            <url>http://first.wpi.edu/FRC/roborio/maven/release</url>
+            <url>https://frcmaven.wpi.edu/artifactory/release/</url>
         </repository>
     </repositories>
 </project>

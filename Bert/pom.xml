@@ -11,32 +11,40 @@
     </parent>
 
     <artifactId>Bert</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
-    <properties>
-        <main.class>com.swrobotics.bert.Main</main.class>
-    </properties>
+    <profiles>
+        <profile>
+            <id>frc-build</id>
+            <properties>
+                <rio.gradle.goal>build</rio.gradle.goal>
+            </properties>
+        </profile>
+        <profile>
+            <id>frc-deploy</id>
+            <properties>
+                <rio.gradle.goal>deploy</rio.gradle.goal>
+            </properties>
+        </profile>
+    </profiles>
 
-    <dependencies>
-        <dependency>
-            <groupId>edu.wpi.first.wpilibj</groupId>
-            <artifactId>wpilibj-java</artifactId>
-            <version>${wpilib.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>edu.wpi.first.ntcore</groupId>
-            <artifactId>ntcore-java</artifactId>
-            <version>${wpilib.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>edu.wpi.first.wpiutil</groupId>
-            <artifactId>wpiutil-java</artifactId>
-            <version>${wpilib.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>edu.wpi.first.hal</groupId>
-            <artifactId>hal-java</artifactId>
-            <version>${wpilib.version}</version>
-        </dependency>
-    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <executable>gradlew.bat</executable>
+                    <workingDirectory>${basedir}</workingDirectory>
+                    <environmentVariables>
+                        <JAVA_HOME>${java.home}</JAVA_HOME>
+                    </environmentVariables>
+                    <arguments>
+                        <argument>${rio.gradle.goal}</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
