@@ -1,0 +1,137 @@
+package com.swrobotics.messenger.server;
+
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Queue;
+import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+public final class RemoteClient implements Client, Runnable {
+    private static final String HEARTBEAT = "_Heartbeat";
+    private static final String LISTEN = "_Listen";
+    private static final String UNLISTEN = "_Unlisten";
+    private static final String DISCONNECT = "_Disconnect";
+
+    private static final long TIMEOUT = 5000; // Max time in milliseconds between heartbeats
+
+    private final Queue<Message> outgoingMessages;
+    private final DataInputStream in;
+    private final DataOutputStream out;
+    private final Set<String> listening;
+
+    private boolean connected = true;
+    private String name = "[Unknown]";
+    private boolean identified = false;
+    private long lastHeartbeatTime;
+
+    public RemoteClient(Socket socket) throws IOException {
+        outgoingMessages = new ConcurrentLinkedQueue<>();
+        in = new DataInputStream(socket.getInputStream());
+        out = new DataOutputStream(socket.getOutputStream());
+
+        listening = Collections.synchronizedSet(new HashSet<>());
+        lastHeartbeatTime = System.currentTimeMillis();
+    }
+
+    private void readMessage() throws IOException {
+        String type = in.readUTF();
+
+        byte[] data = new byte[in.readInt()];
+        in.readFully(data);
+
+        DataInputStream in = new DataInputStream(new ByteArrayInputStream(data));
+        switch (type) {
+            case HEARTBEAT: {
+                lastHeartbeatTime = System.currentTimeMillis();
+                break;
+            }
+            case LISTEN: {
+                String listenType = in.readUTF();
+                System.out.println("Client " + name + "listening to " + listenType);
+                listening.add(listenType);
+                break;
+            }
+            case UNLISTEN: {
+                String unlistenType = in.readUTF();
+                System.out.println("Client " + name + " no longer listening to " + unlistenType);
+                listening.remove(unlistenType);
+                break;
+            }
+            case DISCONNECT: {
+                connected = false;
+                System.out.println("Client " + name + " disconnected");
+                break;
+            }
+            default: {
+                MessengerServer.get().onMessage(new Message(type, data));
+                break;
+            }
+        }
+    }
+
+    private void writeMessage(Message msg) throws IOException {
+        out.writeUTF(msg.getType());
+
+        byte[] data = msg.getData();
+        out.writeInt(data.length);
+        out.write(data);
+    }
+
+    @Override
+    public void run() {
+        MessengerServer.get().addClient(this);
+
+        try {
+            while (connected) {
+                // Check timeout
+                if (System.currentTimeMillis() - lastHeartbeatTime > TIMEOUT) {
+                    System.out.println("Client " + name + " disconnected due to heartbeat timeout");
+                    break;
+                }
+
+                // Read incoming messages
+                while (in.available() > 0) {
+                    if (identified) {
+                        readMessage();
+                    } else {
+                        name = in.readUTF();
+                        identified = true;
+                    }
+                }
+
+                // Send outgoing messages
+                Message msg;
+                while ((msg = outgoingMessages.poll()) != null) {
+                    writeMessage(msg);
+                }
+
+                // Give other threads a chance to run
+                try {
+                    Thread.sleep(1000 / 50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Exception in remote client connection " + name + ":");
+            e.printStackTrace();
+        }
+
+        MessengerServer.get().removeClient(this);
+    }
+
+    @Override
+    public void sendMessage(Message msg) {
+        outgoingMessages.add(msg);
+    }
+
+    @Override
+    public boolean listensTo(String type) {
+        return listening.contains(type);
+    }
+}
