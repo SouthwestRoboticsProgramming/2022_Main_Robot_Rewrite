@@ -52,7 +52,7 @@ public final class RemoteClient implements Client, Runnable {
             }
             case LISTEN: {
                 String listenType = in.readUTF();
-                System.out.println("Client " + name + "listening to " + listenType);
+                System.out.println("Client " + name + " listening to " + listenType);
                 listening.add(listenType);
                 break;
             }
