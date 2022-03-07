@@ -24,10 +24,9 @@ public final class Robot extends RobotBase {
     public void startCompetition() {
         running = true;
 
-        System.out.println("************** Robot program starting **************");
         initSubsystems();
         Scheduler.get().robotInit();
-        System.out.println("********** Robot program startup complete **********");
+        System.out.println("****** Robot program startup complete ******");
 
         HAL.observeUserProgramStarting();
 
