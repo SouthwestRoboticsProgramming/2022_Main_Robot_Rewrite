@@ -90,7 +90,7 @@ public final class RemoteClient implements Client, Runnable {
         MessengerServer.get().addClient(this);
 
         try {
-            while (connected) {
+            main: while (connected) {
                 // Check timeout
                 if (System.currentTimeMillis() - lastHeartbeatTime > TIMEOUT) {
                     System.out.println("Client " + name + " disconnected due to heartbeat timeout");
@@ -103,6 +103,10 @@ public final class RemoteClient implements Client, Runnable {
                 while (in.available() > 0) {
                     if (identified) {
                         readMessage();
+
+                        if (!connected) {
+                            break main;
+                        }
                     } else {
                         name = in.readUTF();
                         identified = true;

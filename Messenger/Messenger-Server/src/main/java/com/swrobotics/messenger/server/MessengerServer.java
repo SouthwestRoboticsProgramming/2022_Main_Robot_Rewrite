@@ -1,5 +1,9 @@
 package com.swrobotics.messenger.server;
 
+import com.swrobotics.messenger.server.log.FileLogger;
+import com.swrobotics.messenger.server.log.MessageLogger;
+import com.swrobotics.messenger.server.log.NoOpLogger;
+
 import java.io.File;
 import java.util.Collections;
 import java.util.HashSet;
@@ -21,11 +25,9 @@ public final class MessengerServer {
         clients = Collections.synchronizedSet(new HashSet<>());
 
         if (config.getLogFile() == null) {
-            log = null;
+            log = new NoOpLogger();
         } else {
-            log = new MessageLogger(config.getLogFile());
-            ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-            executor.scheduleAtFixedRate(log::flush, 0, 1, TimeUnit.SECONDS);
+            log = new FileLogger(config.getLogFile());
         }
     }
 

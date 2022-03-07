@@ -2,11 +2,16 @@ package com.swrobotics.messenger.client;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.function.BiConsumer;
+
+import static com.swrobotics.messenger.client.MessengerUtils.encodeStringUTF;
 
 public final class MessengerClient {
     private static final String HEARTBEAT = "_Heartbeat";
@@ -20,7 +25,7 @@ public final class MessengerClient {
     private final ScheduledExecutorService executor;
     private final ScheduledFuture<?> heartbeatFuture;
 
-    private BiConsumer<String, DataInputStream> messageHandler = (t, d) -> {};
+    private final Map<String, Set<MessageHandler>> listeners;
 
     public MessengerClient(String host, int port, String name) throws IOException {
         socket = new Socket(host, port);
@@ -34,6 +39,8 @@ public final class MessengerClient {
         heartbeatFuture = executor.scheduleAtFixedRate(() -> {
             sendMessage(HEARTBEAT, new byte[0]);
         }, 0, 1, TimeUnit.SECONDS);
+
+        listeners = new HashMap<>();
     }
 
     public void sendMessage(String type, byte[] data) {
@@ -48,16 +55,8 @@ public final class MessengerClient {
         }
     }
 
-    public void listen(String type) {
-        sendMessage(LISTEN, encodeStringUTF(type));
-    }
-
-    public void unlisten(String type) {
-        sendMessage(UNLISTEN, encodeStringUTF(type));
-    }
-
-    public void setMessageHandler(BiConsumer<String, DataInputStream> handler) {
-        messageHandler = handler;
+    public MessageHandler makeHandler() {
+        return new MessageHandler(this);
     }
 
     public void readMessages() {
@@ -67,7 +66,12 @@ public final class MessengerClient {
                 byte[] data = new byte[in.readInt()];
                 in.readFully(data);
 
-                messageHandler.accept(type, new DataInputStream(new ByteArrayInputStream(data)));
+                Set<MessageHandler> handlerSet = listeners.get(type);
+                if (handlerSet != null) {
+                    for (MessageHandler handler : handlerSet) {
+                        handler.dispatch(type, data);
+                    }
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -87,16 +91,43 @@ public final class MessengerClient {
         }
     }
 
-    private byte[] encodeStringUTF(String str) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(b);
+    void addListener(String type, MessageHandler handler) {
+        Set<MessageHandler> handlers = listeners.computeIfAbsent(type, (t) -> new HashSet<>());
 
-        try {
-            out.writeUTF(str);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (handlers.isEmpty()) {
+            sendMessage(LISTEN, encodeStringUTF(type));
         }
 
-        return b.toByteArray();
+        handlers.add(handler);
+    }
+
+    void removeListener(String type, MessageHandler handler) {
+        Set<MessageHandler> handlers = listeners.get(type);
+        if (handlers == null) {
+            return;
+        }
+
+        handlers.remove(handler);
+
+        if (handlers.isEmpty()) {
+            sendMessage(UNLISTEN, encodeStringUTF(type));
+        }
+    }
+
+    void removeListenerFully(MessageHandler handler) {
+        Set<String> keysToRemove = new HashSet<>();
+
+        for (Map.Entry<String, Set<MessageHandler>> entry : listeners.entrySet()) {
+            Set<MessageHandler> handlerSet = entry.getValue();
+
+            if (handlerSet.remove(handler) && handlerSet.isEmpty()) {
+                keysToRemove.add(entry.getKey());
+                sendMessage(UNLISTEN, encodeStringUTF(entry.getKey()));
+            }
+        }
+
+        for (String key : keysToRemove) {
+            listeners.remove(key);
+        }
     }
 }

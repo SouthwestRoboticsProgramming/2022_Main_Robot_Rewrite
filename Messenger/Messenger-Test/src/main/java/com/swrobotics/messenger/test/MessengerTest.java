@@ -6,15 +6,16 @@ public final class MessengerTest {
     public static void main(String[] args) throws Exception {
         MessengerClient msg = new MessengerClient("localhost", 5805, "Test");
 
-        msg.listen("Test Message");
-        msg.setMessageHandler((type, data) -> {
-            System.out.println(type);
-        });
+        msg.makeHandler()
+                .listen("Test Message")
+                .setHandler((type, data) -> {
+                    System.out.println(type);
+                });
 
-        for (int i = 0; i < 10; i++) {
+        msg.sendMessage("Test Message", new byte[0]);
+
+        for (int i = 0; i < 5; i++) {
             msg.readMessages();
-
-            msg.sendMessage("Test Message", new byte[] { (byte) i });
 
             Thread.sleep(1000);
         }

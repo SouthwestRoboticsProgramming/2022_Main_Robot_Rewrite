@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="MessengerServer" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="com.swrobotics.messenger.server.MessengerServerMain" />
+    <module name="Messenger-Server" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Messenger/" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.swrobotics.messenger.server.log.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

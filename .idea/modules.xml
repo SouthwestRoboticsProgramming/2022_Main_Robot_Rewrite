@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/2022_Main_Robot_Rewrite.iml" filepath="$PROJECT_DIR$/2022_Main_Robot_Rewrite.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Bert/Bert.iml" filepath="$PROJECT_DIR$/Bert/Bert.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Messenger/Messenger.iml" filepath="$PROJECT_DIR$/Messenger/Messenger.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Messenger/Messenger-Client/Messenger-Client.iml" filepath="$PROJECT_DIR$/Messenger/Messenger-Client/Messenger-Client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Messenger/Messenger-Server/Messenger-Server.iml" filepath="$PROJECT_DIR$/Messenger/Messenger-Server/Messenger-Server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Messenger/Messenger-Test/Messenger-Test.iml" filepath="$PROJECT_DIR$/Messenger/Messenger-Test/Messenger-Test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TaskManager/TaskManager.iml" filepath="$PROJECT_DIR$/TaskManager/TaskManager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TaskManager/TaskManager-API/TaskManager-API.iml" filepath="$PROJECT_DIR$/TaskManager/TaskManager-API/TaskManager-API.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TaskManager/TaskManager-CLI/TaskManager-CLI.iml" filepath="$PROJECT_DIR$/TaskManager/TaskManager-CLI/TaskManager-CLI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TaskManager/TaskManager-Server/TaskManager-Server.iml" filepath="$PROJECT_DIR$/TaskManager/TaskManager-Server/TaskManager-Server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Vision/Vision.iml" filepath="$PROJECT_DIR$/Vision/Vision.iml" />
+    </modules>
+  </component>
+</project>
