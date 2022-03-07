@@ -24,3 +24,10 @@ hs_err_pid*
 
 # maven target directories
 *target/
+
+# OpenCV Build
+build/
+
+# Intelij
+*.iml
+*.idea
