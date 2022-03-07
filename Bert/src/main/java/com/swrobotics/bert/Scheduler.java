@@ -1,8 +1,10 @@
 package com.swrobotics.bert;
 
+import com.swrobotics.bert.commands.Command;
 import com.swrobotics.bert.subsystems.Subsystem;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public final class Scheduler {
@@ -12,13 +14,65 @@ public final class Scheduler {
     }
 
     private final List<Subsystem> subsystems;
+    private final List<CommandTimer> commands;
 
     private Scheduler() {
         subsystems = new ArrayList<>();
+        commands = new ArrayList<>();
     }
 
     public void addSubsystem(Subsystem subsystem) {
         subsystems.add(subsystem);
+    }
+
+    public void addCommand(Command command) {
+        commands.add(new CommandTimer(command));
+        command.init();
+    }
+
+    public void cancelCommand(Command command) {
+        CommandTimer toRemove = null;
+        for (CommandTimer timer : commands) {
+            if (timer.command.equals(command)) {
+                toRemove = timer;
+            }
+        }
+
+        if (toRemove != null) {
+            commands.remove(toRemove);
+        }
+    }
+
+    private static class CommandTimer {
+        private final Command command;
+        private int timer;
+
+        public CommandTimer(Command command) {
+            this.command = command;
+            timer = command.getInterval();
+        }
+
+        public boolean update() {
+            timer--;
+            if (timer <= 0) {
+                timer = command.getInterval();
+
+                return command.run();
+            }
+
+            return false;
+        }
+    }
+
+    private void updateCommands() {
+        for (Iterator<CommandTimer> iterator = commands.iterator(); iterator.hasNext();) {
+            CommandTimer timer = iterator.next();
+
+            if (timer.update()) {
+                iterator.remove();
+                timer.command.end();
+            }
+        }
     }
 
     public void robotInit() {
@@ -31,6 +85,8 @@ public final class Scheduler {
         for (Subsystem system : subsystems) {
             system.robotPeriodic();
         }
+
+        updateCommands();
     }
 
     public void disabledInit() {
@@ -43,6 +99,8 @@ public final class Scheduler {
         for (Subsystem system : subsystems) {
             system.disabledPeriodic();
         }
+
+        updateCommands();
     }
 
     public void teleopInit() {
@@ -55,6 +113,8 @@ public final class Scheduler {
         for (Subsystem system : subsystems) {
             system.teleopPeriodic();
         }
+
+        updateCommands();
     }
 
     public void autonomousInit() {
@@ -67,6 +127,8 @@ public final class Scheduler {
         for (Subsystem system : subsystems) {
             system.autonomousPeriodic();
         }
+
+        updateCommands();
     }
 
     public void testInit() {
@@ -79,5 +141,7 @@ public final class Scheduler {
         for (Subsystem system : subsystems) {
             system.testPeriodic();
         }
+
+        updateCommands();
     }
 }
