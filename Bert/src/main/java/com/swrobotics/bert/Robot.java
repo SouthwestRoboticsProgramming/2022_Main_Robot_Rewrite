@@ -11,50 +11,55 @@ public final class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         System.out.println("Hello!");
+
+        // All subsystems must be defined before this point
+        Scheduler.get().robotInit();
     }
+
+    // Don't add any more code to the init() and periodic() functions below; use a subsystem or command instead
 
     @Override
     public void robotPeriodic() {
-
+        Scheduler.get().robotPeriodic();
     }
 
     @Override
     public void disabledInit() {
-        System.out.println("In Disabled");
+        Scheduler.get().disabledInit();
     }
 
     @Override
     public void disabledPeriodic() {
-
+        Scheduler.get().disabledPeriodic();
     }
 
     @Override
     public void teleopInit() {
-        System.out.println("In TeleOp");
+        Scheduler.get().teleopInit();
     }
 
     @Override
     public void teleopPeriodic() {
-
+        Scheduler.get().teleopPeriodic();
     }
 
     @Override
     public void autonomousInit() {
-        System.out.println("In Auto");
+        Scheduler.get().autonomousInit();
     }
 
     @Override
     public void autonomousPeriodic() {
-
+        Scheduler.get().autonomousPeriodic();
     }
 
     @Override
     public void testInit() {
-        System.out.println("In Test");
+        Scheduler.get().testInit();
     }
 
     @Override
     public void testPeriodic() {
-
+        Scheduler.get().testPeriodic();
     }
 }

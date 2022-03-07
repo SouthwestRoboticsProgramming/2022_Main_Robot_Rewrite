@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/2022_Main_Robot_Rewrite.iml" filepath="$PROJECT_DIR$/2022_Main_Robot_Rewrite.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Bert/Bert.iml" filepath="$PROJECT_DIR$/Bert/Bert.iml" />
       <module fileurl="file://$PROJECT_DIR$/Messenger/Messenger.iml" filepath="$PROJECT_DIR$/Messenger/Messenger.iml" />
       <module fileurl="file://$PROJECT_DIR$/Messenger/Messenger-Client/Messenger-Client.iml" filepath="$PROJECT_DIR$/Messenger/Messenger-Client/Messenger-Client.iml" />
       <module fileurl="file://$PROJECT_DIR$/Messenger/Messenger-Server/Messenger-Server.iml" filepath="$PROJECT_DIR$/Messenger/Messenger-Server/Messenger-Server.iml" />

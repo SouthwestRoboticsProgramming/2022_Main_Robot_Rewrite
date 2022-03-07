@@ -1,22 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <annotationProcessing>
-      <profile name="Maven default annotation processors profile" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <module name="TaskManager-Server" />
-        <module name="TaskManager-CLI" />
-        <module name="Messenger-Server" />
-        <module name="Messenger-Test" />
-        <module name="Messenger-Client" />
-        <module name="TaskManager-API" />
-      </profile>
-    </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="2022_Main_Robot_Rewrite" target="11" />
-      <module name="Bert" target="11" />
       <module name="Messenger" target="11" />
       <module name="Messenger-Client" target="11" />
       <module name="Messenger-Server" target="11" />
