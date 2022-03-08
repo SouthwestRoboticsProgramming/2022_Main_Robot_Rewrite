@@ -8,6 +8,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public final class TaskManagerServerAPI {
+    private static final String IN_PING = ":Ping";
     private static final String IN_TASK_START = ":StartTask";
     private static final String IN_TASK_STOP = ":StopTask";
     private static final String IN_TASK_IS_RUNNING = ":IsTaskRunning";
@@ -16,6 +17,7 @@ public final class TaskManagerServerAPI {
     private static final String IN_TASK_EXISTS = ":GetTaskExists";
     private static final String IN_GET_TASKS = ":GetTasks";
 
+    private static final String OUT_PONG = ":Pong";
     private static final String OUT_TASK_IS_RUNNING = ":TaskRunning";
     private static final String OUT_TASK_EXISTS = ":TaskExists";
     private static final String OUT_TASKS = ":Tasks";
@@ -32,6 +34,7 @@ public final class TaskManagerServerAPI {
         prefix = config.getMessengerPrefix();
 
         msg.makeHandler()
+                .listen(prefix + IN_PING)
                 .listen(prefix + IN_TASK_START)
                 .listen(prefix + IN_TASK_STOP)
                 .listen(prefix + IN_TASK_IS_RUNNING)
@@ -67,6 +70,11 @@ public final class TaskManagerServerAPI {
         }
 
         msg.sendMessage(message, b.toByteArray());
+    }
+
+    // Allows the client to test whether the server is alive
+    private void handlePing() {
+        msg.sendMessage(prefix + OUT_PONG, new byte[0]);
     }
 
     private void handleTaskStart(DataInputStream in) throws IOException {
@@ -229,6 +237,9 @@ public final class TaskManagerServerAPI {
 
     private void messageHandler(String type, DataInputStream in) throws IOException {
         switch (type.substring(prefix.length())) {
+            case IN_PING:
+                handlePing();
+                break;
             case IN_TASK_START:
                 handleTaskStart(in);
                 break;
