@@ -1,6 +1,6 @@
 package com.swrobotics.bert.constants;
 
-public class DriveConstants {
+public final class DriveConstants {
     // TODO: Make configurable with ShuffleWood or ShuffleBoard
     public static final double WHEEL_DRIVE_KP = 0;
     public static final double WHEEL_DRIVE_KI = 0;

@@ -2,23 +2,30 @@ package com.swrobotics.messenger.server.log;
 
 import com.swrobotics.messenger.server.Message;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.util.Base64;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.GZIPOutputStream;
 
 public final class FileLogger implements MessageLogger {
     private final long startTime;
     private final PrintWriter out;
 
-    public FileLogger(File file) {
+    public FileLogger(File file, boolean compress) {
         try {
             if (!file.exists())
                 file.createNewFile();
 
-            out = new PrintWriter(file);
+            OutputStream fileStream = new FileOutputStream(file);
+
+            // If compressing log files, send data through GZIP
+            if (compress) {
+                fileStream = new GZIPOutputStream(fileStream);
+            }
+
+            out = new PrintWriter(fileStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -47,18 +54,7 @@ public final class FileLogger implements MessageLogger {
 
     @Override
     public void logMessage(Message msg) {
-        out.println(getTimestamp() + "\t" + msg.getType() + "\t" + bytesToHex(msg.getData()));
-    }
-
-    private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
-    private static String bytesToHex(byte[] bytes) {
-        char[] hexChars = new char[bytes.length * 2];
-        for (int j = 0; j < bytes.length; j++) {
-            int v = bytes[j] & 0xFF;
-            hexChars[j * 2] = HEX_ARRAY[v >>> 4];
-            hexChars[j * 2 + 1] = HEX_ARRAY[v & 0x0F];
-        }
-        return new String(hexChars);
+        out.println(getTimestamp() + "\t" + msg.getType() + "\t" + Base64.getEncoder().encodeToString(msg.getData()));
     }
 
     private void flush() {

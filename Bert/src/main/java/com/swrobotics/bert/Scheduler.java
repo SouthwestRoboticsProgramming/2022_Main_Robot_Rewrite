@@ -1,6 +1,7 @@
 package com.swrobotics.bert;
 
 import com.swrobotics.bert.commands.Command;
+import com.swrobotics.bert.profiler.Profiler;
 import com.swrobotics.bert.subsystems.Subsystem;
 
 import java.util.ArrayList;
@@ -60,8 +61,6 @@ public final class Scheduler {
                 return command.run();
             }
 
-//            System.out.println(timer);
-
             return false;
         }
     }
@@ -69,11 +68,14 @@ public final class Scheduler {
     private void updateCommands() {
         for (Iterator<CommandTimer> iterator = commands.iterator(); iterator.hasNext();) {
             CommandTimer timer = iterator.next();
+            Profiler.get().push(timer.command.getClass().getSimpleName());
 
             if (timer.update()) {
                 iterator.remove();
                 timer.command.end();
             }
+
+            Profiler.get().pop();
         }
     }
 
@@ -85,7 +87,9 @@ public final class Scheduler {
 
     public void robotPeriodic() {
         for (Subsystem system : subsystems) {
+            Profiler.get().push(system.getClass().getSimpleName());
             system.robotPeriodic();
+            Profiler.get().pop();
         }
 
         updateCommands();
@@ -99,7 +103,9 @@ public final class Scheduler {
 
     public void disabledPeriodic() {
         for (Subsystem system : subsystems) {
+            Profiler.get().push(system.getClass().getSimpleName());
             system.disabledPeriodic();
+            Profiler.get().pop();
         }
     }
 
@@ -111,7 +117,9 @@ public final class Scheduler {
 
     public void teleopPeriodic() {
         for (Subsystem system : subsystems) {
+            Profiler.get().push(system.getClass().getSimpleName());
             system.teleopPeriodic();
+            Profiler.get().pop();
         }
     }
 
@@ -123,7 +131,9 @@ public final class Scheduler {
 
     public void autonomousPeriodic() {
         for (Subsystem system : subsystems) {
+            Profiler.get().push(system.getClass().getSimpleName());
             system.autonomousPeriodic();
+            Profiler.get().pop();
         }
     }
 
@@ -135,7 +145,9 @@ public final class Scheduler {
 
     public void testPeriodic() {
         for (Subsystem system : subsystems) {
+            Profiler.get().push(system.getClass().getSimpleName());
             system.testPeriodic();
+            Profiler.get().pop();
         }
     }
 }

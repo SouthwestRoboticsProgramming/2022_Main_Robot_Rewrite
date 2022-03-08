@@ -22,7 +22,6 @@ public final class TaskManagerSetupCommand implements Command {
 
     @Override
     public boolean run() {
-        api.getTasks();
         api.ping();
         if (!api.isAlive()) {
             System.out.println("Task manager not ready");

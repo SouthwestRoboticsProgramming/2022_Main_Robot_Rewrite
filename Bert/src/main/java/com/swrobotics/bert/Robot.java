@@ -2,13 +2,18 @@ package com.swrobotics.bert;
 
 import com.swrobotics.bert.commands.MessengerReadCommand;
 import com.swrobotics.bert.commands.taskmanager.TaskManagerSetupCommand;
+import com.swrobotics.bert.constants.Settings;
+import com.swrobotics.bert.profiler.ProfileNode;
 import com.swrobotics.bert.profiler.Profiler;
 import com.swrobotics.messenger.client.MessengerClient;
 import com.swrobotics.taskmanager.api.TaskManagerAPI;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.RobotBase;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import static com.swrobotics.bert.constants.CommunicationConstants.*;
 import static com.swrobotics.bert.constants.Constants.PERIODIC_PER_SECOND;
@@ -125,6 +130,18 @@ public final class Robot extends RobotBase {
                 Profiler.get().pop();
 
                 Profiler.get().endMeasurements();
+                if (Settings.DUMP_PROFILE_DATA) {
+                    ByteArrayOutputStream b = new ByteArrayOutputStream();
+                    DataOutputStream out = new DataOutputStream(b);
+
+                    try {
+                        dumpProfileData(Profiler.get().getData(), out);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    msg.sendMessage("RoboRIO:ProfileData", b.toByteArray());
+                }
             }
         }
     }
@@ -141,5 +158,16 @@ public final class Robot extends RobotBase {
         if (isTest()) return RobotState.TEST;
 
         throw new IllegalStateException("Illegal robot state");
+    }
+
+    private void dumpProfileData(ProfileNode node, DataOutputStream out) throws IOException {
+        out.writeUTF(node.getName());
+        out.writeLong(node.getElapsedTimeNanoseconds());
+
+        List<ProfileNode> children = node.getChildren();
+        out.writeInt(children.size());
+        for (ProfileNode child : children) {
+            dumpProfileData(child, out);
+        }
     }
 }

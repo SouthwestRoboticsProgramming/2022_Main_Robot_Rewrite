@@ -27,7 +27,7 @@ public final class MessengerServer {
         if (config.getLogFile() == null) {
             log = new NoOpLogger();
         } else {
-            log = new FileLogger(config.getLogFile());
+            log = new FileLogger(config.getLogFile(), config.isCompressLog());
         }
     }
 

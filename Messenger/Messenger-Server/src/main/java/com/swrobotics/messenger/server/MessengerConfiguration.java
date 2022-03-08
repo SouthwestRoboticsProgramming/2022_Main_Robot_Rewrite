@@ -11,14 +11,17 @@ public final class MessengerConfiguration {
     static {
         defaultProps.put("port", "5805");
         defaultProps.put("logFile", "");
+        defaultProps.put("compressLog", "false");
     }
 
     private final int port;
     private final File logFile;
+    private final boolean compressLog;
 
-    private MessengerConfiguration(int port, File logFile) {
+    private MessengerConfiguration(int port, File logFile, boolean compressLog) {
         this.port = port;
         this.logFile = logFile;
+        this.compressLog = compressLog;
     }
 
     public static MessengerConfiguration loadFromFile(File file) {
@@ -39,7 +42,8 @@ public final class MessengerConfiguration {
 
         return new MessengerConfiguration(
                 Integer.parseInt(props.getProperty("port")),
-                props.getProperty("logFile").equals("") ? null : new File(props.getProperty("logFile"))
+                props.getProperty("logFile").equals("") ? null : new File(props.getProperty("logFile")),
+                Boolean.parseBoolean(props.getProperty("compressLog"))
         );
     }
 
@@ -49,5 +53,9 @@ public final class MessengerConfiguration {
 
     public File getLogFile() {
         return logFile;
+    }
+
+    public boolean isCompressLog() {
+        return compressLog;
     }
 }

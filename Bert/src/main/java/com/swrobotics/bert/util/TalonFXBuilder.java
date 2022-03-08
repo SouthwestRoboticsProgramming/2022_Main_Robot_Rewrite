@@ -26,7 +26,7 @@ public final class TalonFXBuilder {
         this.canBus = canBus;
         return this;
     }
-    
+
     public TalonFXBuilder setPIDF(double kP, double kI, double kD, double kF) {
         SlotConfiguration slot = config.slot0;
 

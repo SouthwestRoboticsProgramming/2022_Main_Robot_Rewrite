@@ -18,11 +18,11 @@ public final class ProfileNode {
     }
 
     public void begin() {
-        startTime = System.currentTimeMillis();
+        startTime = System.nanoTime();
     }
 
     public void end() {
-        accumulator += System.currentTimeMillis() - startTime;
+        accumulator += System.nanoTime() - startTime;
     }
 
     public void addChild(ProfileNode child) {
@@ -42,7 +42,7 @@ public final class ProfileNode {
         return children;
     }
 
-    public long getElapsedTimeMilliseconds() {
+    public long getElapsedTimeNanoseconds() {
         return accumulator;
     }
 }
