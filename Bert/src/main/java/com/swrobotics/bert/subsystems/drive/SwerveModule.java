@@ -1,12 +1,10 @@
 package com.swrobotics.bert.subsystems.drive;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.swrobotics.bert.subsystems.Subsystem;
 
 import com.swrobotics.bert.util.TalonFXBuilder;
@@ -26,7 +24,7 @@ public class SwerveModule implements Subsystem {
     private final TalonFX drive;
     private final TalonSRX turn;
 
-    public SwerveModule(int driveID, int turnID, int cancoderID, double canCoderOffset) {
+    public SwerveModule(int driveID, int turnID, int cancoderID, double cancoderOffset) {
         drive = new TalonFXBuilder(driveID)
                 .setCANBus(CANIVORE)
                 .setPIDF(
@@ -46,7 +44,7 @@ public class SwerveModule implements Subsystem {
                     TURN_KD,
                     TURN_KF
                 )
-                .setCanCoder(cancoderID)
+                .setCanCoder(cancoderID, cancoderOffset)
                 .build();
 
     }

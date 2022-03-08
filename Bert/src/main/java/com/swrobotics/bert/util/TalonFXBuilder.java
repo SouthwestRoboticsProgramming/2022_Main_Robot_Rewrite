@@ -1,5 +1,6 @@
 package com.swrobotics.bert.util;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
@@ -17,7 +18,7 @@ public final class TalonFXBuilder {
         this.canID = canID;
 
         config = new TalonFXConfiguration();
-        config.neutralDeadband = 0.001;
+        config.neutralDeadband = 0.001; // Percent output considered neutral (Will trigger coast or brake)
         config.openloopRamp = 0.5;   // Seconds to ramp from 0% to 100% 
         config.closedloopRamp = 0.5; // Seconds to ramp from 0% to 100%
     }
@@ -39,8 +40,6 @@ public final class TalonFXBuilder {
         return this;
     }
 
-    // TODO: Add sensor config
-
     public TalonFXBuilder setInverted(boolean inverted) {
         this.inverted = inverted;
         return this;
@@ -51,6 +50,7 @@ public final class TalonFXBuilder {
 
         fx.configAllSettings(config);
         fx.setInverted(inverted);
+        fx.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
         return fx;
     }
