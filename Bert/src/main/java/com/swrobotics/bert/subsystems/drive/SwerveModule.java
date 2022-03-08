@@ -2,59 +2,60 @@ package com.swrobotics.bert.subsystems.drive;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
-import com.ctre.phoenix.sensors.CANCoder;
 import com.swrobotics.bert.subsystems.Subsystem;
 
 import com.swrobotics.bert.util.TalonFXBuilder;
+import com.swrobotics.bert.util.TalonSRXBuilder;
+
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 import static com.swrobotics.bert.constants.Constants.*;
 import static com.swrobotics.bert.constants.DriveConstants.*;
 
 /**
  * A single swerve module.
+ * Controls both wheel rotation and speed
  */
 public class SwerveModule implements Subsystem {
     private final TalonFX drive;
-    private final CANCoder can;
     private final TalonSRX turn;
 
-    public SwerveModule(int driveID, int turnID, int canCoderID, double canCoderOffset) {
+    public SwerveModule(int driveID, int turnID, int cancoderID, double canCoderOffset) {
         drive = new TalonFXBuilder(driveID)
                 .setCANBus(CANIVORE)
                 .setPIDF(
-                        WHEEL_DRIVE_KP,
-                        WHEEL_DRIVE_KI,
-                        WHEEL_DRIVE_KD,
-                        WHEEL_DRIVE_KF
+                        DRIVE_KP,
+                        DRIVE_KI,
+                        DRIVE_KD,
+                        DRIVE_KF
                 )
                 .build();
 
-        turn = new TalonSRX(turnID);
-        can = new CANCoder(canCoderID);
+        drive.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
-        TalonSRXConfiguration turnConfig = new TalonSRXConfiguration();
-        turnConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
-        turnConfig.remoteFilter0.remoteSensorDeviceID = canCoderID;
-        turnConfig.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANCoder;
+        turn = new TalonSRXBuilder(turnID)
+                .setPIDF(
+                    TURN_KP,
+                    TURN_KI,
+                    TURN_KD,
+                    TURN_KF
+                )
+                .setCanCoder(cancoderID)
+                .build();
 
-        can.setPosition(canCoderOffset);
     }
 
-    public void update(double rotation) {
-        /*
-        Get the sensor pose
-        Get the pose of where we want it to be
-        Calculate how much to move it
-        Move it
+    public void update(SwerveModuleState state) {
+        state = SwerveModuleState.optimize(state, Rotation2d.fromDegrees(turn.getSelectedSensorPosition()));
 
-        Drive the drive motor to the right amount
-        */
-
-        double position = can.getAbsolutePosition();
-        double desiredPosition = rotation;
+        turn.set(TalonSRXControlMode.Position, state.angle.getDegrees());
+        drive.set(TalonFXControlMode.Velocity, state.speedMetersPerSecond * DRIVE_SPEED_TO_NATIVE_VELOCITY);
     }
 
     @Override

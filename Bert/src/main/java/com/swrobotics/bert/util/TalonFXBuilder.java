@@ -18,8 +18,8 @@ public final class TalonFXBuilder {
 
         config = new TalonFXConfiguration();
         config.neutralDeadband = 0.001;
-        config.openloopRamp = 0.5;
-        config.closedloopRamp = 0.5;
+        config.openloopRamp = 0.5;   // Seconds to ramp from 0% to 100% 
+        config.closedloopRamp = 0.5; // Seconds to ramp from 0% to 100%
     }
 
     public TalonFXBuilder setCANBus(String canBus) {
@@ -38,6 +38,8 @@ public final class TalonFXBuilder {
 
         return this;
     }
+
+    // TODO: Add sensor config
 
     public TalonFXBuilder setInverted(boolean inverted) {
         this.inverted = inverted;
