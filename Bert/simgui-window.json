@@ -6,8 +6,8 @@
       "style": "0",
       "userScale": "2",
       "width": "1280",
-      "xpos": "204",
-      "ypos": "104"
+      "xpos": "364",
+      "ypos": "58"
     }
   },
   "Window": {
@@ -24,7 +24,7 @@
     "###NetworkTables": {
       "Collapsed": "0",
       "Pos": "233,138",
-      "Size": "750,185"
+      "Size": "750,319"
     },
     "###Other Devices": {
       "Collapsed": "0",
@@ -33,7 +33,7 @@
     },
     "###System Joysticks": {
       "Collapsed": "0",
-      "Pos": "5,350",
+      "Pos": "15,283",
       "Size": "192,218"
     },
     "###Timing": {

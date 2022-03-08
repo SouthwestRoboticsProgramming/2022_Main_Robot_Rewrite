@@ -60,6 +60,8 @@ public final class Scheduler {
                 return command.run();
             }
 
+//            System.out.println(timer);
+
             return false;
         }
     }
@@ -99,8 +101,6 @@ public final class Scheduler {
         for (Subsystem system : subsystems) {
             system.disabledPeriodic();
         }
-
-        updateCommands();
     }
 
     public void teleopInit() {
@@ -113,8 +113,6 @@ public final class Scheduler {
         for (Subsystem system : subsystems) {
             system.teleopPeriodic();
         }
-
-        updateCommands();
     }
 
     public void autonomousInit() {
@@ -127,8 +125,6 @@ public final class Scheduler {
         for (Subsystem system : subsystems) {
             system.autonomousPeriodic();
         }
-
-        updateCommands();
     }
 
     public void testInit() {
@@ -141,7 +137,5 @@ public final class Scheduler {
         for (Subsystem system : subsystems) {
             system.testPeriodic();
         }
-
-        updateCommands();
     }
 }
