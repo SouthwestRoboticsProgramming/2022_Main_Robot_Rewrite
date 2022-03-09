@@ -49,16 +49,16 @@ public class SwerveModule implements Subsystem {
 
     }
 
+    // FIXME: Do the dew
+    public SwerveModuleState getRealState() {
+        return new SwerveModuleState(drive.getSelectedSensorVelocity() / DRIVE_SPEED_TO_NATIVE_VELOCITY, Rotation2d.fromDegrees(turn.getSelectedSensorPosition()));
+    }
+
     public void update(SwerveModuleState state) {
         state = SwerveModuleState.optimize(state, Rotation2d.fromDegrees(turn.getSelectedSensorPosition()));
 
         turn.set(TalonSRXControlMode.Position, state.angle.getDegrees());
         drive.set(TalonFXControlMode.Velocity, state.speedMetersPerSecond * DRIVE_SPEED_TO_NATIVE_VELOCITY);
-    }
-
-    @Override
-    public void robotPeriodic() {
-
     }
 
 }
