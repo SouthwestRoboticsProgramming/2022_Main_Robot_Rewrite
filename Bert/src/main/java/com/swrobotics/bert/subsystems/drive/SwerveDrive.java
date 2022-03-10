@@ -4,9 +4,11 @@ import com.kauailabs.navx.frc.AHRS;
 import com.swrobotics.bert.shuffle.ShuffleBoard;
 import com.swrobotics.bert.subsystems.Subsystem;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 import static com.swrobotics.bert.constants.DriveConstants.*;
@@ -27,6 +29,7 @@ public class SwerveDrive implements Subsystem {
      private final double wheelOffset;
      private final SwerveModule frontLeft, frontRight, backRight, backLeft;
      private final AHRS gyro;
+     private final SwerveDriveOdometry odometry;
 
      public SwerveDrive(AHRS gyro){
 
@@ -61,15 +64,22 @@ public class SwerveDrive implements Subsystem {
          frontRight = new SwerveModule(frInfo.getDriveID(), TURN_ID_FRONT_RIGHT, frInfo.getCancoderID(), frInfo.getCancoderOffset() - 90);
          backRight = new SwerveModule(brInfo.getDriveID(), TURN_ID_BACK_RIGHT, brInfo.getCancoderID(), brInfo.getCancoderOffset() - 180);
          backLeft = new SwerveModule(blInfo.getDriveID(), TURN_ID_BACK_LEFT, blInfo.getCancoderID(), blInfo.getCancoderOffset() - 270);
+
+         odometry = new SwerveDriveOdometry(kinematics, gyro.getRotation2d());
      }
 
      public ChassisSpeeds getRealChassisSpeeds() {
          return kinematics.toChassisSpeeds(frontLeft.getRealState(), frontRight.getRealState(), backRight.getRealState(), backLeft.getRealState());
      }
 
+     public Pose2d getOdometryPose() {
+         return odometry.getPoseMeters(); // NOTE: X and Y are probaly counter intuative
+     }
+
      public void update(ChassisSpeeds chassis) {
          SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassis);
 
+         // FIXME: Ryan check that this does what I think it should
          SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_ATTAINABLE_WHEEL_SPEED);
 
          frontLeft.update(states[0]);
@@ -82,5 +92,11 @@ public class SwerveDrive implements Subsystem {
      public void robotInit() {
          gyro.calibrate();
          gyro.setAngleAdjustment(-90);
+     }
+
+     @Override
+     public void robotPeriodic() {
+         SwerveModuleState[] realStates = {frontLeft.getRealState(), frontRight.getRealState(), backRight.getRealState(), backLeft.getRealState()};
+         odometry.updateWithTime(System.currentTimeMillis(), gyro.getRotation2d(),realStates);
      }
 }

@@ -4,6 +4,10 @@ import com.swrobotics.bert.subsystems.drive.SwerveModuleInfo;
 
 public final class DriveConstants {
     // TODO: Make configurable with ShuffleWood or ShuffleBoard
+
+    public static final double MAX_VELOCITY = 3.0  /*4.1*/; // Meters per Seconda
+    public static final double MAX_TURN_VELOCITY = 4.0; // Radians per Second
+
     public static final double DRIVE_KP = 0;
     public static final double DRIVE_KI = 0;
     public static final double DRIVE_KD = 0;
@@ -16,6 +20,8 @@ public final class DriveConstants {
 
 
 
+
+    /* Hardware*/
     public static final double WHEEL_DIAMETER = 0.10;  // Meters
     public static final int TALON_FX_NATIVE_SENSOR_UNITS_PER_ROTATION = 2048;
     private static final int TALON_FX_NATIVE_VELOCITY_UNITS_PER_ROTATIONS_PER_SECOND =
@@ -27,9 +33,8 @@ public final class DriveConstants {
         SWERVE_MODULE_DRIVE_GEAR_RATIO *
         WHEEL_DIAMETER * Math.PI;  // Converts from sensor position to velocity
 
-    /* Hardware */
     public static final double WHEEL_SPACING = 0.4699; // Meters
-    public static final double MAX_ATTAINABLE_WHEEL_SPEED = 13.0; // m/s  with 0.5 m/s of padding
+    public static final double MAX_ATTAINABLE_WHEEL_SPEED = 3.6; // m/s  with 0.5 m/s of padding
 
     // Device IDs and offsets
     public static final SwerveModuleInfo[] SWERVE_INFO = {
