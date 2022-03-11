@@ -26,7 +26,6 @@ public class SwerveDrive implements Subsystem {
      */
 
      private final SwerveDriveKinematics kinematics;
-     private final double wheelOffset;
      private final SwerveModule frontLeft, frontRight, backRight, backLeft;
      private final AHRS gyro;
      private final SwerveDriveOdometry odometry;
@@ -36,10 +35,10 @@ public class SwerveDrive implements Subsystem {
         this.gyro = gyro;
 
         // Constructs the spacing of the wheels
-         wheelOffset = 0.5 * WHEEL_SPACING;
+         double wheelOffset = 0.5 * WHEEL_SPACING;
          kinematics = new SwerveDriveKinematics(
              // Front Left
-             new Translation2d(-wheelOffset,wheelOffset),
+             new Translation2d(-wheelOffset, wheelOffset),
             // Front Right
             new Translation2d(wheelOffset, wheelOffset),
             //Back Right
@@ -48,7 +47,7 @@ public class SwerveDrive implements Subsystem {
             new Translation2d(-wheelOffset, -wheelOffset)
          );
 
-        // Module selector using shuffleboard
+         // Module selector using shuffleboard
          int flID = (int) ShuffleBoard.frontLeftModule.getDouble(1) - 1;
          int frID = (int) ShuffleBoard.frontLeftModule.getDouble(2) - 1;
          int brID = (int) ShuffleBoard.frontLeftModule.getDouble(3) - 1;
@@ -73,7 +72,7 @@ public class SwerveDrive implements Subsystem {
      }
 
      public Pose2d getOdometryPose() {
-         return odometry.getPoseMeters(); // NOTE: X and Y are probaly counter intuative
+         return odometry.getPoseMeters(); // NOTE: X and Y are probably counter intuitive
      }
 
      public void update(ChassisSpeeds chassis) {

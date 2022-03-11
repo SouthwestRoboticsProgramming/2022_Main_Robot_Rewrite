@@ -3,8 +3,11 @@ package com.swrobotics.bert;
 import com.swrobotics.bert.commands.MessengerReadCommand;
 import com.swrobotics.bert.commands.taskmanager.TaskManagerSetupCommand;
 import com.swrobotics.bert.constants.Settings;
+import com.swrobotics.bert.control.Input;
 import com.swrobotics.bert.profiler.ProfileNode;
 import com.swrobotics.bert.profiler.Profiler;
+import com.swrobotics.bert.subsystems.Lights;
+import com.swrobotics.bert.subsystems.ServoTest;
 import com.swrobotics.messenger.client.MessengerClient;
 import com.swrobotics.taskmanager.api.TaskManagerAPI;
 import edu.wpi.first.hal.HAL;
@@ -31,27 +34,37 @@ public final class Robot extends RobotBase {
     private TaskManagerAPI jetsonNano;
 
     private void init() {
-        // Connect to Messenger
-        while (msg == null) {
-            try {
-                msg = new MessengerClient(
-                        MESSENGER_HOST,
-                        MESSENGER_PORT,
-                        MESSENGER_NAME
-                );
-            } catch (IOException e) {
-                System.out.println("Messenger connection failed, trying again");
-            }
-        }
-        Scheduler.get().addCommand(new MessengerReadCommand(msg));
+       // Connect to Messenger
+       while (msg == null) {
+           try {
+               msg = new MessengerClient(
+                       MESSENGER_HOST,
+                       MESSENGER_PORT,
+                       MESSENGER_NAME
+               );
+           } catch (IOException e) {
+               System.out.println("Messenger connection failed, trying again");
+           }
 
-        // Connect to TaskManager instances
-        raspberryPi = new TaskManagerAPI(msg, RASPBERRY_PI_PREFIX);
-        jetsonNano = new TaskManagerAPI(msg, JETSON_NANO_PREFIX);
-        Scheduler.get().addCommand(new TaskManagerSetupCommand(raspberryPi, LIDAR_NAME, PATHFINDING_NAME));
-        Scheduler.get().addCommand(new TaskManagerSetupCommand(jetsonNano, VISION_NAME));
+           try {
+               Thread.sleep(1000);
+           } catch (InterruptedException e) {
+               e.printStackTrace();
+           }
+       }
+       Scheduler.get().addCommand(new MessengerReadCommand(msg));
+
+       // Connect to TaskManager instances
+       raspberryPi = new TaskManagerAPI(msg, RASPBERRY_PI_PREFIX);
+       jetsonNano = new TaskManagerAPI(msg, JETSON_NANO_PREFIX);
+       Scheduler.get().addCommand(new TaskManagerSetupCommand(raspberryPi, LIDAR_NAME, PATHFINDING_NAME));
+       Scheduler.get().addCommand(new TaskManagerSetupCommand(jetsonNano, VISION_NAME));
+       
+        Input input = new Input();
 
         // Schedule subsystems here
+        Scheduler.get().addSubsystem(new ServoTest(input, 1 /*FIXME*/));
+        Scheduler.get().addSubsystem(new Lights());
         // Scheduler.get().addSubsystem(new TestSubsystem());
     }
 

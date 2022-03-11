@@ -2,7 +2,12 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/Bert/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Bert/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Lidar/Lidar-Library/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Lidar/Lidar-Library/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Lidar/Lidar-Task/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Lidar/Lidar-Task/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Lidar/Lidar-Test/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Lidar/Lidar-Test/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Messenger/Messenger-Client/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Messenger/Messenger-Client/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Messenger/Messenger-Server/src/main/java" charset="UTF-8" />

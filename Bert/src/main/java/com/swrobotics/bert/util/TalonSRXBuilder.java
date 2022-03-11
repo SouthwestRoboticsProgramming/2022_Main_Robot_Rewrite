@@ -36,7 +36,7 @@ public final class TalonSRXBuilder {
     }
 
     // TODO: Add sensor config for other sensors
-    public TalonSRXBuilder setCanCoder (int cancoderID, double cancoderOffset) {
+    public TalonSRXBuilder setCanCoder(int cancoderID, double cancoderOffset) {
         config.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
         config.remoteFilter0.remoteSensorDeviceID = cancoderID;
         config.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANCoder;

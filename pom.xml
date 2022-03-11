@@ -14,6 +14,7 @@
         <module>Vision</module>
         <module>Messenger</module>
         <module>TaskManager</module>
+        <module>Lidar</module>
     </modules>
 
     <properties>
@@ -31,4 +32,23 @@
             <url>https://frcmaven.wpi.edu/artifactory/release/</url>
         </repository>
     </repositories>
+
+    <profiles>
+        <profile>
+            <id>build-windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+        </profile>
+        <profile>
+            <id>build-linux</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                </os>
+            </activation>
+        </profile>
+    </profiles>
 </project>

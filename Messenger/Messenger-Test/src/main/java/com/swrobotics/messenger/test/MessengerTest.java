@@ -4,7 +4,7 @@ import com.swrobotics.messenger.client.MessengerClient;
 
 public final class MessengerTest {
     public static void main(String[] args) throws Exception {
-        MessengerClient msg = new MessengerClient("localhost", 5805, "Test");
+        MessengerClient msg = new MessengerClient("10.21.29.3", 5805, "Test");
 
         msg.makeHandler()
                 .listen("Test Message")
@@ -12,13 +12,15 @@ public final class MessengerTest {
                     System.out.println(type);
                 });
 
-        msg.sendMessage("Test Message", new byte[0]);
+        msg.sendMessage("Lidar:Start", new byte[0]);
 
         for (int i = 0; i < 5; i++) {
             msg.readMessages();
 
             Thread.sleep(1000);
         }
+
+        msg.sendMessage("Lidar:Stop", new byte[0]);
 
         msg.disconnect();
     }

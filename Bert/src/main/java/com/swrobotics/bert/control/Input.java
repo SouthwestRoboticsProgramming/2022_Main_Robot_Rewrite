@@ -24,4 +24,14 @@ public class Input {
     public double getDriveRot() {
         return drive.getRightX();
     }
+
+    /* Temporary things */
+    public int getServoAngle() {
+        if (manipulator.getXButton())
+            return 0;
+        else if (manipulator.getBButton())
+            return 180;
+        else
+            return 90;
+    }
 }
