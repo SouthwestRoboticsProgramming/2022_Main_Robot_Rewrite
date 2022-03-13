@@ -3,6 +3,7 @@ package com.swrobotics.bert.control;
 import edu.wpi.first.wpilibj.XboxController;
 
 import static com.swrobotics.bert.constants.InputConstants.*;
+
 public class Input {
     private final XboxController drive;
     private final XboxController manipulator;
@@ -23,6 +24,11 @@ public class Input {
 
     public double getDriveRot() {
         return drive.getRightX();
+    }
+
+    /* Manipulator */
+    public boolean getToggleIntake() {
+        return manipulator.getYButtonPressed();
     }
 
     /* Temporary things */

@@ -1,6 +1,6 @@
 package com.swrobotics.bert.constants;
 
-public class LightConstants {
+public final class LightConstants {
     public static final int CONTROLLER_ID = 0;
 
     public static final double PURPLE_SOLID = 0.91;
