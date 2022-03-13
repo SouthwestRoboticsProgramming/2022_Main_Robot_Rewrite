@@ -21,6 +21,10 @@ public class CameraTurret implements Subsystem {
         targetAngle = angle;
     }
 
+    public double getAngle() {
+        return predictedAngle;
+    }
+
     @Override
     public void robotPeriodic() {
         if (Math.abs(targetAngle - predictedAngle) > SERVO_TURN_PER_PERIODIC) {

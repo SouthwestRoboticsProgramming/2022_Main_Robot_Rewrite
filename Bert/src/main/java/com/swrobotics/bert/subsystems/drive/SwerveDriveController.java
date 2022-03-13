@@ -10,7 +10,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import static com.swrobotics.bert.constants.DriveConstants.*;
 
 public class SwerveDriveController implements Subsystem {
-    
     private final AHRS gyro;
     private final SwerveDrive drive;
     private final Input input;

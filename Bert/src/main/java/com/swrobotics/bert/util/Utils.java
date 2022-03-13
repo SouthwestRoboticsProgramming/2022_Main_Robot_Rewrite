@@ -10,4 +10,8 @@ public class Utils {
     public static double map(double value, double minA, double maxA, double minB, double maxB) {
         return (value - minA) / (maxA - minA) * (maxB - minB) + minB;
     }
+
+    public static double normalizeRadians(double angle) {
+        return -Math.PI + ((Math.PI * 2 + ((angle + Math.PI) % (Math.PI * 2))) % (Math.PI * 2));
+    }
 }
