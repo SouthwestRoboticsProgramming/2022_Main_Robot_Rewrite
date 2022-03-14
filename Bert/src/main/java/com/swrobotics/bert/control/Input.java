@@ -37,4 +37,19 @@ public class Input {
         }
         return Math.signum(amount) * Utils.map(Math.abs(amount), JOYSTICK_DEAD_ZONE, 1, 0, 1);
     }
+
+    /* Manipulator */
+    public boolean getToggleIntake() {
+        return manipulator.getYButtonPressed();
+    }
+
+    /* Temporary things */
+    public int getServoAngle() {
+        if (manipulator.getXButton())
+            return 0;
+        else if (manipulator.getBButton())
+            return 180;
+        else
+            return 90;
+    }
 }

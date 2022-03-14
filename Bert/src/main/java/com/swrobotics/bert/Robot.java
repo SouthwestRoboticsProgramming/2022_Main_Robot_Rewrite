@@ -3,8 +3,12 @@ package com.swrobotics.bert;
 import com.swrobotics.bert.commands.MessengerReadCommand;
 import com.swrobotics.bert.commands.taskmanager.TaskManagerSetupCommand;
 import com.swrobotics.bert.constants.Settings;
+import com.swrobotics.bert.control.Input;
 import com.swrobotics.bert.profiler.ProfileNode;
 import com.swrobotics.bert.profiler.Profiler;
+import com.swrobotics.bert.subsystems.Lights;
+import com.swrobotics.bert.subsystems.camera.CameraTurret;
+import com.swrobotics.bert.subsystems.camera.CameraTurretController;
 import com.swrobotics.messenger.client.MessengerClient;
 import com.swrobotics.taskmanager.api.TaskManagerAPI;
 import edu.wpi.first.hal.HAL;
@@ -20,6 +24,7 @@ import static com.swrobotics.bert.constants.Constants.PERIODIC_PER_SECOND;
 
 public final class Robot extends RobotBase {
     private static final Robot INSTANCE = new Robot();
+
     public static Robot get() {
         return INSTANCE;
     }
@@ -42,6 +47,12 @@ public final class Robot extends RobotBase {
             } catch (IOException e) {
                 System.out.println("Messenger connection failed, trying again");
             }
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         Scheduler.get().addCommand(new MessengerReadCommand(msg));
 
@@ -51,8 +62,14 @@ public final class Robot extends RobotBase {
         Scheduler.get().addCommand(new TaskManagerSetupCommand(raspberryPi, LIDAR_NAME, PATHFINDING_NAME));
         Scheduler.get().addCommand(new TaskManagerSetupCommand(jetsonNano, VISION_NAME));
 
-        // Schedule subsystems here
-        // Scheduler.get().addSubsystem(new TestSubsystem());
+        Input input = new Input();
+        CameraTurret cameraTurret = new CameraTurret();
+        CameraTurretController cameraTurretController = new CameraTurretController(input, cameraTurret);
+        Lights lights = new Lights();
+
+        Scheduler.get().addSubsystem(cameraTurret);
+        Scheduler.get().addSubsystem(cameraTurretController);
+        Scheduler.get().addSubsystem(lights);
     }
 
     @Override

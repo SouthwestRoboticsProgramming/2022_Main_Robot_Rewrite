@@ -20,7 +20,7 @@ import static com.swrobotics.bert.constants.DriveConstants.*;
  * A single swerve module.
  * Controls both wheel rotation and speed
  */
-public class SwerveModule implements Subsystem {
+public class SwerveModule {
     private final TalonFX drive;
     private final TalonSRX turn;
 
@@ -46,7 +46,6 @@ public class SwerveModule implements Subsystem {
                 )
                 .setCanCoder(cancoderID, cancoderOffset)
                 .build();
-
     }
 
     public SwerveModuleState getRealState() {
@@ -59,5 +58,4 @@ public class SwerveModule implements Subsystem {
         turn.set(TalonSRXControlMode.Position, state.angle.getDegrees());
         drive.set(TalonFXControlMode.Velocity, state.speedMetersPerSecond * DRIVE_SPEED_TO_NATIVE_VELOCITY);
     }
-
 }

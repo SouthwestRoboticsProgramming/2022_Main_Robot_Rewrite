@@ -13,6 +13,6 @@ public class Lights implements Subsystem {
 
     @Override
     public void robotPeriodic() {
-        lights.set(PURPLE_SOLID);
+        lights.set(COLOR_WAVES_1_AND_2);
     }
 }

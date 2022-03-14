@@ -60,10 +60,10 @@ public final class TaskManagerServerAPI {
         String message;
         switch (type) {
             case STDOUT:
-                message = OUT_TASK_STDOUT;
+                message = prefix + OUT_TASK_STDOUT;
                 break;
             case STDERR:
-                message = OUT_TASK_STDERR;
+                message = prefix + OUT_TASK_STDERR;
                 break;
             default:
                 throw new IllegalArgumentException(String.valueOf(type));

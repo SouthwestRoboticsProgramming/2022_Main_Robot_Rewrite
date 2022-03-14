@@ -51,7 +51,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
-                    <executable>gradlew.bat</executable>
+                    <executable>${rio.gradle.executable}</executable>
                     <workingDirectory>${basedir}</workingDirectory>
                     <environmentVariables>
                         <JAVA_HOME>${java.home}</JAVA_HOME>

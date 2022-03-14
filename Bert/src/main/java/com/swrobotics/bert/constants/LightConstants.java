@@ -1,6 +1,6 @@
 package com.swrobotics.bert.constants;
 
-public class LightConstants {
+public final class LightConstants {
     public static final int CONTROLLER_ID = 0;
 
     public static final double PURPLE_SOLID = 0.91;
@@ -10,6 +10,7 @@ public class LightConstants {
     public static final double RED_SHOT = -0.85;
     public static final double BLUE_SHOT = -0.83;
     public static final double LARGE_FIRE = -0.57;
+    public static final double COLOR_WAVES_1_AND_2 = 0.53;
 
     private LightConstants(){
         throw new AssertionError();

@@ -6,12 +6,10 @@ import com.swrobotics.bert.subsystems.Subsystem;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 
 import static com.swrobotics.bert.constants.DriveConstants.*;
 
 public class SwerveDriveController implements Subsystem {
-    
     private final AHRS gyro;
     private final SwerveDrive drive;
     private final Input input;
@@ -37,7 +35,7 @@ public class SwerveDriveController implements Subsystem {
         double rotation = -input.getDriveRot() * MAX_TURN_VELOCITY;
         Rotation2d gyroRotation = gyro.getRotation2d();
 
-        chassis = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeX, fieldRelativeY, rotation, gyroRotation); // Away velocity, left velocity, counter-clockwise speed, conter-clockwise gyro
+        chassis = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeX, fieldRelativeY, rotation, gyroRotation); // Away velocity, left velocity, counter-clockwise speed, counter-clockwise gyro
         drive.update(chassis);
     }
 }

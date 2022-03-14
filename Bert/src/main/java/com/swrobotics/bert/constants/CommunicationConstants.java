@@ -2,7 +2,7 @@ package com.swrobotics.bert.constants;
 
 public final class CommunicationConstants {
     // FIXME: Set to the correct values for the robot system
-    public static final String MESSENGER_HOST = "localhost";
+    public static final String MESSENGER_HOST = "10.21.29.3";
     public static final int MESSENGER_PORT = 5805;
     public static final String MESSENGER_NAME = "RoboRIO";
 

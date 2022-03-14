@@ -5,6 +5,7 @@ import com.swrobotics.bert.shuffle.ShuffleBoard;
 import com.swrobotics.bert.subsystems.Subsystem;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -26,20 +27,19 @@ public class SwerveDrive implements Subsystem {
      */
 
      private final SwerveDriveKinematics kinematics;
-     private final double wheelOffset;
      private final SwerveModule frontLeft, frontRight, backRight, backLeft;
      private final AHRS gyro;
      private final SwerveDriveOdometry odometry;
 
-     public SwerveDrive(AHRS gyro){
+     public SwerveDrive(AHRS gyro) {
 
         this.gyro = gyro;
 
         // Constructs the spacing of the wheels
-         wheelOffset = 0.5 * WHEEL_SPACING;
+         double wheelOffset = 0.5 * WHEEL_SPACING;
          kinematics = new SwerveDriveKinematics(
              // Front Left
-             new Translation2d(-wheelOffset,wheelOffset),
+             new Translation2d(-wheelOffset, wheelOffset),
             // Front Right
             new Translation2d(wheelOffset, wheelOffset),
             //Back Right
@@ -48,7 +48,7 @@ public class SwerveDrive implements Subsystem {
             new Translation2d(-wheelOffset, -wheelOffset)
          );
 
-        // Module selector using shuffleboard
+         // Module selector using shuffleboard
          int flID = (int) ShuffleBoard.frontLeftModule.getDouble(1) - 1;
          int frID = (int) ShuffleBoard.frontLeftModule.getDouble(2) - 1;
          int brID = (int) ShuffleBoard.frontLeftModule.getDouble(3) - 1;
@@ -72,14 +72,34 @@ public class SwerveDrive implements Subsystem {
          return kinematics.toChassisSpeeds(frontLeft.getRealState(), frontRight.getRealState(), backRight.getRealState(), backLeft.getRealState());
      }
 
+     public void calibrateOdometry(double x, double y) {
+         Rotation2d gyroRotation = gyro.getRotation2d();
+
+         // TODO Mason: Check if this is correct to convert from field coords to odometry coords
+         Pose2d newPose = new Pose2d(
+                 y,
+                 -x,
+                 gyroRotation
+         );
+
+         odometry.resetPosition(newPose, gyroRotation);
+     }
+
      public Pose2d getOdometryPose() {
-         return odometry.getPoseMeters(); // NOTE: X and Y are probaly counter intuative
+         Pose2d odometryPose = odometry.getPoseMeters();
+
+         // TODO Mason: Check if this is correct to convert from odometry coords to field coords
+         Translation2d fieldPosition = new Translation2d(
+                 -odometryPose.getY(),
+                 odometryPose.getX()
+         );
+
+         return new Pose2d(fieldPosition, gyro.getRotation2d());
      }
 
      public void update(ChassisSpeeds chassis) {
          SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassis);
 
-         // FIXME: Ryan check that this does what I think it should
          SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_ATTAINABLE_WHEEL_SPEED);
 
          frontLeft.update(states[0]);
@@ -97,6 +117,6 @@ public class SwerveDrive implements Subsystem {
      @Override
      public void robotPeriodic() {
          SwerveModuleState[] realStates = {frontLeft.getRealState(), frontRight.getRealState(), backRight.getRealState(), backLeft.getRealState()};
-         odometry.updateWithTime(System.currentTimeMillis(), gyro.getRotation2d(),realStates);
+         odometry.updateWithTime(System.currentTimeMillis() / 1000.0, gyro.getRotation2d(), realStates);
      }
 }
