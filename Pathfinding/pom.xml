@@ -10,6 +10,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>Pathfinding</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>Pathfinding-Library</module>
+        <module>Pathfinding-Test</module>
+        <module>Pathfinding-Task</module>
+    </modules>
 
     <properties>
         <p5x.version>0.353.0-beta-3</p5x.version>

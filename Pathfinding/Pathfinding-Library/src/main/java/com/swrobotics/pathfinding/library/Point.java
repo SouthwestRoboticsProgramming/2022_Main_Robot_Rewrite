@@ -1,4 +1,4 @@
-package com.swrobotics.pathfinding;
+package com.swrobotics.pathfinding.library;
 
 public final class Point {
     private final int x;

@@ -24,8 +24,12 @@
     <file url="file://$PROJECT_DIR$/Messenger/Messenger-Test" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Messenger/Messenger-Test/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Messenger/Messenger-Test/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Pathfinding/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Pathfinding/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Pathfinding/Pathfinding-Library/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Pathfinding/Pathfinding-Library/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Pathfinding/Pathfinding-Task/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Pathfinding/Pathfinding-Task/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Pathfinding/Pathfinding-Test/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Pathfinding/Pathfinding-Test/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/TaskManager" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/TaskManager/TaskManager-API" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/TaskManager/TaskManager-API/src/main/java" charset="UTF-8" />

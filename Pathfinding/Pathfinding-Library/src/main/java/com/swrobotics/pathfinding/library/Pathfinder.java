@@ -1,16 +1,16 @@
-package com.swrobotics.pathfinding;
+package com.swrobotics.pathfinding.library;
 
 import java.util.*;
 
 public final class Pathfinder {
-    private boolean[][] grid;
+    private Grid grid;
     private Node[][] nodes;
     private int width, height;
 
-    public void setGrid(boolean[][] grid, int width, int height) {
+    public void setGrid(Grid grid) {
         this.grid = grid;
-        this.width = width;
-        this.height = height;
+        width = grid.getWidth();
+        height = grid.getHeight();
     }
 
     private static class Node {
@@ -47,7 +47,7 @@ public final class Pathfinder {
     private void testNeighbor(Node node, Set<Node> nodeSet, int dx, int dy) {
         int x = node.x + dx;
         int y = node.y + dy;
-        if (isValidNodeCoord(x, y) && !grid[x][y])
+        if (isValidNodeCoord(x, y) && !grid.get(x, y))
             nodeSet.add(nodes[x][y]);
     }
 
