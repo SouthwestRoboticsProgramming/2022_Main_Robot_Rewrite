@@ -77,8 +77,8 @@ public class SwerveDrive implements Subsystem {
 
          // TODO Mason: Check if this is correct to convert from field coords to odometry coords
          Pose2d newPose = new Pose2d(
-                 y,
-                 -x,
+                 -y,
+                 x,
                  gyroRotation
          );
 
