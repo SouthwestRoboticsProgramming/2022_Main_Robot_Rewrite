@@ -75,10 +75,9 @@ public class SwerveDrive implements Subsystem {
      public void calibrateOdometry(double x, double y) {
          Rotation2d gyroRotation = gyro.getRotation2d();
 
-         // TODO Mason: Check if this is correct to convert from field coords to odometry coords
          Pose2d newPose = new Pose2d(
-                 -y,
-                 x,
+                 y,
+                 -x,
                  gyroRotation
          );
 
@@ -88,7 +87,6 @@ public class SwerveDrive implements Subsystem {
      public Pose2d getOdometryPose() {
          Pose2d odometryPose = odometry.getPoseMeters();
 
-         // TODO Mason: Check if this is correct to convert from odometry coords to field coords
          Translation2d fieldPosition = new Translation2d(
                  -odometryPose.getY(),
                  odometryPose.getX()
