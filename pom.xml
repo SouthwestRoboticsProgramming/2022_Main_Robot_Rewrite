@@ -15,6 +15,7 @@
         <module>Messenger</module>
         <module>TaskManager</module>
         <module>Lidar</module>
+        <module>Pathfinding</module>
     </modules>
 
     <properties>
