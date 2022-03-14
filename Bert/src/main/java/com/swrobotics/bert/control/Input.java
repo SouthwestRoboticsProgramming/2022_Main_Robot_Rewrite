@@ -3,6 +3,9 @@ package com.swrobotics.bert.control;
 import edu.wpi.first.wpilibj.XboxController;
 
 import static com.swrobotics.bert.constants.InputConstants.*;
+
+import com.swrobotics.bert.util.Utils;
+
 public class Input {
     private final XboxController drive;
     private final XboxController manipulator;
@@ -14,14 +17,24 @@ public class Input {
 
     /* Drive */
     public double getDriveX() {
-        return drive.getLeftX();
+        return deadzone(drive.getLeftX());
     }
 
     public double getDriveY() {
-        return drive.getLeftY();
+        return deadzone(drive.getLeftY());
     }
 
     public double getDriveRot() {
-        return drive.getRightX();
+        return deadzone(drive.getRightX());
+    }
+
+
+
+
+    private double deadzone(double amount) {
+        if (Math.abs(amount) < JOYSTICK_DEAD_ZONE) {
+            return 0;
+        }
+        return Math.signum(amount) * Utils.map(Math.abs(amount), JOYSTICK_DEAD_ZONE, 1, 0, 1);
     }
 }
