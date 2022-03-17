@@ -7,7 +7,7 @@ public final class TunableInt extends ShuffleBoardTunable<Integer> {
     private final int defaultValue;
 
     public TunableInt(ShuffleboardLayout layout, String name, int defaultValue) {
-        super(layout.add(name, defaultValue).getEntry());
+        super(layout.addPersistent(name, defaultValue).getEntry());
         this.defaultValue = defaultValue;
 
         entry.addListener((event) -> {

@@ -7,7 +7,7 @@ public final class TunableDouble extends ShuffleBoardTunable<Double> {
     private final double defaultValue;
 
     public TunableDouble(ShuffleboardLayout layout, String name, double defaultValue) {
-        super(layout.add(name, defaultValue).getEntry());
+        super(layout.addPersistent(name, defaultValue).getEntry());
         this.defaultValue = defaultValue;
 
         entry.addListener((event) -> {
