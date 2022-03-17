@@ -36,8 +36,8 @@ public final class DriveConstants {
 
     public static final double DRIVE_SPEED_TO_NATIVE_VELOCITY = 
         TALON_FX_NATIVE_VELOCITY_UNITS_PER_ROTATIONS_PER_SECOND *
-        SWERVE_MODULE_DRIVE_GEAR_RATIO *
-        WHEEL_DIAMETER * Math.PI;  // Converts from sensor position to velocity
+        SWERVE_MODULE_DRIVE_GEAR_RATIO /
+        (WHEEL_DIAMETER * Math.PI);  // Converts from sensor position to velocity
 
     public static final double WHEEL_SPACING = 0.4699; // Meters
     public static final double MAX_ATTAINABLE_WHEEL_SPEED = 3.6; // m/s  with 0.5 m/s of padding
