@@ -37,9 +37,9 @@ public class SwerveModule {
     private final PIDController pid;
 
     public SwerveModule(int driveID, int turnID, int cancoderID, double cancoderOffset) {
-        drive = new TalonFX(driveID);
+        drive = new TalonFX(driveID, CANIVORE);
         turn = new TalonSRX(turnID);
-        canCoder = new CANCoder(cancoderID);
+        canCoder = new CANCoder(cancoderID, CANIVORE);
         
         TalonFXConfiguration driveConfig = new TalonFXConfiguration();
         {

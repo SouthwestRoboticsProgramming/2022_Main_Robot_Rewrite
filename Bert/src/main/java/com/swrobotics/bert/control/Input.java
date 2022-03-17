@@ -1,13 +1,12 @@
 package com.swrobotics.bert.control;
 
-import edu.wpi.first.wpilibj.XboxController;
-
 import static com.swrobotics.bert.constants.InputConstants.*;
 
+import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.util.Utils;
 
 // Note: The Y axes on the sticks are backwards from what you would expect: up is negative
-public class Input {
+public class Input implements Subsystem {
     private final XboxController drive;
     private final XboxController manipulator;
 
@@ -18,18 +17,16 @@ public class Input {
 
     /* Drive */
     public double getDriveX() {
-        return deadzone(drive.getLeftX());
+        return deadzone(drive.leftStickX.get());
     }
 
     public double getDriveY() {
-        return deadzone(-drive.getLeftY());
+        return deadzone(drive.leftStickY.get());
     }
 
     public double getDriveRot() {
-        return deadzone(drive.getRightX());
+        return deadzone(drive.rightStickX.get());
     }
-
-
 
 
     private double deadzone(double amount) {
@@ -41,16 +38,22 @@ public class Input {
 
     /* Manipulator */
     public boolean getToggleIntake() {
-        return manipulator.getYButtonPressed();
+        return manipulator.y.leadingEdge();
     }
 
     /* Temporary things */
     public int getServoAngle() {
-        if (manipulator.getXButton())
+        if (manipulator.x.isPressed())
             return 0;
-        else if (manipulator.getBButton())
+        else if (manipulator.b.isPressed())
             return 180;
         else
             return 90;
+    }
+
+    @Override
+    public void robotPeriodic() {
+        drive.update();
+        manipulator.update();
     }
 }

@@ -1,5 +1,6 @@
 package com.swrobotics.bert.shuffle;
 
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 
@@ -7,7 +8,7 @@ public final class TuneGroup {
     private final ShuffleboardLayout layout;
 
     public TuneGroup(String name, ShuffleboardContainer parent) {
-        layout = parent.getLayout(name);
+        layout = parent.getLayout(name, BuiltInLayouts.kList);
     }
 
     public TuneGroup(String name, TuneGroup parent) {
