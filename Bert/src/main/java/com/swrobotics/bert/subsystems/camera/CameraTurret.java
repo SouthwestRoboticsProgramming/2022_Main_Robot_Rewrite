@@ -33,6 +33,6 @@ public class CameraTurret implements Subsystem {
             predictedAngle = targetAngle;
         }
 
-        System.out.println("Servo at " + predictedAngle);
+        // System.out.println("Servo at " + predictedAngle);
     }
 }

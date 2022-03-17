@@ -35,7 +35,7 @@ public final class PathfinderTest extends PApplet {
 
         grid = new Grid(WIDTH, HEIGHT);
         scene = Scene.loadFromFile(new File("scene.txt"));
-        grid.buildEnvironmentFromScene(scene, new CircleCollider(0, 0, 3));
+        grid.buildEnvironmentFromScene(scene, new CircleCollider(0, 0, 2.94 + 1));
 
         pathfinder = new Pathfinder();
         pathfinder.setGrid(grid);
@@ -61,13 +61,13 @@ public final class PathfinderTest extends PApplet {
         strokeWeight(2);
         for (Collider c : scene.getColliders()) {
             if (c instanceof CircleCollider) {
-                stroke(255, 128, 0);
+                stroke(255, 255, 0);
                 noFill();
 
                 CircleCollider circle = (CircleCollider) c;
                 ellipse((float) circle.getX() * CELL_SIZE, (float) circle.getY() * CELL_SIZE, (float) circle.getRadius() * 2 * CELL_SIZE, (float) circle.getRadius() * 2 * CELL_SIZE);
             } else if (c instanceof RectangleCollider) {
-                stroke(255, 128, 0);
+                stroke(255, 255, 0);
                 noFill();
 
                 RectangleCollider rect = (RectangleCollider) c;
@@ -91,7 +91,15 @@ public final class PathfinderTest extends PApplet {
 
             List<Point> optimized = PathOptimizer.optimize(grid, path);
 
-            stroke(128, 64, 255);
+            stroke(0, 128, 0);
+            beginShape(LINE_STRIP);
+            for (Point point : optimized) {
+                vertex((point.getX() + 0.5f) * CELL_SIZE, (point.getY() + 0.5f) * CELL_SIZE);
+            }
+            endShape();
+
+            stroke(0, 128, 0, 64);
+            strokeWeight(2.94f * 2 * CELL_SIZE);
             beginShape(LINE_STRIP);
             for (Point point : optimized) {
                 vertex((point.getX() + 0.5f) * CELL_SIZE, (point.getY() + 0.5f) * CELL_SIZE);

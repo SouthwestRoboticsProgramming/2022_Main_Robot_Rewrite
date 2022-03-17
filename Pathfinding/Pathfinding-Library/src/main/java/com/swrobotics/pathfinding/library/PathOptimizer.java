@@ -3,9 +3,11 @@ package com.swrobotics.pathfinding.library;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PathOptimizer {
+public final class PathOptimizer {
     private static boolean testLineOfSight(Grid grid, Point start, Point end) {
-        // TODO: Use a proper algorithm
+        // TODO: Use a proper algorithm.
+        //     So far, this has not been an issue but it could cause a path
+        //     to be incorrect if the line is long enough.
 
         double precision = 0.01;
         for (int i = 0; i <= 100; i++) {
@@ -20,6 +22,7 @@ public class PathOptimizer {
         return true;
     }
 
+    // Removes steps in the path which aren't neccesary and allows for perfect diagonal lines
     public static List<Point> optimize(Grid grid, List<Point> path) {
         List<Point> output = new ArrayList<>();
 

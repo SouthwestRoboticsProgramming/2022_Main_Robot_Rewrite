@@ -1,25 +1,31 @@
 package com.swrobotics.bert.constants;
 
+import com.swrobotics.bert.shuffle.ShuffleBoard;
+import com.swrobotics.bert.shuffle.TunableDouble;
+import com.swrobotics.bert.shuffle.TunableInt;
+import com.swrobotics.bert.shuffle.TuneGroup;
 import com.swrobotics.bert.subsystems.drive.SwerveModuleInfo;
 
 public final class DriveConstants {
-    // TODO: Make configurable with ShuffleWood or ShuffleBoard
+    private static final TuneGroup MODULES = new TuneGroup("Modules", ShuffleBoard.driveTab);
+        public static final TunableInt FRONT_LEFT_MODULE = MODULES.getInt("Front Left", 1);
+        public static final TunableInt FRONT_RIGHT_MODULE = MODULES.getInt("Front Right", 2);
+        public static final TunableInt BACK_RIGHT_MODULE = MODULES.getInt("Back Right", 3);
+        public static final TunableInt BACK_LEFT_MODULE = MODULES.getInt("Back Left", 4);
 
-    public static final double MAX_VELOCITY = 3.0  /*4.1*/; // Meters per Seconda
-    public static final double MAX_TURN_VELOCITY = 4.0; // Radians per Second
+    private static final TuneGroup CONTROLS = new TuneGroup("Controls", ShuffleBoard.driveTab);
+        public static final TunableDouble MAX_VELOCITY = CONTROLS.getDouble("Max Velocity", 0.05); // Meters per Seconda
+        public static final TunableDouble MAX_TURN_VELOCITY = CONTROLS.getDouble("Max Turn Velocity", 0.05); // Radians per Second
 
-    public static final double DRIVE_KP = 0;
-    public static final double DRIVE_KI = 0;
-    public static final double DRIVE_KD = 0;
-    public static final double DRIVE_KF = 0;
+    private static final TuneGroup PID = new TuneGroup("PID", ShuffleBoard.driveTab);
+        public static final TunableDouble DRIVE_KP = PID.getDouble("Drive KP", 0.05);
+        public static final TunableDouble DRIVE_KI = PID.getDouble("Drive KI", 0.0);
+        public static final TunableDouble DRIVE_KD = PID.getDouble("Drive KD", 0.001);
+        public static final TunableDouble DRIVE_KF = PID.getDouble("Drive KF", 0.05);
 
-    public static final double TURN_KP = 0;
-    public static final double TURN_KI = 0;
-    public static final double TURN_KD = 0;
-    public static final double TURN_KF = 0;
-
-
-
+        public static final TunableDouble TURN_KP = PID.getDouble("Turn KP", 0.009);
+        public static final TunableDouble TURN_KI = PID.getDouble("Turn KI", 0.0);
+        public static final TunableDouble TURN_KD = PID.getDouble("Turn KD", 0.0001);
 
     /* Hardware*/
     public static final double WHEEL_DIAMETER = 0.10;  // Meters
@@ -38,17 +44,17 @@ public final class DriveConstants {
 
     // Device IDs and offsets
     public static final SwerveModuleInfo[] SWERVE_INFO = {
-        new SwerveModuleInfo(1 /*Drive*/, 2 /*Cancoder*/, 0 /*Offset*/), // Module 1
-        new SwerveModuleInfo(4 /*Drive*/, 5 /*Cancoder*/, 0 /*Offset*/), // Module 2
-        new SwerveModuleInfo(7 /*Drive*/, 8 /*Cancoder*/, 0 /*Offset*/), // Module 3
-        new SwerveModuleInfo(10 /*Drive*/, 11 /*Cancoder*/, 0 /*Offset*/), // Module 4
-        new SwerveModuleInfo(13 /*Drive*/, 14 /*Cancoder*/, 0 /*Offset*/), // Module 5
+        new SwerveModuleInfo(1 /*Drive*/, 3 /*Cancoder*/, -134.297 /*Offset*/), // Module 1
+        new SwerveModuleInfo(4 /*Drive*/, 6 /*Cancoder*/, -129.375 /*Offset*/), // Module 2
+        new SwerveModuleInfo(7 /*Drive*/, 9 /*Cancoder*/, -77.344 /*Offset*/), // Module 3
+        new SwerveModuleInfo(10 /*Drive*/, 12 /*Cancoder*/, 89.318 /*Offset*/), // Module 4
+        new SwerveModuleInfo(13 /*Drive*/, 15 /*Cancoder*/, 0 /*Offset*/), // Module 5
     };
 
-    public static final int TURN_ID_FRONT_LEFT = 3;
-    public static final int TURN_ID_FRONT_RIGHT = 6;
-    public static final int TURN_ID_BACK_RIGHT = 9;
-    public static final int TURN_ID_BACK_LEFT = 12;
+    public static final int TURN_ID_FRONT_LEFT = 2;
+    public static final int TURN_ID_FRONT_RIGHT = 5;
+    public static final int TURN_ID_BACK_RIGHT = 8;
+    public static final int TURN_ID_BACK_LEFT = 11;
 
     private DriveConstants() {
         throw new AssertionError();

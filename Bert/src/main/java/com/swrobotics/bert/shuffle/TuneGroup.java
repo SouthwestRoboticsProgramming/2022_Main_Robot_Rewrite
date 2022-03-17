@@ -1,0 +1,24 @@
+package com.swrobotics.bert.shuffle;
+
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+
+public final class TuneGroup {
+    private final ShuffleboardLayout layout;
+
+    public TuneGroup(String name, ShuffleboardContainer parent) {
+        layout = parent.getLayout(name);
+    }
+
+    public TuneGroup(String name, TuneGroup parent) {
+        layout = parent.layout.getLayout(name);
+    }
+
+    public TunableDouble getDouble(String name, double defaultVal) {
+        return new TunableDouble(layout, name, defaultVal);
+    }
+
+    public TunableInt getInt(String name, int defaultVal) {
+        return new TunableInt(layout, name, defaultVal);
+    }
+}

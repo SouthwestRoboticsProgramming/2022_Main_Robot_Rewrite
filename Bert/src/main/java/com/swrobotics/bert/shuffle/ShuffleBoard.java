@@ -13,4 +13,6 @@ public class ShuffleBoard {
             public static NetworkTableEntry frontRightModule = swerveHardware.add("Front Right Module", 2).getEntry();
             public static NetworkTableEntry backRightModule = swerveHardware.add("Back Right Module", 3).getEntry();
             public static NetworkTableEntry backLeftModule = swerveHardware.add("Back Left Module", 4).getEntry();
+
+    public static final ShuffleboardTab driveTab = Shuffleboard.getTab("Drive");
 }

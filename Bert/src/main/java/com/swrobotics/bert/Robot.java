@@ -1,5 +1,6 @@
 package com.swrobotics.bert;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.swrobotics.bert.commands.MessengerReadCommand;
 import com.swrobotics.bert.commands.taskmanager.TaskManagerSetupCommand;
 import com.swrobotics.bert.constants.Settings;
@@ -9,10 +10,13 @@ import com.swrobotics.bert.profiler.Profiler;
 import com.swrobotics.bert.subsystems.Lights;
 import com.swrobotics.bert.subsystems.camera.CameraTurret;
 import com.swrobotics.bert.subsystems.camera.CameraTurretController;
+import com.swrobotics.bert.subsystems.drive.SwerveDrive;
+import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
 import com.swrobotics.messenger.client.MessengerClient;
 import com.swrobotics.taskmanager.api.TaskManagerAPI;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.SPI;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -37,36 +41,42 @@ public final class Robot extends RobotBase {
 
     private void init() {
         // Connect to Messenger
-        while (msg == null) {
-            try {
-                msg = new MessengerClient(
-                        MESSENGER_HOST,
-                        MESSENGER_PORT,
-                        MESSENGER_NAME
-                );
-            } catch (IOException e) {
-                System.out.println("Messenger connection failed, trying again");
-            }
+//        while (msg == null) {
+//            try {
+//                msg = new MessengerClient(
+//                        MESSENGER_HOST,
+//                        MESSENGER_PORT,
+//                        MESSENGER_NAME
+//                );
+//            } catch (IOException e) {
+//                System.out.println("Messenger connection failed, trying again");
+//            }
+//
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        Scheduler.get().addCommand(new MessengerReadCommand(msg));
+//
+//        // Connect to TaskManager instances
+//        raspberryPi = new TaskManagerAPI(msg, RASPBERRY_PI_PREFIX);
+//        jetsonNano = new TaskManagerAPI(msg, JETSON_NANO_PREFIX);
+//        Scheduler.get().addCommand(new TaskManagerSetupCommand(raspberryPi, LIDAR_NAME, PATHFINDING_NAME));
+//        Scheduler.get().addCommand(new TaskManagerSetupCommand(jetsonNano, VISION_NAME));
 
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        Scheduler.get().addCommand(new MessengerReadCommand(msg));
-
-        // Connect to TaskManager instances
-        raspberryPi = new TaskManagerAPI(msg, RASPBERRY_PI_PREFIX);
-        jetsonNano = new TaskManagerAPI(msg, JETSON_NANO_PREFIX);
-        Scheduler.get().addCommand(new TaskManagerSetupCommand(raspberryPi, LIDAR_NAME, PATHFINDING_NAME));
-        Scheduler.get().addCommand(new TaskManagerSetupCommand(jetsonNano, VISION_NAME));
+        AHRS gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
 
         Input input = new Input();
+        SwerveDrive swerveDrive = new SwerveDrive(gyro);
+        SwerveDriveController swerveDriveController = new SwerveDriveController(input, gyro, swerveDrive);
         CameraTurret cameraTurret = new CameraTurret();
         CameraTurretController cameraTurretController = new CameraTurretController(input, cameraTurret);
         Lights lights = new Lights();
 
+        Scheduler.get().addSubsystem(swerveDrive);
+        Scheduler.get().addSubsystem(swerveDriveController);
         Scheduler.get().addSubsystem(cameraTurret);
         Scheduler.get().addSubsystem(cameraTurretController);
         Scheduler.get().addSubsystem(lights);

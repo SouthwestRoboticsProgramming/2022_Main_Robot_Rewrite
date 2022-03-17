@@ -6,6 +6,7 @@ import static com.swrobotics.bert.constants.InputConstants.*;
 
 import com.swrobotics.bert.util.Utils;
 
+// Note: The Y axes on the sticks are backwards from what you would expect: up is negative
 public class Input {
     private final XboxController drive;
     private final XboxController manipulator;
@@ -21,7 +22,7 @@ public class Input {
     }
 
     public double getDriveY() {
-        return deadzone(drive.getLeftY());
+        return deadzone(-drive.getLeftY());
     }
 
     public double getDriveRot() {
