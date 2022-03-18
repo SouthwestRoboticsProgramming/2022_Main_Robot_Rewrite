@@ -1,12 +1,14 @@
 package com.swrobotics.bert.subsystems.climber.rotating;
 
+import static com.swrobotics.bert.constants.ClimberConstants.*;
+
 public final class RotatingArms {
     private final RotatingArm left;
     private final RotatingArm right;
 
     public RotatingArms() {
-        left = new RotatingArm();
-        right = new RotatingArm();
+        left = new RotatingArm(ROTATING_LEFT_MOTOR_ID, true);
+        right = new RotatingArm(ROTATING_RIGHT_MOTOR_ID, true);
     }
 
     public void setTargetAngleDegrees(double angle) {
