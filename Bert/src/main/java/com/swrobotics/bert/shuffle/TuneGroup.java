@@ -26,4 +26,8 @@ public final class TuneGroup {
     public TunableBoolean getBoolean(String name, boolean defaultVal) {
         return new TunableBoolean(layout, name, defaultVal);
     }
+
+    public TunableDoubleArray getDoubleArray(String name, double... defaultVals) {
+        return new TunableDoubleArray(layout, name, defaultVals);
+    }
 }

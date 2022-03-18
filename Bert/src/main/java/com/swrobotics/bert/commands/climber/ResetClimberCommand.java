@@ -25,7 +25,6 @@ public final class ResetClimberCommand implements Command {
 
     @Override
     public void init() {
-        climber.manualMove(-0.1, -0.1);
         if (controller != null) {
             Scheduler.get().removeSubsystem(controller);
             controller = null;
@@ -34,6 +33,8 @@ public final class ResetClimberCommand implements Command {
 
     @Override 
     public boolean run() {
+        climber.manualMove(-0.1, -0.1);
+
         return --timer <= 0;
     }
 
