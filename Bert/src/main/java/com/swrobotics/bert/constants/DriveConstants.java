@@ -31,7 +31,7 @@ public final class DriveConstants {
     public static final double WHEEL_DIAMETER = 0.10;  // Meters
     public static final int TALON_FX_NATIVE_SENSOR_UNITS_PER_ROTATION = 2048;
     private static final int TALON_FX_NATIVE_VELOCITY_UNITS_PER_ROTATIONS_PER_SECOND =
-        TALON_FX_NATIVE_SENSOR_UNITS_PER_ROTATION * 10;
+        TALON_FX_NATIVE_SENSOR_UNITS_PER_ROTATION / 10;
     public static final double SWERVE_MODULE_DRIVE_GEAR_RATIO = 8.14 / 1;
 
     public static final double DRIVE_SPEED_TO_NATIVE_VELOCITY = 

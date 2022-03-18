@@ -37,7 +37,11 @@ public class SwerveDriveController implements Subsystem {
         double rotation = -input.getDriveRot() * maxTurnVelocity;
         Rotation2d gyroRotation = gyro.getRotation2d();
 
-        chassis = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeX, fieldRelativeY, rotation, gyroRotation); // Away velocity, left velocity, counter-clockwise speed, counter-clockwise gyro
-        drive.update(chassis);
+        // if (fieldRelativeX == 0 && fieldRelativeY == 0 && rotation == 0) {
+        //     drive.stop();
+        // } else {
+            chassis = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeX, fieldRelativeY, rotation, gyroRotation); // Away velocity, left velocity, counter-clockwise speed, counter-clockwise gyro
+            drive.update(chassis);
+        // }
     }
 }

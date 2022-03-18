@@ -9,4 +9,5 @@ public final class ShuffleBoard {
     public static final ShuffleboardTab climberTab = Shuffleboard.getTab("Climber");
     public static final ShuffleboardTab inputTab = Shuffleboard.getTab("Input");
     public static final ShuffleboardTab settingsTab = Shuffleboard.getTab("Settings");
+    public static final ShuffleboardTab shooterTab = Shuffleboard.getTab("Shooter");
 }

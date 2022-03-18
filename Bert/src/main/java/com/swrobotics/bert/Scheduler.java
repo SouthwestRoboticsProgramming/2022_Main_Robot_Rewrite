@@ -5,8 +5,10 @@ import com.swrobotics.bert.profiler.Profiler;
 import com.swrobotics.bert.subsystems.Subsystem;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public final class Scheduler {
     private static final Scheduler INSTANCE = new Scheduler();
@@ -17,13 +19,21 @@ public final class Scheduler {
     private final List<Subsystem> subsystems;
     private final List<CommandTimer> commands;
 
+    private final Set<Subsystem> subsystemsToRemove;
+
     private Scheduler() {
         subsystems = new ArrayList<>();
         commands = new ArrayList<>();
+
+        subsystemsToRemove = new HashSet<>();
     }
 
     public void addSubsystem(Subsystem subsystem) {
         subsystems.add(subsystem);
+    }
+
+    public void removeSubsystem(Subsystem subsystem) {
+        subsystemsToRemove.add(subsystem);
     }
 
     public void addCommand(Command command) {
@@ -66,6 +76,9 @@ public final class Scheduler {
     }
 
     private void updateCommands() {
+        subsystems.removeAll(subsystemsToRemove);
+        subsystemsToRemove.clear();
+
         for (Iterator<CommandTimer> iterator = commands.iterator(); iterator.hasNext();) {
             CommandTimer timer = iterator.next();
             Profiler.get().push(timer.command.getClass().getSimpleName());

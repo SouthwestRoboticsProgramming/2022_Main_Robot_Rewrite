@@ -96,14 +96,31 @@ public class SwerveDrive implements Subsystem {
 
     public void update(ChassisSpeeds chassis) {
         SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassis);
-
         SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_ATTAINABLE_WHEEL_SPEED);
+
+        if (!frontLeft.isAtTargetAngle() ||
+            !frontRight.isAtTargetAngle() ||
+            !backRight.isAtTargetAngle() ||
+            !backLeft.isAtTargetAngle()) {
+            
+            // Don't move
+            for (SwerveModuleState state : states) {
+                state.speedMetersPerSecond = 0;
+            }
+        }
 
         frontLeft.update(states[0]);
         frontRight.update(states[1]);
         backRight.update(states[2]);
         backLeft.update(states[3]);
-    } 
+    }
+
+    public void stop() {
+        frontLeft.stop();
+        frontRight.stop();
+        backRight.stop();
+        backLeft.stop();
+    }
 
     @Override
     public void robotInit() {

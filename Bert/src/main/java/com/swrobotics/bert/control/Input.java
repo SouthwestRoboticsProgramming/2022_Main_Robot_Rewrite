@@ -25,7 +25,7 @@ public class Input implements Subsystem {
     }
 
     public double getDriveRot() {
-        return deadzone(drive.rightStickX.get());
+        return -deadzone(drive.rightStickX.get());
     }
 
 
@@ -59,6 +59,10 @@ public class Input implements Subsystem {
 
     public double getRotManual() {
         return deadzone(manipulator.leftStickX.get()) * 0.25;
+    }
+
+    public boolean getShoot() {
+        return manipulator.a.leadingEdge();
     }
 
     /* Temporary things */

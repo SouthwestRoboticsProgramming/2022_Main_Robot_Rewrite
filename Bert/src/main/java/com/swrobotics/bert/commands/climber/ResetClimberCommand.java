@@ -9,6 +9,8 @@ import com.swrobotics.bert.subsystems.climber.ClimberController;
 import static com.swrobotics.bert.constants.Constants.PERIODIC_PER_SECOND;
 
 public final class ResetClimberCommand implements Command {
+    private static ClimberController controller;
+
     private final Climber climber;
     private final Input input;
 
@@ -24,6 +26,10 @@ public final class ResetClimberCommand implements Command {
     @Override
     public void init() {
         climber.manualMove(-0.1, -0.1);
+        if (controller != null) {
+            Scheduler.get().removeSubsystem(controller);
+            controller = null;
+        }
     }
 
     @Override 
@@ -34,6 +40,6 @@ public final class ResetClimberCommand implements Command {
     @Override
     public void end() {
         climber.zero();
-        Scheduler.get().addSubsystem(new ClimberController(input, climber));
+        Scheduler.get().addSubsystem(controller = new ClimberController(input, climber));
     }
 }
