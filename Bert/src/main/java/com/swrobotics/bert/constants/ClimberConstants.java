@@ -38,10 +38,33 @@ public final class ClimberConstants {
     public static final int ROTATING_LEFT_MOTOR_ID = 20;
     public static final int ROTATING_RIGHT_MOTOR_ID = 23;
 
-    public static final double ROTATING_ARM_LENGTH = 1;
-    public static final double ROTATING_BASE_LENGTH = 1;
-    public static final double ROTATING_ROTS_PER_INCH = 1;
-    public static final double ROTATING_STARTING_LENGTH = 1;
+    public static final double ROTATING_ARM_LENGTH = 15.0017;
+    public static final double ROTATING_BASE_LENGTH = 6.76;
+    public static final double ROTATING_ROTS_PER_INCH = 11.0;
+    public static final double ROTATING_STARTING_LENGTH = 12.38;
+
+
+
+
+    private static final TuneGroup STEPS = new TuneGroup("Climber Steps", ShuffleBoard.climberTab);
+        public static final TunableDouble CLIMB_STEP_1_ROT = STEPS.getDouble("Step One Rotation", 0);
+        public static final TunableDouble CLIMB_STEP_1_TELE = STEPS.getDouble("Step One Tele", 0);
+        public static final TunableDouble CLIMB_STEP_2_ROT = STEPS.getDouble("Step Two Rotation", 0);
+        public static final TunableDouble CLIMB_STEP_2_TELE = STEPS.getDouble("Step Two Tele", 0);
+        public static final TunableDouble CLIMB_STEP_3_ROT = STEPS.getDouble("Step Three Rotation", 0);
+        public static final TunableDouble CLIMB_STEP_3_TELE = STEPS.getDouble("Step Three Tele", 0);
+        public static final TunableDouble CLIMB_STEP_4_ROT = STEPS.getDouble("Step Four Rotation", 0);
+        public static final TunableDouble CLIMB_STEP_4_TELE = STEPS.getDouble("Step Four Tele", 0);
+        public static final TunableDouble CLIMB_STEP_5_ROT = STEPS.getDouble("Step Five Rotation", 0);
+        public static final TunableDouble CLIMB_STEP_5_TELE = STEPS.getDouble("Step Five Tele", 0);
+        public static final TunableDouble CLIMB_STEP_6_ROT = STEPS.getDouble("Step Six Rotation", 0);
+        public static final TunableDouble CLIMB_STEP_6_TELE = STEPS.getDouble("Step Six Tele", 0);
+        public static final TunableDouble CLIMB_STEP_7_ROT = STEPS.getDouble("Step Seven Rotation", 0);
+        public static final TunableDouble CLIMB_STEP_7_TELE = STEPS.getDouble("Step Seven Tele", 0);
+        public static final TunableDouble CLIMB_STEP_8_ROT = STEPS.getDouble("Step Eight Rotation", 0);
+        public static final TunableDouble CLIMB_STEP_8_TELE = STEPS.getDouble("Step Eight Tele", 0);
+        public static final TunableDouble CLIMB_STEP_9_ROT = STEPS.getDouble("Step Nine Rotation", 0);
+        public static final TunableDouble CLIMB_STEP_9_TELE = STEPS.getDouble("Step Nine Tele", 0);
 
     private ClimberConstants() {
         throw new AssertionError();
