@@ -38,6 +38,11 @@ public final class ClimberConstants {
     public static final int ROTATING_LEFT_MOTOR_ID = 20;
     public static final int ROTATING_RIGHT_MOTOR_ID = 23;
 
+    public static final double ROTATING_ARM_LENGTH = 1;
+    public static final double ROTATING_BASE_LENGTH = 1;
+    public static final double ROTATING_ROTS_PER_INCH = 1;
+    public static final double ROTATING_STARTING_LENGTH = 1;
+
     private ClimberConstants() {
         throw new AssertionError();
     }

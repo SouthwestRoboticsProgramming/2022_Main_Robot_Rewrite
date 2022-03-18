@@ -18,6 +18,10 @@ public final class RotatingArm {
     private boolean loaded;
     private double kF;
     private double target;
+    
+    private double arm;
+    private double base;
+    private double rotsPerInch;
 
     public RotatingArm(int motorID, boolean inverted){
         motor = new CANSparkMax(motorID, MotorType.kBrushless);
@@ -42,6 +46,10 @@ public final class RotatingArm {
         ROTATING_PID_LOADED_KI.onChange(this::updatePID);
         ROTATING_PID_LOADED_KD.onChange(this::updatePID);
         ROTATING_PID_LOADED_KF.onChange(this::updatePID);
+
+        arm = ROTATING_ARM_LENGTH;
+        base = ROTATING_BASE_LENGTH;
+        rotsPerInch = ROTATING_ROTS_PER_INCH;
     }
 
     public void zero() {
@@ -82,13 +90,16 @@ public final class RotatingArm {
             percentOut = target;
         } else {
             // Do law of cosines
-            percentOut = 0;
+            double currentPose = -encoder.getPosition() / rotsPerInch + ROTATING_STARTING_LENGTH;
+            double currentAngle = Math.acos((base*base + arm*arm - currentPose*currentPose)/(2*arm*base));
+            percentOut = pid.calculate(Math.toDegrees(currentAngle), target);
+            motor.set(percentOut);
         }
 
         motor.set(percentOut);
     }
     
     public void setLoaded(boolean loaded) {
-        
+        this.loaded = loaded;
     }
 }
