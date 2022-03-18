@@ -14,12 +14,16 @@ public final class ClimberController implements Subsystem {
 
     @Override
     public void teleopPeriodic() {
-        double telescopingDistance = input.getTeleDistance();
-        double rotatingAngle = input.getRotAngle();
-        boolean loaded = false;
+        if (input.getClimberManualOverride()) {
+            climber.manualMove(input.getTeleManual(), input.getRotManual());
+        } else {
+            double telescopingDistance = input.getTeleDistance();
+            double rotatingAngle = input.getRotAngle();
+            boolean loaded = false;
 
-        ClimberState state = new ClimberState(telescopingDistance, rotatingAngle, loaded);
+            ClimberState state = new ClimberState(telescopingDistance, rotatingAngle, loaded);
 
-        climber.setTargetState(state);
+            climber.setTargetState(state);
+        }
     }
 }

@@ -49,6 +49,18 @@ public class Input implements Subsystem {
         return 90;
     }
 
+    public boolean getClimberManualOverride() {
+        return manipulator.select.isPressed();
+    }
+
+    public double getTeleManual() {
+        return deadzone(manipulator.leftStickY.get());
+    }
+
+    public double getRotManual() {
+        return deadzone(manipulator.leftStickX.get()) * 0.25;
+    }
+
     /* Temporary things */
     public int getServoAngle() {
         if (manipulator.x.isPressed())

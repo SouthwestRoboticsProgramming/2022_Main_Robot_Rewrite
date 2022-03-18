@@ -23,10 +23,10 @@ public final class ResetClimberCommand implements Command {
 
     @Override
     public void init() {
-        climber.manualMove(-0.1, 0);
+        climber.manualMove(-0.1, -0.1);
     }
 
-    @Override
+    @Override 
     public boolean run() {
         return --timer <= 0;
     }
