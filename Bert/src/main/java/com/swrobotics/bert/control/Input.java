@@ -28,7 +28,6 @@ public class Input implements Subsystem {
         return -deadzone(drive.rightStickX.get());
     }
 
-
     private double deadzone(double amount) {
         if (Math.abs(amount) < JOYSTICK_DEAD_ZONE.get()) {
             return 0;
@@ -46,7 +45,7 @@ public class Input implements Subsystem {
     }
 
     public double getRotAngle() {
-        return 90;
+        return Utils.map(deadzone(manipulator.leftStickX.get()), -1, 1, 60, 120);
     }
 
     public boolean getClimberManualOverride() {
@@ -63,6 +62,14 @@ public class Input implements Subsystem {
 
     public boolean getShoot() {
         return manipulator.a.leadingEdge();
+    }
+
+    public boolean getClimberNextStep() {
+        return manipulator.x.leadingEdge();
+    }
+
+    public boolean getClimberPreviousStep() {
+        return manipulator.b.leadingEdge();
     }
 
     /* Temporary things */

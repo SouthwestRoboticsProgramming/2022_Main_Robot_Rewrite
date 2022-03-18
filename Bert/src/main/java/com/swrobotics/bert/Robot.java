@@ -85,7 +85,7 @@ public final class Robot extends RobotBase {
         BallDetector ballDetector = new BallDetector();
         Hopper hopper = new Hopper(ballDetector, input);
         ShooterController shooterController = new ShooterController(input, hopper);
-        // Climber climber = new Climber(input);
+        Climber climber = new Climber(input);
         // Don't add ClimberController here, it is added after reset
         Lights lights = new Lights();
 
@@ -99,7 +99,7 @@ public final class Robot extends RobotBase {
         Scheduler.get().addSubsystem(ballDetector);
         Scheduler.get().addSubsystem(hopper);
         Scheduler.get().addSubsystem(shooterController);
-        // Scheduler.get().addSubsystem(climber);
+        Scheduler.get().addSubsystem(climber);
         Scheduler.get().addSubsystem(lights);
     }
 

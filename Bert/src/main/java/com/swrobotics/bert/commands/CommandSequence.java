@@ -25,15 +25,28 @@ public abstract class CommandSequence implements Command {
         cmds.get(index).init();
     }
 
+    public void next() {
+        cmds.get(index).end();
+        index++;
+
+        if (running()) {
+            cmds.get(index).init();
+        }
+    }
+
+    public void back() {
+        cmds.get(index).end();
+        index--;
+
+        if (running()) {
+            cmds.get(index).init();
+        }
+    }
+
     @Override
     public boolean run() {
         if (cmds.get(index).run()) {
-            cmds.get(index).end();
-            index++;
-
-            if (running()) {
-                cmds.get(index).init();
-            }
+            next();
         }
 
         return !running();
@@ -47,6 +60,6 @@ public abstract class CommandSequence implements Command {
     }
 
     private boolean running() {
-        return index < cmds.size();
+        return index >= 0 && index < cmds.size();
     }
 }

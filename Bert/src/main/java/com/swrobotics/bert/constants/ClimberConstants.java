@@ -2,6 +2,7 @@ package com.swrobotics.bert.constants;
 
 import com.swrobotics.bert.shuffle.ShuffleBoard;
 import com.swrobotics.bert.shuffle.TunableDouble;
+import com.swrobotics.bert.shuffle.TunableDoubleArray;
 import com.swrobotics.bert.shuffle.TuneGroup;
 
 public final class ClimberConstants {
@@ -34,6 +35,9 @@ public final class ClimberConstants {
         public static final TunableDouble ROTATING_PID_LOADED_KI = ROTATING.getDouble("Loaded kI", 0);
         public static final TunableDouble ROTATING_PID_LOADED_KD = ROTATING.getDouble("Loaded kD", 0);
         public static final TunableDouble ROTATING_PID_LOADED_KF = ROTATING.getDouble("Loaded kF", 0);
+
+    private static final TuneGroup TEST = new TuneGroup("Test", ShuffleBoard.climberTab);
+        public static final TunableDoubleArray TEST_ARRAY = TEST.getDoubleArray("Test Array", 1, 2, 3, 4, 5, 6, 7, 8, 9);
     
     public static final int ROTATING_LEFT_MOTOR_ID = 20;
     public static final int ROTATING_RIGHT_MOTOR_ID = 23;

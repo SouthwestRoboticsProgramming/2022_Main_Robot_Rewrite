@@ -119,7 +119,7 @@ public class SwerveModule {
         turn.set(ControlMode.PercentOutput, 0);
         drive.set(ControlMode.Velocity, 0);
 
-        System.out.println("It's stopped");
+        // System.out.println("It's stopped");
     }
 
     public void update(SwerveModuleState state) {
@@ -139,6 +139,6 @@ public class SwerveModule {
         // drive.set(ControlMode.PercentOutput, moduleState.speedMetersPerSecond / 4.11 * 10);
         drive.set(TalonFXControlMode.Velocity, moduleState.speedMetersPerSecond * DRIVE_SPEED_TO_NATIVE_VELOCITY);
 
-        System.out.println("No stopped");
+        // System.out.println("No stopped");
     }
 }

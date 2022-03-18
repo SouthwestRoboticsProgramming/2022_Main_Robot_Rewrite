@@ -90,13 +90,15 @@ public final class RotatingArm {
             percentOut = target;
         } else {
             // Do law of cosines
-            double currentPose = -encoder.getPosition() / rotsPerInch + ROTATING_STARTING_LENGTH;
+            double currentPose = encoder.getPosition() / rotsPerInch + ROTATING_STARTING_LENGTH;
             double currentAngle = Math.acos((base*base + arm*arm - currentPose*currentPose)/(2*arm*base));
             percentOut = pid.calculate(Math.toDegrees(currentAngle), target);
             motor.set(percentOut);
         }
 
         motor.set(percentOut);
+
+        System.out.println("Encoder (" + motor.getDeviceId() + "): " + encoder.getPosition());
     }
     
     public void setLoaded(boolean loaded) {
