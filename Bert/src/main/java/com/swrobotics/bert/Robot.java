@@ -167,7 +167,7 @@ public final class Robot extends RobotBase {
                 Profiler.get().pop();
 
                 Profiler.get().endMeasurements();
-                if (Settings.DUMP_PROFILE_DATA) {
+                if (Settings.DUMP_PROFILE_DATA.get()) {
                     ByteArrayOutputStream b = new ByteArrayOutputStream();
                     DataOutputStream out = new DataOutputStream(b);
 

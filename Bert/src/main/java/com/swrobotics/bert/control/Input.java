@@ -30,10 +30,10 @@ public class Input implements Subsystem {
 
 
     private double deadzone(double amount) {
-        if (Math.abs(amount) < JOYSTICK_DEAD_ZONE) {
+        if (Math.abs(amount) < JOYSTICK_DEAD_ZONE.get()) {
             return 0;
         }
-        return Math.signum(amount) * Utils.map(Math.abs(amount), JOYSTICK_DEAD_ZONE, 1, 0, 1);
+        return Math.signum(amount) * Utils.map(Math.abs(amount), JOYSTICK_DEAD_ZONE.get(), 1, 0, 1);
     }
 
     /* Manipulator */

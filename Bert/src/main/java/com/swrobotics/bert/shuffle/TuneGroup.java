@@ -22,4 +22,8 @@ public final class TuneGroup {
     public TunableInt getInt(String name, int defaultVal) {
         return new TunableInt(layout, name, defaultVal);
     }
+
+    public TunableBoolean getBoolean(String name, boolean defaultVal) {
+        return new TunableBoolean(layout, name, defaultVal);
+    }
 }

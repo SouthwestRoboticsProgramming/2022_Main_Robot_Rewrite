@@ -4,7 +4,7 @@ import com.swrobotics.bert.shuffle.ShuffleBoard;
 import com.swrobotics.bert.shuffle.TunableDouble;
 import com.swrobotics.bert.shuffle.TuneGroup;
 
-public class IntakeConstants {
+public final class IntakeConstants {
     private static final TuneGroup PID = new TuneGroup("PID", ShuffleBoard.intakeTab);
         public static final TunableDouble INTAKE_KP = PID.getDouble("kP", 0.05);
         public static final TunableDouble INTAKE_KI = PID.getDouble("kI", 0);

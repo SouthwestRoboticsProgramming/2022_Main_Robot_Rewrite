@@ -33,11 +33,38 @@ public final class TelescopingArm {
         encoder.setPosition(0);
 
         pid = new PIDController(
-            TELESCOPING_PID_KP,
-            TELESCOPING_PID_KI,
-            TELESCOPING_PID_KD
+            TELESCOPING_PID_KP.get(),
+            TELESCOPING_PID_KI.get(),
+            TELESCOPING_PID_KD.get()
         );
-        kF = TELESCOPING_PID_KF;
+        kF = TELESCOPING_PID_KF.get();
+
+        TELESCOPING_PID_KP.onChange(this::updatePID);
+        TELESCOPING_PID_KI.onChange(this::updatePID);
+        TELESCOPING_PID_KD.onChange(this::updatePID);
+        TELESCOPING_PID_KF.onChange(this::updatePID);
+        TELESCOPING_PID_LOADED_KP.onChange(this::updatePID);
+        TELESCOPING_PID_LOADED_KI.onChange(this::updatePID);
+        TELESCOPING_PID_LOADED_KD.onChange(this::updatePID);
+        TELESCOPING_PID_LOADED_KF.onChange(this::updatePID);
+    }
+
+    private void updatePID() {
+        if (loaded) {
+            pid.setPID(
+                TELESCOPING_PID_LOADED_KP.get(),
+                TELESCOPING_PID_LOADED_KI.get(),
+                TELESCOPING_PID_LOADED_KD.get()
+            );
+            kF = TELESCOPING_PID_LOADED_KF.get();
+        } else {
+            pid.setPID(
+                    TELESCOPING_PID_KP.get(),
+                    TELESCOPING_PID_KI.get(),
+                    TELESCOPING_PID_KD.get()
+            );
+            kF = TELESCOPING_PID_KF.get();
+        }
     }
 
     public void setTargetDistancePercent(double distance) {
@@ -45,7 +72,7 @@ public final class TelescopingArm {
     }
 
     public void update() {
-        double target = Utils.map(targetDistance, 0, 1, TELESCOPING_MIN_TICKS, TELESCOPING_MAX_TICKS);
+        double target = Utils.map(targetDistance, 0, 1, TELESCOPING_MIN_TICKS.get(), TELESCOPING_MAX_TICKS.get());
         double pidOut = pid.calculate(encoder.getPosition(), target);
 
         double percentOut = Utils.clamp(pidOut, -0.5, 0.5) + kF;
@@ -54,23 +81,7 @@ public final class TelescopingArm {
     }
 
     public void setLoaded(boolean loaded) {
-        if (loaded && !this.loaded) {
-            pid.setPID(
-                TELESCOPING_PID_LOADED_KP,
-                TELESCOPING_PID_LOADED_KI,
-                TELESCOPING_PID_LOADED_KD
-            );
-            kF = TELESCOPING_PID_LOADED_KF;
-        }
-        if (!loaded && this.loaded) {
-            pid.setPID(
-                TELESCOPING_PID_KP,
-                TELESCOPING_PID_KI,
-                TELESCOPING_PID_KD
-            );
-            kF = TELESCOPING_PID_KF;
-        }
-
         this.loaded = loaded;
+        updatePID();
     }
 }

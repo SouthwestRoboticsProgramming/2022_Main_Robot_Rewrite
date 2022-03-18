@@ -1,18 +1,23 @@
 package com.swrobotics.bert.constants;
 
+import com.swrobotics.bert.shuffle.ShuffleBoard;
+import com.swrobotics.bert.shuffle.TunableDouble;
+import com.swrobotics.bert.shuffle.TuneGroup;
+
 public final class ClimberConstants {
-    public static final double TELESCOPING_MIN_TICKS = 0;
-    public static final double TELESCOPING_MAX_TICKS = 47.07;
+    private static final TuneGroup TELESCOPING = new TuneGroup("Telescoping", ShuffleBoard.climberTab);
+        public static final TunableDouble TELESCOPING_MIN_TICKS = TELESCOPING.getDouble("Min Ticks", 0);
+        public static final TunableDouble TELESCOPING_MAX_TICKS = TELESCOPING.getDouble("Max Ticks", 47.07);
 
-    public static final double TELESCOPING_PID_KP = 0;
-    public static final double TELESCOPING_PID_KI = 0;
-    public static final double TELESCOPING_PID_KD = 0;
-    public static final double TELESCOPING_PID_KF = 0;
+        public static final TunableDouble TELESCOPING_PID_KP = TELESCOPING.getDouble("kP", 0);
+        public static final TunableDouble TELESCOPING_PID_KI = TELESCOPING.getDouble("kI", 0);
+        public static final TunableDouble TELESCOPING_PID_KD = TELESCOPING.getDouble("kD", 0);
+        public static final TunableDouble TELESCOPING_PID_KF = TELESCOPING.getDouble("kF", 0);
 
-    public static final double TELESCOPING_PID_LOADED_KP = 0;
-    public static final double TELESCOPING_PID_LOADED_KI = 0;
-    public static final double TELESCOPING_PID_LOADED_KD = 0;
-    public static final double TELESCOPING_PID_LOADED_KF = 0;
+        public static final TunableDouble TELESCOPING_PID_LOADED_KP = TELESCOPING.getDouble("Loaded kP", 0);
+        public static final TunableDouble TELESCOPING_PID_LOADED_KI = TELESCOPING.getDouble("Loaded kI", 0);
+        public static final TunableDouble TELESCOPING_PID_LOADED_KD = TELESCOPING.getDouble("Loaded kD", 0);
+        public static final TunableDouble TELESCOPING_PID_LOADED_KF = TELESCOPING.getDouble("Loaded kF", 0);
 
     public static final int TELESCOPING_LEFT_MOTOR_ID_ONE = 21;
     public static final int TELESCOPING_LEFT_MOTOR_ID_TWO = 22;
