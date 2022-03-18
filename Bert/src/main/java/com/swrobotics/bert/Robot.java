@@ -10,6 +10,8 @@ import com.swrobotics.bert.profiler.Profiler;
 import com.swrobotics.bert.subsystems.Lights;
 import com.swrobotics.bert.subsystems.camera.CameraTurret;
 import com.swrobotics.bert.subsystems.camera.CameraTurretController;
+import com.swrobotics.bert.subsystems.climber.Climber;
+import com.swrobotics.bert.subsystems.climber.ClimberController;
 import com.swrobotics.bert.subsystems.drive.SwerveDrive;
 import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
 import com.swrobotics.bert.subsystems.intake.Intake;
@@ -72,23 +74,26 @@ public final class Robot extends RobotBase {
         AHRS gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
 
         Input input = new Input();
-        SwerveDrive swerveDrive = new SwerveDrive(gyro);
-        SwerveDriveController swerveDriveController = new SwerveDriveController(input, gyro, swerveDrive);
+        // SwerveDrive swerveDrive = new SwerveDrive(gyro);
+        // SwerveDriveController swerveDriveController = new SwerveDriveController(input, gyro, swerveDrive);
         CameraTurret cameraTurret = new CameraTurret();
         CameraTurretController cameraTurretController = new CameraTurretController(input, cameraTurret);
         Intake intake = new Intake();
         IntakeController intakeController = new IntakeController(input, intake);
         BallDetector ballDetector = new BallDetector();
+        Climber climber = new Climber(input);
+        // Don't add ClimberController here, it is added after reset
         Lights lights = new Lights();
 
         Scheduler.get().addSubsystem(input);
-        Scheduler.get().addSubsystem(swerveDrive);
-        Scheduler.get().addSubsystem(swerveDriveController);
+        // Scheduler.get().addSubsystem(swerveDrive);
+        // Scheduler.get().addSubsystem(swerveDriveController);
         Scheduler.get().addSubsystem(cameraTurret);
         Scheduler.get().addSubsystem(cameraTurretController);
         Scheduler.get().addSubsystem(intake);
         Scheduler.get().addSubsystem(intakeController);
         Scheduler.get().addSubsystem(ballDetector);
+        Scheduler.get().addSubsystem(climber);
         Scheduler.get().addSubsystem(lights);
     }
 

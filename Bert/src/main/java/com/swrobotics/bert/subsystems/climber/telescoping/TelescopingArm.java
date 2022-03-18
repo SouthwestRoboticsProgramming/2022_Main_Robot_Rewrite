@@ -16,9 +16,10 @@ public final class TelescopingArm {
     private final RelativeEncoder encoder;
     private final PIDController pid;
 
+    private boolean manualMoving;
     private boolean loaded;
     private double kF;
-    private double targetDistance;
+    private double target;
 
     public TelescopingArm(int motor1ID, int motor2ID, boolean inverted) {
         motor1 = new CANSparkMax(motor1ID, MotorType.kBrushless);
@@ -47,6 +48,8 @@ public final class TelescopingArm {
         TELESCOPING_PID_LOADED_KI.onChange(this::updatePID);
         TELESCOPING_PID_LOADED_KD.onChange(this::updatePID);
         TELESCOPING_PID_LOADED_KF.onChange(this::updatePID);
+
+        manualMoving = false;
     }
 
     private void updatePID() {
@@ -68,14 +71,25 @@ public final class TelescopingArm {
     }
 
     public void setTargetDistancePercent(double distance) {
-        targetDistance = distance;
+        target = distance;
+        manualMoving = false;
+    }
+
+    public void manualMove(double percentOutput) {
+        manualMoving = true;
+        target = percentOutput;
     }
 
     public void update() {
-        double target = Utils.map(targetDistance, 0, 1, TELESCOPING_MIN_TICKS.get(), TELESCOPING_MAX_TICKS.get());
-        double pidOut = pid.calculate(encoder.getPosition(), target);
+        double percentOut;
+        if (manualMoving) {
+            percentOut = target;
+        } else {
+            double targetTicks = Utils.map(target, 0, 1, TELESCOPING_MIN_TICKS.get(), TELESCOPING_MAX_TICKS.get());
+            double pidOut = pid.calculate(encoder.getPosition(), targetTicks);
 
-        double percentOut = Utils.clamp(pidOut, -0.5, 0.5) + kF;
+            percentOut = Utils.clamp(pidOut, -0.5, 0.5) + kF;
+        }
         motor1.set(percentOut);
         motor2.set(percentOut);
     }

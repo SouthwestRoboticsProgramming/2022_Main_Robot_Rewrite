@@ -1,5 +1,8 @@
 package com.swrobotics.bert.subsystems.climber;
 
+import com.swrobotics.bert.Scheduler;
+import com.swrobotics.bert.commands.climber.ResetClimberCommand;
+import com.swrobotics.bert.control.Input;
 import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.subsystems.climber.rotating.RotatingArms;
 import com.swrobotics.bert.subsystems.climber.telescoping.TelescopingArms;
@@ -7,15 +10,27 @@ import com.swrobotics.bert.subsystems.climber.telescoping.TelescopingArms;
 public final class Climber implements Subsystem {
     private final TelescopingArms telescoping;
     private final RotatingArms rotating;
+    private final Input input;
 
-    public Climber() {
+    public Climber(Input input) {
         telescoping = new TelescopingArms();
         rotating = new RotatingArms();
+        this.input = input;
     }
 
     public void setTargetState(ClimberState state) {
         telescoping.setTargetDistancePercent(state.getTelescopingDistance());
         rotating.setTargetAngleDegrees(state.getRotatingAngle());
+    }
+
+    public void manualMove(double teleMove, double rotMove) {
+        telescoping.manualMove(teleMove);
+        rotating.manualMove(rotMove);
+    }
+
+    @Override
+    public void teleopInit() {
+        Scheduler.get().addCommand(new ResetClimberCommand(this, input));
     }
 
     @Override

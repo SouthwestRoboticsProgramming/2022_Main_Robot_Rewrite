@@ -41,6 +41,14 @@ public class Input implements Subsystem {
         return manipulator.y.leadingEdge();
     }
 
+    public double getTeleDistance() {
+        return Utils.clamp(manipulator.leftStickY.get(), 0, 1);
+    }
+
+    public double getRotAngle() {
+        return 90;
+    }
+
     /* Temporary things */
     public int getServoAngle() {
         if (manipulator.x.isPressed())

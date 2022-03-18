@@ -14,6 +14,11 @@ public final class RotatingArms {
         right.setTargetAngleDegrees(angle);
     }
 
+    public void manualMove(double percentOutput) {
+        left.manualMove(percentOutput);
+        right.manualMove(percentOutput);
+    }
+
     public void setLoaded(boolean loaded) {
         left.setLoaded(loaded);
         right.setLoaded(loaded);
