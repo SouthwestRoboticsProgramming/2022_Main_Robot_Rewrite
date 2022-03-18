@@ -42,7 +42,7 @@ public class Input implements Subsystem {
     }
 
     public double getTeleDistance() {
-        return Utils.clamp(manipulator.leftStickY.get(), 0, 1);
+        return Utils.clamp(deadzone(manipulator.leftStickY.get()), 0, 1);
     }
 
     public double getRotAngle() {

@@ -28,6 +28,11 @@ public final class Climber implements Subsystem {
         rotating.manualMove(rotMove);
     }
 
+    public void zero() {
+        telescoping.zero();
+        rotating.zero();
+    }
+
     @Override
     public void teleopInit() {
         Scheduler.get().addCommand(new ResetClimberCommand(this, input));

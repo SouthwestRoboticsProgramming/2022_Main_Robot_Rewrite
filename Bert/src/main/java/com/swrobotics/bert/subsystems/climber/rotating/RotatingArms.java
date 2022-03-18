@@ -24,6 +24,11 @@ public final class RotatingArms {
         right.setLoaded(loaded);
     }
 
+    public void zero() {
+        left.zero();
+        right.zero();
+    }
+
     public void update() {
         left.update();
         right.update();

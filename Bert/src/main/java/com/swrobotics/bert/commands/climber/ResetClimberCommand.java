@@ -33,6 +33,7 @@ public final class ResetClimberCommand implements Command {
 
     @Override
     public void end() {
+        climber.zero();
         Scheduler.get().addSubsystem(new ClimberController(input, climber));
     }
 }

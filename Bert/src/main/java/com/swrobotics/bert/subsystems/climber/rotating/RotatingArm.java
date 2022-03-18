@@ -6,10 +6,14 @@ public final class RotatingArm {
     }
 
     public void manualMove(double percentOutput) {
-        
+
     }
 
     public void setLoaded(boolean loaded) {
+        
+    }
+
+    public void zero() {
         
     }
 

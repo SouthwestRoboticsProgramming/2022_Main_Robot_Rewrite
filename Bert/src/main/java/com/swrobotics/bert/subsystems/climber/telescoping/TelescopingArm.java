@@ -80,6 +80,10 @@ public final class TelescopingArm {
         target = percentOutput;
     }
 
+    public void zero() {
+        encoder.setPosition(0);
+    }
+
     public void update() {
         double percentOut;
         if (manualMoving) {
