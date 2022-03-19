@@ -15,7 +15,7 @@ public final class DriveConstants {
 
     private static final TuneGroup CONTROLS = new TuneGroup("Controls", ShuffleBoard.driveTab);
         public static final TunableDouble MAX_VELOCITY = CONTROLS.getDouble("Max Velocity", 0.05); // Meters per Seconda
-        public static final TunableDouble MAX_TURN_VELOCITY = CONTROLS.getDouble("Max Turn Velocity", 0.05); // Radians per Second
+        public static final TunableDouble MAX_TURN_VELOCITY = CONTROLS.getDouble("Max Turn Velocity", Math.PI); // Radians per Second
 
     private static final TuneGroup PID = new TuneGroup("PID", ShuffleBoard.driveTab);
         public static final TunableDouble DRIVE_KP = PID.getDouble("Drive KP", 0.05);
@@ -44,10 +44,10 @@ public final class DriveConstants {
 
     // Device IDs and offsets
     public static final SwerveModuleInfo[] SWERVE_INFO = {
-        new SwerveModuleInfo(1 /*Drive*/, 3 /*Cancoder*/, -134.297 /*Offset*/), // Module 1
-        new SwerveModuleInfo(4 /*Drive*/, 6 /*Cancoder*/, -129.375 /*Offset*/), // Module 2
-        new SwerveModuleInfo(7 /*Drive*/, 9 /*Cancoder*/, -77.344 /*Offset*/), // Module 3
-        new SwerveModuleInfo(10 /*Drive*/, 12 /*Cancoder*/, 89.318 /*Offset*/), // Module 4
+        new SwerveModuleInfo(1 /*Drive*/, 3 /*Cancoder*/, -134.297 - 269.91 /*Offset*/), // Module 1
+        new SwerveModuleInfo(4 /*Drive*/, 6 /*Cancoder*/, -129.375 - 89.91 - 180 /*Offset*/), // Module 2
+        new SwerveModuleInfo(7 /*Drive*/, 9 /*Cancoder*/, -77.344 - 92.55 - 180 /*Offset*/), // Module 3
+        new SwerveModuleInfo(10 /*Drive*/, 12 /*Cancoder*/, 89.318 - 92.64 - 180 /*Offset*/), // Module 4
         new SwerveModuleInfo(13 /*Drive*/, 15 /*Cancoder*/, 0 /*Offset*/), // Module 5
     };
 

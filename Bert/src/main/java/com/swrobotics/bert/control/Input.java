@@ -25,7 +25,7 @@ public class Input implements Subsystem {
     }
 
     public double getDriveRot() {
-        return -deadzone(drive.rightStickX.get());
+        return deadzone(drive.rightStickX.get());
     }
 
     private double deadzone(double amount) {

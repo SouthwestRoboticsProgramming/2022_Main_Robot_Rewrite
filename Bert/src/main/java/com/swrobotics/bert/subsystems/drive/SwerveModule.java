@@ -36,6 +36,12 @@ public class SwerveModule {
     private final CANCoder canCoder;
     private final PIDController pid;
 
+    private boolean stopped;
+    private double targetAngle;
+    private double currentAngle;
+    private double targetVelocity;
+    private double currentVelocity;
+
     public SwerveModule(int driveID, int turnID, int cancoderID, double cancoderOffset) {
         drive = new TalonFX(driveID, CANIVORE);
         turn = new TalonSRX(turnID);
@@ -74,7 +80,7 @@ public class SwerveModule {
 
         pid = new PIDController(TURN_KP.get(), TURN_KI.get(), TURN_KD.get());
         pid.enableContinuousInput(-90, 90);
-        pid.setTolerance(100);
+        pid.setTolerance(10);
 
         DRIVE_KP.onChange(this::updateDrivePID);
         DRIVE_KI.onChange(this::updateDrivePID);
@@ -119,7 +125,7 @@ public class SwerveModule {
         turn.set(ControlMode.PercentOutput, 0);
         drive.set(ControlMode.Velocity, 0);
 
-        // System.out.println("It's stopped");
+        stopped = true;
     }
 
     public void update(SwerveModuleState state) {
@@ -132,13 +138,34 @@ public class SwerveModule {
         double turnAmount = pid.calculate(currentAngle.getDegrees(),targetAngle.getDegrees());
         turnAmount = Utils.clamp(turnAmount,-1.0,1.0);
 
+        //System.out.println("Target: " + targetAngle.getDegrees() + " Current: " + currentAngle.getDegrees());
+
+
         // Spin the motors
         turn.set(ControlMode.PercentOutput, turnAmount); 
 
         // go velocity
-        // drive.set(ControlMode.PercentOutput, moduleState.speedMetersPerSecond / 4.11 * 10);
+        //drive.set(ControlMode.PercentOutput, moduleState.speedMetersPerSecond / 4.11 * 10);
         drive.set(TalonFXControlMode.Velocity, moduleState.speedMetersPerSecond * DRIVE_SPEED_TO_NATIVE_VELOCITY);
 
-        // System.out.println("No stopped");
+        stopped = false;
+        this.targetAngle = targetAngle.getDegrees();
+        this.currentAngle = currentAngle.getDegrees();
+        targetVelocity = moduleState.speedMetersPerSecond;
+        currentVelocity = drive.getSelectedSensorVelocity() / DRIVE_SPEED_TO_NATIVE_VELOCITY;
+
+
+
+    }
+
+    @Override
+    public String toString() {
+        return(
+            "Stopped: " + stopped + "\n" +
+            "Angle {" + " Target: " + targetAngle + " , Current: " + currentAngle + " ,  Error: " + pid.getPositionError() + "}\n" +
+            "Velocity {" + " Target: " + targetVelocity + " , Current: " + currentVelocity + " ,  Error: " + drive.getClosedLoopError() + "}\n" + 
+            "PID: " + pid.getP() + " , " + pid.getI() + " , " + pid.getD()
+
+        );
     }
 }

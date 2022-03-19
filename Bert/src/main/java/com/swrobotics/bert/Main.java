@@ -1,8 +1,5 @@
 package com.swrobotics.bert;
 
-import java.io.File;
-import java.io.IOException;
-
 import edu.wpi.first.wpilibj.RobotBase;
 
 public final class Main {

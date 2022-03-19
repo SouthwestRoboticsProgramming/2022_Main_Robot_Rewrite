@@ -38,13 +38,13 @@ public class SwerveDrive implements Subsystem {
         double wheelOffset = 0.5 * WHEEL_SPACING;
         kinematics = new SwerveDriveKinematics(
             // Front Left
-            new Translation2d(-wheelOffset, wheelOffset),
-            // Front Right
             new Translation2d(wheelOffset, wheelOffset),
-            //Back Right
+            // Front Right
             new Translation2d(wheelOffset, -wheelOffset),
+            //Back Right
+            new Translation2d(-wheelOffset, -wheelOffset),
             // Back Left
-            new Translation2d(-wheelOffset, -wheelOffset)
+            new Translation2d(-wheelOffset, wheelOffset)
         );
 
         // Module selector using shuffleboard
@@ -125,7 +125,7 @@ public class SwerveDrive implements Subsystem {
     @Override
     public void robotInit() {
         gyro.calibrate();
-        //  gyro.setAngleAdjustment(-90); // TODO: This might be wrong
+        //gyro.setAngleAdjustment(180); // TODO: This doesn't do anything
     }
 
     @Override
@@ -140,5 +140,7 @@ public class SwerveDrive implements Subsystem {
         //     backRight.getCANCoderAngle(),
         //     backLeft.getCANCoderAngle()
         // );
+
+        //System.out.print(frontLeft);
     }
 }

@@ -26,6 +26,8 @@ public final class ClimberConstants {
     public static final int TELESCOPING_RIGHT_MOTOR_ID_TWO = 25;
 
     private static final TuneGroup ROTATING = new TuneGroup("Rotating", ShuffleBoard.climberTab);
+        public static final TunableDouble ROTATING_MAX_PERCENT = ROTATING.getDouble("Rotating Max Output", 0.1);
+
         public static final TunableDouble ROTATING_PID_KP = ROTATING.getDouble("kP", 0.2);
         public static final TunableDouble ROTATING_PID_KI = ROTATING.getDouble("kI", 0);
         public static final TunableDouble ROTATING_PID_KD = ROTATING.getDouble("kD", 0);

@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.swrobotics.bert.util.Utils;
 
 import edu.wpi.first.math.controller.PIDController;
 
@@ -93,12 +94,11 @@ public final class RotatingArm {
             double currentPose = encoder.getPosition() / rotsPerInch + ROTATING_STARTING_LENGTH;
             double currentAngle = Math.acos((base*base + arm*arm - currentPose*currentPose)/(2*arm*base));
             percentOut = pid.calculate(Math.toDegrees(currentAngle), target);
-            motor.set(percentOut);
         }
-
+        double out = Utils.clamp(percentOut, -ROTATING_MAX_PERCENT.get(), ROTATING_MAX_PERCENT.get());
         motor.set(percentOut);
 
-        System.out.println("Encoder (" + motor.getDeviceId() + "): " + encoder.getPosition());
+        //System.out.println("Encoder (" + motor.getDeviceId() + "): " + encoder.getPosition());
     }
     
     public void setLoaded(boolean loaded) {
