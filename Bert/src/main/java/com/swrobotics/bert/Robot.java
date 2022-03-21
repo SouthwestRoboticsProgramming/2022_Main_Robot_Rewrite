@@ -48,30 +48,30 @@ public final class Robot extends RobotBase {
 
     private void init() {
         // Connect to Messenger
-//        while (msg == null) {
-//            try {
-//                msg = new MessengerClient(
-//                        MESSENGER_HOST,
-//                        MESSENGER_PORT,
-//                        MESSENGER_NAME
-//                );
-//            } catch (IOException e) {
-//                System.out.println("Messenger connection failed, trying again");
-//            }
-//
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        Scheduler.get().addCommand(new MessengerReadCommand(msg));
-//
-//        // Connect to TaskManager instances
-//        raspberryPi = new TaskManagerAPI(msg, RASPBERRY_PI_PREFIX);
-//        jetsonNano = new TaskManagerAPI(msg, JETSON_NANO_PREFIX);
-//        Scheduler.get().addCommand(new TaskManagerSetupCommand(raspberryPi, LIDAR_NAME, PATHFINDING_NAME));
-//        Scheduler.get().addCommand(new TaskManagerSetupCommand(jetsonNano, VISION_NAME));
+        while (msg == null) {
+            try {
+                msg = new MessengerClient(
+                        MESSENGER_HOST,
+                        MESSENGER_PORT,
+                        MESSENGER_NAME
+                );
+            } catch (IOException e) {
+                System.out.println("Messenger connection failed, trying again");
+            }
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        Scheduler.get().addCommand(new MessengerReadCommand(msg));
+
+        // Connect to TaskManager instances
+        raspberryPi = new TaskManagerAPI(msg, RASPBERRY_PI_PREFIX);
+        jetsonNano = new TaskManagerAPI(msg, JETSON_NANO_PREFIX);
+        Scheduler.get().addCommand(new TaskManagerSetupCommand(raspberryPi, LIDAR_NAME, PATHFINDING_NAME));
+        Scheduler.get().addCommand(new TaskManagerSetupCommand(jetsonNano, VISION_NAME));
 
         AHRS gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
 

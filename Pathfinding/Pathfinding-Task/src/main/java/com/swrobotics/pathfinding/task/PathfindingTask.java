@@ -71,6 +71,8 @@ public final class PathfindingTask {
 
         Grid grid = new Grid(CELLS_X, CELLS_Y);
         Scene scene = Scene.loadFromFile(new File("scene.txt"));
+        grid.buildEnvironmentFromScene(scene, agent);
+
         Pathfinder pathfinder = new Pathfinder();
         pathfinder.setGrid(grid);
 
@@ -92,6 +94,11 @@ public final class PathfindingTask {
                             int cx = (int) (x / METERS_PER_CELL + CELLS_X / 2f);
                             int cy = (int) (y / METERS_PER_CELL + CELLS_Y / 2f);
 
+                            if (cx < 0 || cy < 0 | cx >= grid.getWidth() || cy >= grid.getHeight()) {
+                                System.err.println("Ignoring request to set target as it is outside the field");
+                                break;
+                            }
+
                             goal[0] = new Point(cx, cy);
                             System.out.println("Now targeting " + x + ", " + y);
 
@@ -103,6 +110,11 @@ public final class PathfindingTask {
 
                             int cx = (int) (x / METERS_PER_CELL + CELLS_X / 2f);
                             int cy = (int) (y / METERS_PER_CELL + CELLS_Y / 2f);
+
+                            if (cx < 0 || cy < 0 | cx >= grid.getWidth() || cy >= grid.getHeight()) {
+                                System.err.println("Ignoring request to set position as it is outside the field");
+                                break;
+                            }
 
                             start[0] = new Point(cx, cy);
 

@@ -1,7 +1,10 @@
 package com.swrobotics.bert.constants;
 
+import edu.wpi.first.wpilibj.RobotBase;
+
 public final class CommunicationConstants {
-    public static final String MESSENGER_HOST = "10.21.29.3";
+    // If simulating, connect to a local Messenger server
+    public static final String MESSENGER_HOST = RobotBase.isReal() ? "10.21.29.3" : "localhost";
     public static final int MESSENGER_PORT = 5805;
     public static final String MESSENGER_NAME = "RoboRIO";
 
