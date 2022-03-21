@@ -16,6 +16,7 @@
         <module>TaskManager</module>
         <module>Lidar</module>
         <module>Pathfinding</module>
+        <module>FieldViewer</module>
     </modules>
 
     <properties>

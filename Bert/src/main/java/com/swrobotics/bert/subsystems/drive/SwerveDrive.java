@@ -95,48 +95,6 @@ public class SwerveDrive implements Subsystem {
         return new Pose2d(fieldPosition, gyro.getRotation2d());
     }
 
-    private double getDriveLerpFactor() {
-        double avgError = (
-                frontLeft.getError() +
-                frontRight.getError() +
-                backRight.getError() +
-                backLeft.getError()
-        ) / 4.0;
-
-        double fullThreshold = DRIVE_FULL_THRESHOLD.get();
-        double stopThreshold = DRIVE_STOP_THRESHOLD.get();
-
-        double clampedError = Utils.clamp(avgError, fullThreshold, stopThreshold);
-
-        return Utils.map(clampedError, stopThreshold, fullThreshold, 0, 1);
-    }
-
-    public void update(ChassisSpeeds chassis) {
-        SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassis);
-        SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_ATTAINABLE_WHEEL_SPEED);
-
-        double lerp = getDriveLerpFactor();
-        for (SwerveModuleState state : states) {
-            state.speedMetersPerSecond *= lerp;
-        }
-
-//        if (!frontLeft.isAtTargetAngle() ||
-//            !frontRight.isAtTargetAngle() ||
-//            !backRight.isAtTargetAngle() ||
-//            !backLeft.isAtTargetAngle()) {
-//
-//            // Don't move
-//            for (SwerveModuleState state : states) {
-//                state.speedMetersPerSecond = 0;
-//            }
-//        }
-
-        frontLeft.update(states[0]);
-        frontRight.update(states[1]);
-        backRight.update(states[2]);
-        backLeft.update(states[3]);
-    }
-
     public void stop() {
         frontLeft.stop();
         frontRight.stop();
@@ -144,10 +102,67 @@ public class SwerveDrive implements Subsystem {
         backLeft.stop();
     }
 
+    public void update(ChassisSpeeds chassis) {
+        SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassis);
+        SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_ATTAINABLE_WHEEL_SPEED);
+
+        double[] errors = new double[4];
+        errors[0] = frontLeft.getError();
+        errors[1] = frontRight.getError();
+        errors[2] = backRight.getError();
+        errors[3] = backLeft.getError();
+
+        double sum = 0;
+        for (double error : errors)
+            sum += error;
+        double average = sum / 4.0;
+
+//        {
+//            // Determine whether all the modules are within 10 degrees of each other
+//
+//            final double tolerance = 10; // degrees
+//
+//
+//
+//            for (double error : errors) {
+//                if (Math.abs(error - average) > tolerance / 2) {
+//                    shouldDrive = false;
+//                    break;
+//                }
+//            }
+//        }
+
+        double driveCoefficient;
+        {
+            // Calculate drive coefficient from the average difference from the average
+
+            double averageDifference = 0;
+            for (double error : errors) {
+                averageDifference += Math.abs(error - average);
+            }
+            averageDifference /= 4;
+
+            double fullThreshold = DRIVE_FULL_THRESHOLD.get();
+            double stopThreshold = DRIVE_STOP_THRESHOLD.get();
+            double clampedError = Utils.clamp(averageDifference, fullThreshold, stopThreshold);
+            driveCoefficient = Utils.map(clampedError, stopThreshold, fullThreshold, 0, 1);
+        }
+
+        // Drive based on coefficient
+        for (SwerveModuleState state : states) {
+            state.speedMetersPerSecond *= driveCoefficient;
+        }
+
+        // Drive
+        frontLeft.update(states[0]);
+        frontRight.update(states[1]);
+        backRight.update(states[2]);
+        backLeft.update(states[3]);
+    }
+
     @Override
     public void robotInit() {
         gyro.calibrate();
-        //gyro.setAngleAdjustment(180); // TODO: This doesn't do anything
     }
 
     @Override

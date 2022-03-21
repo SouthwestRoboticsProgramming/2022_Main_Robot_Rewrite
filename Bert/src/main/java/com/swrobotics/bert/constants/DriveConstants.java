@@ -27,6 +27,10 @@ public final class DriveConstants {
         public static final TunableDouble TURN_KI = PID.getDouble("Turn KI", 0.0);
         public static final TunableDouble TURN_KD = PID.getDouble("Turn KD", 0.0001);
 
+    private static final TuneGroup LERP = new TuneGroup("Lerp", ShuffleBoard.driveTab);
+        public static final TunableDouble DRIVE_FULL_THRESHOLD = LERP.getDouble("Full Threshold", 10);
+        public static final TunableDouble DRIVE_STOP_THRESHOLD = LERP.getDouble("Stop Threshold", 20);
+
     /* Hardware*/
     public static final double WHEEL_DIAMETER = 0.10;  // Meters
     public static final int TALON_FX_NATIVE_SENSOR_UNITS_PER_ROTATION = 2048;

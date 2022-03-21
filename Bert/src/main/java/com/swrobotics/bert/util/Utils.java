@@ -7,8 +7,8 @@ public class Utils {
         return value;
     }
 
-    public static double map(double value, double minA, double maxA, double minB, double maxB) {
-        return (value - minA) / (maxA - minA) * (maxB - minB) + minB;
+    public static double map(double value, double minOld, double maxOld, double minNew, double maxNew) {
+        return (value - minOld) / (maxOld - minOld) * (maxNew - minNew) + minNew;
     }
 
     public static double normalizeRadians(double angle) {

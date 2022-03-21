@@ -13,6 +13,7 @@ public final class TalonSRXBuilder {
 
     private boolean inverted = false;
     private double sensorOffset = 0;
+    private double deadband = 0.001;
 
     public TalonSRXBuilder(int canID) {
         this.canID = canID;
@@ -48,6 +49,11 @@ public final class TalonSRXBuilder {
 
     public TalonSRXBuilder setInverted(boolean inverted) {
         this.inverted = inverted;
+        return this;
+    }
+
+    public TalonSRXBuilder setDeadband(double deadband) {
+        config.neutralDeadband = deadband;
         return this;
     }
 

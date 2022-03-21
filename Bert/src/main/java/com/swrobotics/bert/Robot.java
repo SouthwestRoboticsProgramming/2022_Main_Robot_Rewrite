@@ -76,8 +76,8 @@ public final class Robot extends RobotBase {
         AHRS gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
 
         Input input = new Input();
-        SwerveDrive swerveDrive = new SwerveDrive(gyro);
-        SwerveDriveController swerveDriveController = new SwerveDriveController(input, gyro, swerveDrive);
+        // SwerveDrive swerveDrive = new SwerveDrive(gyro);
+        // SwerveDriveController swerveDriveController = new SwerveDriveController(input, gyro, swerveDrive);
         // CameraTurret cameraTurret = new CameraTurret();
         // CameraTurretController cameraTurretController = new CameraTurretController(input, cameraTurret);
         //Intake intake = new Intake();
@@ -86,13 +86,13 @@ public final class Robot extends RobotBase {
         //BallDetector ballDetector = new BallDetector();
         //Hopper hopper = new Hopper(ballDetector, input);
         //ShooterController shooterController = new ShooterController(input, hopper);
-        //Climber climber = new Climber(input);
+        Climber climber = new Climber(input);
         // Don't add ClimberController here, it is added after reset
         //Lights lights = new Lights();
 
         Scheduler.get().addSubsystem(input);
-        Scheduler.get().addSubsystem(swerveDrive);
-        Scheduler.get().addSubsystem(swerveDriveController);
+        // Scheduler.get().addSubsystem(swerveDrive);
+        // Scheduler.get().addSubsystem(swerveDriveController);
         // Scheduler.get().addSubsystem(cameraTurret);
         // Scheduler.get().addSubsystem(cameraTurretController);
         // Scheduler.get().addSubsystem(intake);
@@ -100,7 +100,7 @@ public final class Robot extends RobotBase {
         // Scheduler.get().addSubsystem(ballDetector);
         // Scheduler.get().addSubsystem(hopper);
         // Scheduler.get().addSubsystem(shooterController);
-        // Scheduler.get().addSubsystem(climber);
+        Scheduler.get().addSubsystem(climber);
         // Scheduler.get().addSubsystem(lights);
     }
 
