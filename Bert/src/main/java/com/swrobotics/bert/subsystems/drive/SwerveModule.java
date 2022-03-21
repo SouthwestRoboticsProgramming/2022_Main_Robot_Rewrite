@@ -121,6 +121,11 @@ public class SwerveModule {
         return pid.atSetpoint();
     }
 
+    // Incorrectness in degrees
+    public double getError() {
+        return pid.getPositionError();
+    }
+
     public void stop() {
         turn.set(ControlMode.PercentOutput, 0);
         drive.set(ControlMode.Velocity, 0);

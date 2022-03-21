@@ -33,7 +33,7 @@ public final class ResetClimberCommand implements Command {
 
     @Override 
     public boolean run() {
-        climber.manualMove(-0.1, -0.1);
+        climber.manualMove(-0.3, -0.1);
 
         return --timer <= 0;
     }

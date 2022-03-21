@@ -95,8 +95,9 @@ public final class RotatingArm {
             double currentAngle = Math.acos((base*base + arm*arm - currentPose*currentPose)/(2*arm*base));
             percentOut = pid.calculate(Math.toDegrees(currentAngle), target);
         }
+
         double out = Utils.clamp(percentOut, -ROTATING_MAX_PERCENT.get(), ROTATING_MAX_PERCENT.get());
-        motor.set(percentOut);
+        motor.set(out);
 
         //System.out.println("Encoder (" + motor.getDeviceId() + "): " + encoder.getPosition());
     }

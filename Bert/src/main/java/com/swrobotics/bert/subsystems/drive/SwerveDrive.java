@@ -4,6 +4,7 @@ import com.kauailabs.navx.frc.AHRS;
 import com.swrobotics.bert.shuffle.ShuffleBoard;
 import com.swrobotics.bert.subsystems.Subsystem;
 
+import com.swrobotics.bert.util.Utils;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -94,20 +95,41 @@ public class SwerveDrive implements Subsystem {
         return new Pose2d(fieldPosition, gyro.getRotation2d());
     }
 
+    private double getDriveLerpFactor() {
+        double avgError = (
+                frontLeft.getError() +
+                frontRight.getError() +
+                backRight.getError() +
+                backLeft.getError()
+        ) / 4.0;
+
+        double fullThreshold = DRIVE_FULL_THRESHOLD.get();
+        double stopThreshold = DRIVE_STOP_THRESHOLD.get();
+
+        double clampedError = Utils.clamp(avgError, fullThreshold, stopThreshold);
+
+        return Utils.map(clampedError, stopThreshold, fullThreshold, 0, 1);
+    }
+
     public void update(ChassisSpeeds chassis) {
         SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassis);
         SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_ATTAINABLE_WHEEL_SPEED);
 
-        if (!frontLeft.isAtTargetAngle() ||
-            !frontRight.isAtTargetAngle() ||
-            !backRight.isAtTargetAngle() ||
-            !backLeft.isAtTargetAngle()) {
-            
-            // Don't move
-            for (SwerveModuleState state : states) {
-                state.speedMetersPerSecond = 0;
-            }
+        double lerp = getDriveLerpFactor();
+        for (SwerveModuleState state : states) {
+            state.speedMetersPerSecond *= lerp;
         }
+
+//        if (!frontLeft.isAtTargetAngle() ||
+//            !frontRight.isAtTargetAngle() ||
+//            !backRight.isAtTargetAngle() ||
+//            !backLeft.isAtTargetAngle()) {
+//
+//            // Don't move
+//            for (SwerveModuleState state : states) {
+//                state.speedMetersPerSecond = 0;
+//            }
+//        }
 
         frontLeft.update(states[0]);
         frontRight.update(states[1]);
