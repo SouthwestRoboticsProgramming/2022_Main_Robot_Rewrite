@@ -3,6 +3,7 @@ package com.swrobotics.bert.subsystems.drive;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -46,6 +47,9 @@ public class SwerveModule {
         drive = new TalonFX(driveID, CANIVORE);
         turn = new TalonSRX(turnID);
         canCoder = new CANCoder(cancoderID, CANIVORE);
+
+        drive.configFactoryDefault();
+        turn.configFactoryDefault();
         
         TalonFXConfiguration driveConfig = new TalonFXConfiguration();
         {
@@ -63,11 +67,12 @@ public class SwerveModule {
 
         TalonSRXConfiguration turnConfig = new TalonSRXConfiguration();
         turn.configAllSettings(turnConfig);
+        turn.enableVoltageCompensation(false);
         drive.setNeutralMode(NeutralMode.Brake);
         drive.setSelectedSensorPosition(0, 0, 30);
         drive.set(ControlMode.PercentOutput, 0);
 
-        turn.setNeutralMode(NeutralMode.Brake);
+        turn.setNeutralMode(NeutralMode.Coast);
         turn.setSelectedSensorPosition(0, 0, 30);
         turn.set(ControlMode.PercentOutput, 0);
 
@@ -80,7 +85,7 @@ public class SwerveModule {
 
         pid = new PIDController(TURN_KP.get(), TURN_KI.get(), TURN_KD.get());
         pid.enableContinuousInput(-90, 90);
-        pid.setTolerance(10);
+        pid.setTolerance(20);
 
         DRIVE_KP.onChange(this::updateDrivePID);
         DRIVE_KI.onChange(this::updateDrivePID);
@@ -100,7 +105,7 @@ public class SwerveModule {
     }
 
     private void updateTurnPID() {
-        pid.setPID(DRIVE_KP.get(), DRIVE_KI.get(), DRIVE_KD.get());
+        pid.setPID(TURN_KP.get(), TURN_KP.get(), TURN_KD.get());
     }
 
     public SwerveModuleState getRealState() {
@@ -121,12 +126,17 @@ public class SwerveModule {
         return pid.atSetpoint();
     }
 
-    public void stop() {
+     public double getError() {
+        return pid.getPositionError();
+     }
+
+     public void stop() {
         turn.set(ControlMode.PercentOutput, 0);
         drive.set(ControlMode.Velocity, 0);
 
         stopped = true;
     }
+     
 
     public void update(SwerveModuleState state) {
         Rotation2d canRotation = new Rotation2d(Math.toRadians(canCoder.getAbsolutePosition()));
@@ -138,34 +148,9 @@ public class SwerveModule {
         double turnAmount = pid.calculate(currentAngle.getDegrees(),targetAngle.getDegrees());
         turnAmount = Utils.clamp(turnAmount,-1.0,1.0);
 
-        //System.out.println("Target: " + targetAngle.getDegrees() + " Current: " + currentAngle.getDegrees());
-
-
         // Spin the motors
         turn.set(ControlMode.PercentOutput, turnAmount); 
-
-        // go velocity
-        //drive.set(ControlMode.PercentOutput, moduleState.speedMetersPerSecond / 4.11 * 10);
         drive.set(TalonFXControlMode.Velocity, moduleState.speedMetersPerSecond * DRIVE_SPEED_TO_NATIVE_VELOCITY);
-
-        stopped = false;
-        this.targetAngle = targetAngle.getDegrees();
-        this.currentAngle = currentAngle.getDegrees();
-        targetVelocity = moduleState.speedMetersPerSecond;
-        currentVelocity = drive.getSelectedSensorVelocity() / DRIVE_SPEED_TO_NATIVE_VELOCITY;
-
-
-
     }
 
-    @Override
-    public String toString() {
-        return(
-            "Stopped: " + stopped + "\n" +
-            "Angle {" + " Target: " + targetAngle + " , Current: " + currentAngle + " ,  Error: " + pid.getPositionError() + "}\n" +
-            "Velocity {" + " Target: " + targetVelocity + " , Current: " + currentVelocity + " ,  Error: " + drive.getClosedLoopError() + "}\n" + 
-            "PID: " + pid.getP() + " , " + pid.getI() + " , " + pid.getD()
-
-        );
-    }
 }

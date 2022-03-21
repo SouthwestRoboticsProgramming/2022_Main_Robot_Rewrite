@@ -94,15 +94,45 @@ public class SwerveDrive implements Subsystem {
         return new Pose2d(fieldPosition, gyro.getRotation2d());
     }
 
+    public void stop() {
+        frontLeft.stop();
+        frontRight.stop();
+        backRight.stop();
+        backLeft.stop();
+    }
+
     public void update(ChassisSpeeds chassis) {
         SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassis);
         SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_ATTAINABLE_WHEEL_SPEED);
 
-        if (!frontLeft.isAtTargetAngle() ||
-            !frontRight.isAtTargetAngle() ||
-            !backRight.isAtTargetAngle() ||
-            !backLeft.isAtTargetAngle()) {
+        // if (!frontLeft.isAtTargetAngle() ||
+        //     !frontRight.isAtTargetAngle() ||
+        //     !backRight.isAtTargetAngle() ||
+        //     !backLeft.isAtTargetAngle()) {
             
+        //     // Don't move
+        //     for (SwerveModuleState state : states) {
+        //         state.speedMetersPerSecond = 0;
+        //     }
+        // }
+
+        double errors[] = new double[4];
+        errors[0] = frontLeft.getError();
+        errors[1] = frontRight.getError();
+        errors[2] = backRight.getError();
+        errors[3] = backLeft.getError(); 
+
+        double sum = 0;
+        for (double error : errors) {
+            sum += error;
+        }
+
+        double average = sum / 4;
+
+        boolean isOkay = true;
+        for (double error: errors) {
+            if (Math.abs(error - average) > 10) {
+                isOkay = false;
             // Don't move
             for (SwerveModuleState state : states) {
                 state.speedMetersPerSecond = 0;
@@ -115,17 +145,9 @@ public class SwerveDrive implements Subsystem {
         backLeft.update(states[3]);
     }
 
-    public void stop() {
-        frontLeft.stop();
-        frontRight.stop();
-        backRight.stop();
-        backLeft.stop();
-    }
-
     @Override
     public void robotInit() {
         gyro.calibrate();
-        //gyro.setAngleAdjustment(180); // TODO: This doesn't do anything
     }
 
     @Override

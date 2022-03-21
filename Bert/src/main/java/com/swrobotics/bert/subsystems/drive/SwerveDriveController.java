@@ -37,8 +37,6 @@ public class SwerveDriveController implements Subsystem {
         double rotation = -input.getDriveRot() * maxTurnVelocity;
         Rotation2d gyroRotation = gyro.getRotation2d();
 
-        System.out.println(rotation);
-
 
         if (fieldRelativeX == 0 && fieldRelativeY == 0 && rotation == 0) {
             drive.stop();

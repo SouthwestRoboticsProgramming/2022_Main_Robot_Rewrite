@@ -23,10 +23,12 @@ public final class TelescopingArm {
 
     public TelescopingArm(int motor1ID, int motor2ID, boolean inverted) {
         motor1 = new CANSparkMax(motor1ID, MotorType.kBrushless);
+        motor1.restoreFactoryDefaults();
         motor1.setIdleMode(IdleMode.kBrake);
         motor1.setInverted(inverted);
 
         motor2 = new CANSparkMax(motor2ID, MotorType.kBrushless);
+        motor2.restoreFactoryDefaults();
         motor2.setIdleMode(IdleMode.kBrake);
         motor2.setInverted(inverted);
 
