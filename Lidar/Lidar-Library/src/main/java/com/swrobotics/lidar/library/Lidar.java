@@ -396,8 +396,11 @@ public final class Lidar implements SerialPortDataListener {
         }
 
         if (readState == ReadState.NO_READ) {
-            byte[] skipped = new byte[port.bytesAvailable()];
-            port.readBytes(skipped, skipped.length);
+            byte[] buffer = new byte[1024];
+            int available;
+            while ((available = port.bytesAvailable()) > 0) {
+                port.readBytes(buffer, Math.min(available, 1024));
+            }
         }
 
         while (port.bytesAvailable() > 0) {
