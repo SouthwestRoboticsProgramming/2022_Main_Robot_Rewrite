@@ -18,7 +18,7 @@ import java.util.Set;
 public final class PathfindingTask {
     private static final String CONFIG_FILE = "config.properties";
 
-    private static final String IN_SET_POSITION = "Pathfinder:SetPosition";
+    private static final String IN_SET_POSITION = "RoboRIO:Location";
     private static final String IN_SET_TARGET = "Pathfinder:SetTarget";
     private static final String IN_DUMP_SCENE = "Pathfinder:DumpScene";
 
@@ -88,8 +88,9 @@ public final class PathfindingTask {
                 .setHandler((type, in) -> {
                     switch (type) {
                         case IN_SET_TARGET: {
+                            // Conversion from driver coords to judge coords
+                            double y = -in.readDouble();
                             double x = in.readDouble();
-                            double y = in.readDouble();
 
                             int cx = (int) (x / METERS_PER_CELL + CELLS_X / 2f);
                             int cy = (int) (y / METERS_PER_CELL + CELLS_Y / 2f);
@@ -105,14 +106,16 @@ public final class PathfindingTask {
                             break;
                         }
                         case IN_SET_POSITION: {
+                            // Conversion from driver coords to judge coords
+                            double y = -in.readDouble();
                             double x = in.readDouble();
-                            double y = in.readDouble();
+                            double rot = in.readDouble();
 
                             int cx = (int) (x / METERS_PER_CELL + CELLS_X / 2f);
                             int cy = (int) (y / METERS_PER_CELL + CELLS_Y / 2f);
 
                             if (cx < 0 || cy < 0 | cx >= grid.getWidth() || cy >= grid.getHeight()) {
-                                System.err.println("Ignoring request to set position as it is outside the field");
+                                System.err.println("Ignoring position as it is outside the field");
                                 break;
                             }
 

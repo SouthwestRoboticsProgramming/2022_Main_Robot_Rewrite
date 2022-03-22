@@ -5,8 +5,7 @@ import com.swrobotics.messenger.client.MessengerClient;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public final class LidarOverlay implements FieldOverlay {
     private static final String IN_READY = "Lidar:Ready";
@@ -16,20 +15,23 @@ public final class LidarOverlay implements FieldOverlay {
     private static final String OUT_START = "Lidar:Start";
     private static final String OUT_STOP = "Lidar:Stop";
 
+    private static final int PERSIST_TIME = 1000; // milliseconds
+
     private static class Point {
         public float x;
         public float y;
+        public long timestamp;
 
-        public Point(float x, float y) {
+        public Point(float x, float y, long timestamp) {
             this.x = x;
             this.y = y;
+            this.timestamp = timestamp;
         }
     }
 
     private final MessengerClient msg;
 
-    private List<Point> scan;
-    private List<Point> incomingScan;
+    private final Set<Point> scan;
 
     public LidarOverlay(MessengerClient msg) {
         this.msg = msg;
@@ -39,8 +41,7 @@ public final class LidarOverlay implements FieldOverlay {
                 .listen(IN_SCAN)
                 .setHandler(this::onMessage);
 
-        scan = new ArrayList<>();
-        incomingScan = new ArrayList<>();
+        scan = Collections.synchronizedSet(new HashSet<>());
     }
 
     private void onMessage(String type, DataInputStream in) throws IOException {
@@ -50,8 +51,6 @@ public final class LidarOverlay implements FieldOverlay {
                 break;
             }
             case IN_SCAN_START: {
-                scan = incomingScan;
-                incomingScan = new ArrayList<>();
                 break;
             }
             case IN_SCAN: {
@@ -59,7 +58,7 @@ public final class LidarOverlay implements FieldOverlay {
                 double x = in.readDouble();
                 double y = in.readDouble();
 
-                incomingScan.add(new Point((float) -y, (float) x));
+                scan.add(new Point((float) x, (float) y, System.currentTimeMillis()));
             }
         }
     }
@@ -67,10 +66,24 @@ public final class LidarOverlay implements FieldOverlay {
     @Override
     public void draw(FieldViewer p) {
         p.strokeWeight(6);
-        p.stroke(255, 0, 0);
 
-        for (Point point : scan) {
+        for (Iterator<Point> iter = scan.iterator(); iter.hasNext(); ) {
+            Point point = iter.next();
+
+            long age = System.currentTimeMillis() - point.timestamp;
+            if (age >= PERSIST_TIME) {
+                iter.remove();
+            }
+        }
+
+        List<Point> sorted = new ArrayList<>(scan);
+        sorted.sort(Comparator.comparingLong((point) -> point.timestamp));
+
+        for (Point point : sorted) {
+            long age = System.currentTimeMillis() - point.timestamp;
+            p.stroke((1 - (float) age / PERSIST_TIME) * 255, 0, 0);
             p.point(point.x, point.y);
+//            p.line(0, 0, point.x, point.y);
         }
     }
 }

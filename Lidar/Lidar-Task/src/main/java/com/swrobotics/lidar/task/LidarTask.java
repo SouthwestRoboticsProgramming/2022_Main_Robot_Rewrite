@@ -19,7 +19,7 @@ public final class LidarTask {
 
     private static final boolean INVERT_ANGLE = false;
     private static final boolean INVERT_LOC_ANGLE = false;
-    private static final double ANGLE_OFFSET = -90;
+    private static final double ANGLE_OFFSET = 0;
 
     private final MessengerClient msg;
     private final Lidar lidar;

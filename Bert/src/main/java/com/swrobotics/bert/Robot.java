@@ -7,6 +7,7 @@ import com.swrobotics.bert.constants.Settings;
 import com.swrobotics.bert.control.Input;
 import com.swrobotics.bert.profiler.ProfileNode;
 import com.swrobotics.bert.profiler.Profiler;
+import com.swrobotics.bert.shuffle.ShuffleBoard;
 import com.swrobotics.bert.subsystems.Lights;
 import com.swrobotics.bert.subsystems.camera.CameraTurret;
 import com.swrobotics.bert.subsystems.camera.CameraTurretController;
@@ -42,13 +43,18 @@ public final class Robot extends RobotBase {
 
     private boolean running;
 
-    private MessengerClient msg;
+    private MessengerClient msg = null;
     private TaskManagerAPI raspberryPi;
     private TaskManagerAPI jetsonNano;
 
+    public boolean isMessengerConnected() {
+        return msg != null;
+    }
+
     private void init() {
         // Connect to Messenger
-        while (msg == null) {
+        int attempts;
+        for (attempts = 0; attempts < MESSENGER_CONNECT_MAX_ATTEMPTS && msg == null; attempts++) {
             try {
                 msg = new MessengerClient(
                         MESSENGER_HOST,
@@ -60,18 +66,24 @@ public final class Robot extends RobotBase {
             }
 
             try {
-                Thread.sleep(1000);
+                Thread.sleep(MESSENGER_CONNECT_RETRY_INTERVAL);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        Scheduler.get().addCommand(new MessengerReadCommand(msg));
 
-        // Connect to TaskManager instances
-        raspberryPi = new TaskManagerAPI(msg, RASPBERRY_PI_PREFIX);
-        jetsonNano = new TaskManagerAPI(msg, JETSON_NANO_PREFIX);
-        Scheduler.get().addCommand(new TaskManagerSetupCommand(raspberryPi, LIDAR_NAME, PATHFINDING_NAME));
-        Scheduler.get().addCommand(new TaskManagerSetupCommand(jetsonNano, VISION_NAME));
+        ShuffleBoard.show("Messenger connected", msg != null);
+        ShuffleBoard.show("Messenger attempts", attempts);
+
+        if (msg != null) {
+            Scheduler.get().addCommand(new MessengerReadCommand(msg));
+
+            // Connect to TaskManager instances
+            raspberryPi = new TaskManagerAPI(msg, RASPBERRY_PI_PREFIX);
+            jetsonNano = new TaskManagerAPI(msg, JETSON_NANO_PREFIX);
+            Scheduler.get().addCommand(new TaskManagerSetupCommand(raspberryPi, LIDAR_NAME, PATHFINDING_NAME));
+            Scheduler.get().addCommand(new TaskManagerSetupCommand(jetsonNano, VISION_NAME));
+        }
 
         AHRS gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
 

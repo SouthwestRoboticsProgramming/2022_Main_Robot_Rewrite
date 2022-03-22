@@ -14,7 +14,7 @@ import java.util.Set;
 public final class PathfindingOverlay implements FieldOverlay {
     private static final String IN_PATH = "Pathfinder:Path";
     private static final String IN_SCENE_DATA = "Pathfinder:SceneData";
-    private static final String IN_SET_POSITION = "Pathfinder:SetPosition";
+    private static final String IN_SET_POSITION = "RoboRIO:Location";
     private static final String IN_SET_TARGET = "Pathfinder:SetTarget";
 
     private static final String OUT_DUMP_SCENE = "Pathfinder:DumpScene";
@@ -119,14 +119,14 @@ public final class PathfindingOverlay implements FieldOverlay {
         double x = in.readDouble();
         double y = in.readDouble();
 
-        position = new Point((float) -y, (float) x);
+        position = new Point((float) x, (float) y);
     }
 
     private void readTarget(DataInputStream in) throws IOException {
         double x = in.readDouble();
         double y = in.readDouble();
 
-        target = new Point((float) -y, (float) x);
+        target = new Point((float) x, (float) y);
     }
 
     private void readSceneData(DataInputStream in) throws IOException {
