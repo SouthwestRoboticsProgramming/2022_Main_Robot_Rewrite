@@ -37,12 +37,6 @@ public class SwerveModule {
     private final CANCoder canCoder;
     private final PIDController pid;
 
-    private boolean stopped;
-    private double targetAngle;
-    private double currentAngle;
-    private double targetVelocity;
-    private double currentVelocity;
-
     public SwerveModule(int driveID, int turnID, int cancoderID, double cancoderOffset) {
         drive = new TalonFX(driveID, CANIVORE);
         turn = new TalonSRX(turnID);
@@ -126,7 +120,7 @@ public class SwerveModule {
         return pid.atSetpoint();
     }
 
-    // Incorrectness in degrees
+    // Angle incorrectness in degrees
     public double getError() {
         return pid.getPositionError();
     }
@@ -134,8 +128,6 @@ public class SwerveModule {
     public void stop() {
         turn.set(ControlMode.PercentOutput, 0);
         drive.set(ControlMode.Velocity, 0);
-
-        stopped = true;
     }
      
 
@@ -150,7 +142,7 @@ public class SwerveModule {
         turnAmount = Utils.clamp(turnAmount,-1.0,1.0);
 
         // Spin the motors
-        turn.set(ControlMode.PercentOutput, turnAmount); 
+        turn.set(TalonSRXControlMode.PercentOutput, turnAmount); 
         drive.set(TalonFXControlMode.Velocity, moduleState.speedMetersPerSecond * DRIVE_SPEED_TO_NATIVE_VELOCITY);
     }
 

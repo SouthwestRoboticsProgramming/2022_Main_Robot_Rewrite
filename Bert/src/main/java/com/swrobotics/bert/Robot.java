@@ -21,6 +21,7 @@ import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
 import com.swrobotics.bert.subsystems.intake.Intake;
 import com.swrobotics.bert.subsystems.intake.IntakeController;
 import com.swrobotics.bert.subsystems.shooter.BallDetector;
+import com.swrobotics.bert.subsystems.shooter.Flywheel;
 import com.swrobotics.bert.subsystems.shooter.Hopper;
 import com.swrobotics.bert.subsystems.shooter.ShooterController;
 import com.swrobotics.messenger.client.MessengerClient;
@@ -101,7 +102,9 @@ public final class Robot extends RobotBase {
         IntakeController intakeController = new IntakeController(input, intake);
         BallDetector ballDetector = new BallDetector();
         Hopper hopper = new Hopper(ballDetector, input);
-        ShooterController shooterController = new ShooterController(input, hopper);
+        Flywheel flywheel = new Flywheel();
+        Hood hood = new Hood();
+        ShooterController shooterController = new ShooterController(input, hopper, flywheel, hood);
         Climber climber = new Climber(input);
         // Don't add ClimberController here, it is added after reset
         Lights lights = new Lights();

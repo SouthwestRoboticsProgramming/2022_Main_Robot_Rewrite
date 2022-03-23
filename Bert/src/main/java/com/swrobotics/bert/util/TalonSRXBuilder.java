@@ -20,8 +20,8 @@ public final class TalonSRXBuilder {
 
         config = new TalonSRXConfiguration();
         config.neutralDeadband = 0.001; // Percent output considered neutral (Will trigger coast or brake)
-        config.openloopRamp = 0.5;   // Seconds to ramp from 0% to 100%
-        config.closedloopRamp = 0.5; // Seconds to ramp from 0% to 100%
+        config.openloopRamp = 0.3 ;   // Seconds to ramp from 0% to 100%
+        config.closedloopRamp = 0.3; // Seconds to ramp from 0% to 100%
     }
 
     public TalonSRXBuilder setPIDF(double kP, double kI, double kD, double kF) {
@@ -36,16 +36,6 @@ public final class TalonSRXBuilder {
         return this;
     }
 
-    // TODO: Add sensor config for other sensors
-    public TalonSRXBuilder setCanCoder(int cancoderID, double cancoderOffset) {
-        config.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
-        config.remoteFilter0.remoteSensorDeviceID = cancoderID;
-        config.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANCoder;
-
-        sensorOffset = cancoderOffset;
-
-        return this;
-    }
 
     public TalonSRXBuilder setInverted(boolean inverted) {
         this.inverted = inverted;
