@@ -1,5 +1,7 @@
 package com.swrobotics.pathfinding.library;
 
+import com.swrobotics.pathfinding.library.grid.Grid;
+
 import java.util.*;
 
 public final class Pathfinder {

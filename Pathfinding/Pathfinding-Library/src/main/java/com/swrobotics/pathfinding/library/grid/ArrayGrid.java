@@ -1,15 +1,15 @@
-package com.swrobotics.pathfinding.library;
+package com.swrobotics.pathfinding.library.grid;
 
 import com.swrobotics.pathfinding.library.collider.Collider;
 import com.swrobotics.pathfinding.library.collider.Scene;
 
-public final class Grid {
+public final class ArrayGrid implements Grid {
     private final boolean[][] environment;
     private final boolean[][] overlay;
     private final int width;
     private final int height;
 
-    public Grid(int width, int height) {
+    public ArrayGrid(int width, int height) {
         this.width = width;
         this.height = height;
         environment = new boolean[width][height];
@@ -24,6 +24,7 @@ public final class Grid {
         }
     }
 
+    @Override
     public boolean get(int x, int y) {
         if (x < 0 || y < 0 || x >= width || y >= height)
             return false;
@@ -39,10 +40,12 @@ public final class Grid {
         overlay[x][y] = colliding;
     }
 
+    @Override
     public int getWidth() {
         return width;
     }
 
+    @Override
     public int getHeight() {
         return height;
     }

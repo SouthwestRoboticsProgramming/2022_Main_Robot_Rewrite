@@ -6,6 +6,7 @@ import com.swrobotics.bert.subsystems.camera.Cameras;
 import com.swrobotics.bert.subsystems.drive.SwerveDrive;
 import com.swrobotics.bert.util.Utils;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 
 public class Localization implements Subsystem {
     private final AHRS gyro;
@@ -27,6 +28,10 @@ public class Localization implements Subsystem {
 
     public double getFieldY() {
         return fieldY;
+    }
+
+    public Rotation2d getFieldRot() {
+        return gyro.getRotation2d();
     }
 
     @Override

@@ -21,6 +21,8 @@ public final class LidarTask {
     private static final boolean INVERT_LOC_ANGLE = false;
     private static final double ANGLE_OFFSET = 0;
 
+    private static final double IGNORED_RADIUS = 898.024 / 2;
+
     private final MessengerClient msg;
     private final Lidar lidar;
 
@@ -60,13 +62,18 @@ public final class LidarTask {
             if (quality == 0 || distance == 0)
                 return;
 
+            // Ignore samples that are too close
+            if (distance < IGNORED_RADIUS)
+                return;
+
             // Account for robot rotation
             angle -= locRot;
 
             // Get field-aligned position of point relative to robot
             double angleRadians = Math.toRadians(angle);
-            double localX = Math.cos(angleRadians) * distance;
-            double localY = Math.sin(angleRadians) * distance;
+            double distanceMeters = distance / 1000.0;
+            double localX = Math.cos(angleRadians) * distanceMeters;
+            double localY = Math.sin(angleRadians) * distanceMeters;
 
             // Find the field position of the point
             double fieldX = localX + locX;

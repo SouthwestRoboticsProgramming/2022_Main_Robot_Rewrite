@@ -300,7 +300,7 @@ public final class Lidar implements SerialPortDataListener {
         check(readBuffer.length == 5, "Read buffer incorrect size: " + readBuffer.length);
 
         check((readBuffer[1] & 0x01) == 1, "Check bit 2 incorrect");
-//        check(((readBuffer[0] & 0x02) ^ (readBuffer[1] & 0x01)) == 1, "Check bit 1 incorrect"); // TODO: Fix this check
+        check(((readBuffer[0] & 0x02) ^ (readBuffer[0] & 0x01)) == 1, "Check bit 1 incorrect");
 
         boolean isStart = (readBuffer[0] & 0x01) != 0;
 
@@ -396,8 +396,11 @@ public final class Lidar implements SerialPortDataListener {
         }
 
         if (readState == ReadState.NO_READ) {
-            byte[] skipped = new byte[port.bytesAvailable()];
-            port.readBytes(skipped, skipped.length);
+            byte[] buffer = new byte[1024];
+            int available;
+            while ((available = port.bytesAvailable()) > 0) {
+                port.readBytes(buffer, Math.min(available, 1024));
+            }
         }
 
         while (port.bytesAvailable() > 0) {

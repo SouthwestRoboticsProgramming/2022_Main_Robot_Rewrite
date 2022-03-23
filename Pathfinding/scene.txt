@@ -10,24 +10,24 @@ rectangle x=-1 y=27 width=2 height=54
 rectangle x=109 y=27 width=2 height=54
 
 # hub
-rectangle x=54 y=27 width=12.313 height=12.313 rotation=69
-rectangle x=54 y=27 width=16.73 height=4 rotation=114
-rectangle x=54 y=27 width=16.73 height=4 rotation=204
+rectangle x=54 y=27 width=12.313 height=12.313 rotation=-69
+rectangle x=54 y=27 width=16.73 height=4 rotation=-114
+rectangle x=54 y=27 width=16.73 height=4 rotation=-204
 
 # blue terminal
-rectangle x=0 y=54 width=15.42 height=15.42 rotation=45
+rectangle x=0 y=0 width=15.42 height=15.42 rotation=45
 
 # red terminal
-rectangle x=108 y=0 width=15.42 height=15.42 rotation=45
+rectangle x=108 y=54 width=15.42 height=15.42 rotation=45
 
 # blue climber
-rectangle x=2.5 y=2.5 width=1 height=1
-rectangle x=2.5 y=18.53 width=1 height=1
-rectangle x=20.758 y=2.5 width=1 height=1
-rectangle x=20.758 y=18.53 width=1 height=1
+rectangle x=2.5 y=51.5 width=1 height=1
+rectangle x=2.5 y=34.47 width=1 height=1
+rectangle x=20.758 y=51.5 width=1 height=1
+rectangle x=20.758 y=34.47 width=1 height=1
 
 # red climber
-rectangle x=105.5 y=51.5 width=1 height=1
-rectangle x=105.5 y=34.47 width=1 height=1
-rectangle x=87.242 y=51.5 width=1 height=1
-rectangle x=87.242 y=34.47 width=1 height=1
+rectangle x=105.5 y=2.5 width=1 height=1
+rectangle x=105.5 y=18.53 width=1 height=1
+rectangle x=87.242 y=2.5 width=1 height=1
+rectangle x=87.242 y=18.53 width=1 height=1

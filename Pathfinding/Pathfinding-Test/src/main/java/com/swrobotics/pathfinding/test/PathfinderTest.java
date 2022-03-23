@@ -1,6 +1,6 @@
 package com.swrobotics.pathfinding.test;
 
-import com.swrobotics.pathfinding.library.Grid;
+import com.swrobotics.pathfinding.library.grid.ArrayGrid;
 import com.swrobotics.pathfinding.library.PathOptimizer;
 import com.swrobotics.pathfinding.library.Pathfinder;
 import com.swrobotics.pathfinding.library.Point;
@@ -18,7 +18,7 @@ public final class PathfinderTest extends PApplet {
     private static final int HEIGHT = 27 * 12 / 6;
     private static final int CELL_SIZE = 13;
 
-    private Grid grid;
+    private ArrayGrid grid;
     private Scene scene;
     private Pathfinder pathfinder;
     private Point start, end;
@@ -33,7 +33,7 @@ public final class PathfinderTest extends PApplet {
     public void setup() {
         ellipseMode(CENTER);
 
-        grid = new Grid(WIDTH, HEIGHT);
+        grid = new ArrayGrid(WIDTH, HEIGHT);
         scene = Scene.loadFromFile(new File("scene.txt"));
         grid.buildEnvironmentFromScene(scene, new CircleCollider(0, 0, 2.94 + 1));
 
@@ -126,7 +126,7 @@ public final class PathfinderTest extends PApplet {
         } else if (mouseButton == RIGHT) {
             end = new Point(x, y);
         } else if (mouseButton == CENTER) {
-            grid.setOverlay(x, y, dragMode = !grid.getOverlay(x, y));
+//            grid.setOverlay(x, y, dragMode = !grid.getOverlay(x, y));
         }
     }
 

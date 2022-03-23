@@ -1,7 +1,6 @@
 package com.swrobotics.fieldviewer;
 
-import com.swrobotics.fieldviewer.overlay.FieldOverlay;
-import com.swrobotics.fieldviewer.overlay.LocalizationOverlay;
+import com.swrobotics.fieldviewer.overlay.*;
 import com.swrobotics.messenger.client.MessengerClient;
 import processing.core.PApplet;
 
@@ -14,20 +13,23 @@ public final class FieldViewer extends PApplet {
     public static final float FIELD_HEIGHT = Conversions.feetToMeters(54);
 
     public static final int PADDING = 75;
-    public static final float PIXELS_PER_METER = 50;
+    public static float PIXELS_PER_METER = 80;
 
+    private static final float STROKE_MULTIPLIER = 1.25f;
+
+    private MessengerClient msg;
     private List<FieldOverlay> overlays;
 
     @Override
     public void strokeWeight(float weight) {
-        super.strokeWeight(weight / PIXELS_PER_METER);
+        super.strokeWeight(weight / PIXELS_PER_METER * STROKE_MULTIPLIER);
     }
 
     @Override
     public void settings() {
         size(
-                (int) Math.ceil(FIELD_WIDTH * PIXELS_PER_METER) + PADDING * 2,
                 (int) Math.ceil(FIELD_HEIGHT * PIXELS_PER_METER) + PADDING * 2,
+                (int) Math.ceil(FIELD_WIDTH * PIXELS_PER_METER) + PADDING * 2,
                 P2D
         );
     }
@@ -37,7 +39,6 @@ public final class FieldViewer extends PApplet {
         rectMode(CENTER);
         ellipseMode(CENTER);
 
-        MessengerClient msg;
         try {
             msg = new MessengerClient("localhost", 5805, "FieldViewer");
         } catch (IOException e) {
@@ -45,16 +46,21 @@ public final class FieldViewer extends PApplet {
         }
 
         overlays = new ArrayList<>();
+        overlays.add(new FieldImageOverlay(this));
+        overlays.add(new LidarOverlay(msg));
+        overlays.add(new PathfindingOverlay(msg));
         overlays.add(new LocalizationOverlay(msg));
     }
 
     @Override
     public void draw() {
+        msg.readMessages();
         background(32);
 
         translate(PADDING, PADDING);
         scale(PIXELS_PER_METER, -PIXELS_PER_METER);
-        translate(FIELD_WIDTH / 2, -FIELD_HEIGHT / 2);
+        translate(FIELD_HEIGHT / 2, -FIELD_WIDTH / 2);
+        rotate(-HALF_PI);
 
         // Field border
         strokeWeight(1);
@@ -64,5 +70,41 @@ public final class FieldViewer extends PApplet {
         for (FieldOverlay overlay : overlays) {
             overlay.draw(this);
         }
+
+        float fieldX = (mouseY - height / 2f) / PIXELS_PER_METER;
+        float fieldY = (mouseX - width / 2f) / PIXELS_PER_METER;
+
+        strokeWeight(10);
+        stroke(255);
+        point(fieldX, fieldY);
+
+        msg.builder("RoboRIO:Location")
+                .addDouble(rx)
+                .addDouble(ry)
+                .addDouble(0)
+                .send();
+    }
+
+    private double rx, ry;
+
+    @Override
+    public void mousePressed() {
+        float fieldX = (mouseY - height / 2f) / PIXELS_PER_METER;
+        float fieldY = (mouseX - width / 2f) / PIXELS_PER_METER;
+
+        if (mouseButton == LEFT) {
+            msg.builder("Pathfinder:SetTarget")
+                    .addDouble(fieldX)
+                    .addDouble(fieldY)
+                    .send();
+        } else if (mouseButton == RIGHT) {
+            rx = fieldX;
+            ry = fieldY;
+        }
+    }
+
+    @Override
+    public void mouseDragged() {
+        mousePressed();
     }
 }
