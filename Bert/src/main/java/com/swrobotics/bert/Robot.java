@@ -2,6 +2,7 @@ package com.swrobotics.bert;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.swrobotics.bert.commands.MessengerReadCommand;
+import com.swrobotics.bert.commands.PublishLocalizationCommand;
 import com.swrobotics.bert.commands.taskmanager.TaskManagerSetupCommand;
 import com.swrobotics.bert.constants.Settings;
 import com.swrobotics.bert.control.Input;
@@ -9,8 +10,10 @@ import com.swrobotics.bert.profiler.ProfileNode;
 import com.swrobotics.bert.profiler.Profiler;
 import com.swrobotics.bert.shuffle.ShuffleBoard;
 import com.swrobotics.bert.subsystems.Lights;
+import com.swrobotics.bert.subsystems.Localization;
 import com.swrobotics.bert.subsystems.camera.CameraTurret;
 import com.swrobotics.bert.subsystems.camera.CameraTurretController;
+import com.swrobotics.bert.subsystems.camera.Cameras;
 import com.swrobotics.bert.subsystems.climber.Climber;
 import com.swrobotics.bert.subsystems.climber.ClimberController;
 import com.swrobotics.bert.subsystems.drive.SwerveDrive;
@@ -88,32 +91,39 @@ public final class Robot extends RobotBase {
         AHRS gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
 
         Input input = new Input();
-        // SwerveDrive swerveDrive = new SwerveDrive(gyro);
-        // SwerveDriveController swerveDriveController = new SwerveDriveController(input, gyro, swerveDrive);
-        // CameraTurret cameraTurret = new CameraTurret();
-        // CameraTurretController cameraTurretController = new CameraTurretController(input, cameraTurret);
-        //Intake intake = new Intake();
-
-        //IntakeController intakeController = new IntakeController(input, intake);
-        //BallDetector ballDetector = new BallDetector();
-        //Hopper hopper = new Hopper(ballDetector, input);
-        //ShooterController shooterController = new ShooterController(input, hopper);
+        SwerveDrive swerveDrive = new SwerveDrive(gyro);
+        SwerveDriveController swerveDriveController = new SwerveDriveController(input, gyro, swerveDrive);
+        CameraTurret cameraTurret = new CameraTurret();
+        CameraTurretController cameraTurretController = new CameraTurretController(input, cameraTurret);
+        Cameras cameras = new Cameras();
+        Localization localization = new Localization(gyro, swerveDrive, cameras, cameraTurret);
+        Intake intake = new Intake();
+        IntakeController intakeController = new IntakeController(input, intake);
+        BallDetector ballDetector = new BallDetector();
+        Hopper hopper = new Hopper(ballDetector, input);
+        ShooterController shooterController = new ShooterController(input, hopper);
         Climber climber = new Climber(input);
         // Don't add ClimberController here, it is added after reset
-        //Lights lights = new Lights();
+        Lights lights = new Lights();
 
         Scheduler.get().addSubsystem(input);
-        // Scheduler.get().addSubsystem(swerveDrive);
-        // Scheduler.get().addSubsystem(swerveDriveController);
-        // Scheduler.get().addSubsystem(cameraTurret);
-        // Scheduler.get().addSubsystem(cameraTurretController);
-        // Scheduler.get().addSubsystem(intake);
-        // Scheduler.get().addSubsystem(intakeController);
-        // Scheduler.get().addSubsystem(ballDetector);
-        // Scheduler.get().addSubsystem(hopper);
-        // Scheduler.get().addSubsystem(shooterController);
+        Scheduler.get().addSubsystem(swerveDrive);
+        Scheduler.get().addSubsystem(swerveDriveController);
+        Scheduler.get().addSubsystem(cameraTurret);
+        Scheduler.get().addSubsystem(cameraTurretController);
+        Scheduler.get().addSubsystem(cameras);
+        Scheduler.get().addSubsystem(localization);
+        Scheduler.get().addSubsystem(intake);
+        Scheduler.get().addSubsystem(intakeController);
+        Scheduler.get().addSubsystem(ballDetector);
+        Scheduler.get().addSubsystem(hopper);
+        Scheduler.get().addSubsystem(shooterController);
         Scheduler.get().addSubsystem(climber);
-        // Scheduler.get().addSubsystem(lights);
+        Scheduler.get().addSubsystem(lights);
+
+        if (msg != null) {
+            Scheduler.get().addCommand(new PublishLocalizationCommand(msg, localization));
+        }
     }
 
     @Override

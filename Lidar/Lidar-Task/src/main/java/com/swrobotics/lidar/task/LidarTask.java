@@ -21,6 +21,8 @@ public final class LidarTask {
     private static final boolean INVERT_LOC_ANGLE = false;
     private static final double ANGLE_OFFSET = 0;
 
+    private static final double IGNORED_RADIUS = 898.024 / 2;
+
     private final MessengerClient msg;
     private final Lidar lidar;
 
@@ -58,6 +60,10 @@ public final class LidarTask {
 
             // Don't send the sample if it is bad
             if (quality == 0 || distance == 0)
+                return;
+
+            // Ignore samples that are too close
+            if (distance < IGNORED_RADIUS)
                 return;
 
             // Account for robot rotation

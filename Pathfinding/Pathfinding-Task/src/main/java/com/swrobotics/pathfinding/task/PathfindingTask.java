@@ -1,7 +1,8 @@
 package com.swrobotics.pathfinding.task;
 
 import com.swrobotics.messenger.client.MessengerClient;
-import com.swrobotics.pathfinding.library.Grid;
+import com.swrobotics.pathfinding.library.grid.ArrayGrid;
+import com.swrobotics.pathfinding.library.grid.Grid;
 import com.swrobotics.pathfinding.library.PathOptimizer;
 import com.swrobotics.pathfinding.library.Pathfinder;
 import com.swrobotics.pathfinding.library.Point;
@@ -9,11 +10,10 @@ import com.swrobotics.pathfinding.library.collider.CircleCollider;
 import com.swrobotics.pathfinding.library.collider.Collider;
 import com.swrobotics.pathfinding.library.collider.RectangleCollider;
 import com.swrobotics.pathfinding.library.collider.Scene;
+import com.swrobotics.pathfinding.library.grid.GridUnion;
 
 import java.io.*;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 public final class PathfindingTask {
     private static final String CONFIG_FILE = "config.properties";
@@ -21,6 +21,7 @@ public final class PathfindingTask {
     private static final String IN_SET_POSITION = "RoboRIO:Location";
     private static final String IN_SET_TARGET = "Pathfinder:SetTarget";
     private static final String IN_DUMP_SCENE = "Pathfinder:DumpScene";
+    private static final String IN_LIDAR_POINT = "Lidar:Scan";
 
     private static final String OUT_PATH = "Pathfinder:Path";
     private static final String OUT_SCENE_DATA = "Pathfinder:SceneData";
@@ -30,6 +31,8 @@ public final class PathfindingTask {
 
     private static final float CELLS_PER_METER = 3.281f * 2;
     private static final float METERS_PER_CELL = 1 / CELLS_PER_METER;
+
+    private static final long LIDAR_DECAY_TIME = 1000;
 
     public static void main(String[] args) {
         Properties config = new Properties();
@@ -67,11 +70,16 @@ public final class PathfindingTask {
         }
         System.out.println("Connected");
 
-        Collider agent = new CircleCollider(0, 0, agentRadius + collisionPadding);
+        CircleCollider agent = new CircleCollider(0, 0, agentRadius + collisionPadding);
 
-        Grid grid = new Grid(CELLS_X, CELLS_Y);
+        ArrayGrid sceneGrid = new ArrayGrid(CELLS_X, CELLS_Y);
         Scene scene = Scene.loadFromFile(new File("scene.txt"));
-        grid.buildEnvironmentFromScene(scene, agent);
+        sceneGrid.buildEnvironmentFromScene(scene, agent);
+
+        LidarPointCollisionGrid lidarGrid = new LidarPointCollisionGrid(agent, CELLS_X, CELLS_Y);
+        Set<LidarPoint> lidarPoints = new HashSet<>();
+
+        Grid grid = new GridUnion(sceneGrid, lidarGrid);
 
         Pathfinder pathfinder = new Pathfinder();
         pathfinder.setGrid(grid);
@@ -85,6 +93,7 @@ public final class PathfindingTask {
                 .listen(IN_SET_TARGET)
                 .listen(IN_SET_POSITION)
                 .listen(IN_DUMP_SCENE)
+                .listen(IN_LIDAR_POINT)
                 .setHandler((type, in) -> {
                     switch (type) {
                         case IN_SET_TARGET: {
@@ -160,6 +169,17 @@ public final class PathfindingTask {
 
                             finalMsg.sendMessage(OUT_SCENE_DATA, b.toByteArray());
                         }
+                        case IN_LIDAR_POINT: {
+                            int quality = in.readInt();
+                            double y = -in.readDouble();
+                            double x = in.readDouble();
+
+                            int cx = (int) (x / METERS_PER_CELL + CELLS_X / 2f);
+                            int cy = (int) (y / METERS_PER_CELL + CELLS_Y / 2f);
+
+                            lidarGrid.addLidarPoint(cx, cy);
+                            lidarPoints.add(new LidarPoint(cx, cy, System.currentTimeMillis()));
+                        }
                     }
                 });
 
@@ -188,6 +208,14 @@ public final class PathfindingTask {
                 e.printStackTrace();
             }
             msg.sendMessage(OUT_PATH, b.toByteArray());
+
+            for (Iterator<LidarPoint> iter = lidarPoints.iterator(); iter.hasNext(); ) {
+                LidarPoint point = iter.next();
+                if (System.currentTimeMillis() - point.getTimestamp() >= LIDAR_DECAY_TIME) {
+                    iter.remove();
+                    lidarGrid.removeLidarPoint(point.getX(), point.getY());
+                }
+            }
 
             try {
                 Thread.sleep(50);

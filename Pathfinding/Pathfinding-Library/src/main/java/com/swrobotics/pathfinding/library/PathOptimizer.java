@@ -1,5 +1,7 @@
 package com.swrobotics.pathfinding.library;
 
+import com.swrobotics.pathfinding.library.grid.Grid;
+
 import java.util.ArrayList;
 import java.util.List;
 

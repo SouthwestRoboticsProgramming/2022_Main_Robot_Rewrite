@@ -16,6 +16,8 @@ public final class CommunicationConstants {
     public static final String LIDAR_NAME = "Lidar";
     public static final String PATHFINDING_NAME = "Pathfinding";
     public static final String VISION_NAME = "Vision";
+    
+    public static final String LOCALIZATION_MSG = "RoboRIO:Location";
 
     private CommunicationConstants() {
         throw new AssertionError();

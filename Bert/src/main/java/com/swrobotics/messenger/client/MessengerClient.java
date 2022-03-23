@@ -45,6 +45,10 @@ public final class MessengerClient {
         listeners = new HashMap<>();
     }
 
+    public void sendMessage(String type) {
+        sendMessage(type, new byte[0]);
+    }
+
     public void sendMessage(String type, byte[] data) {
         synchronized (out) {
             try {
@@ -55,6 +59,10 @@ public final class MessengerClient {
                 e.printStackTrace();
             }
         }
+    }
+
+    public MessageBuilder builder(String type) {
+        return new MessageBuilder(this, type);
     }
 
     public MessageHandler makeHandler() {
