@@ -49,9 +49,13 @@ public final class ShooterConstants {
         public static final TunableDouble HOOD_KD = HOOD.getDouble("kD", 0);
         public static final TunableDouble HOOD_KF = HOOD.getDouble("kF", 0);
 
+        public static final TunableDouble HOOD_LOWEST_TICKS = HOOD.getDouble("Lowest Ticks", 15); // FIXME
         public static final TunableDouble HOOD_HIGHEST_TICKS = HOOD.getDouble("Highest Ticks", 1000); // FIXME
 
+        public static final TunableDouble HOOD_CALIBRATE_SPEED = HOOD.getDouble("Calibration Speed", -0.2);
+
     public static final int HOOD_ID = 30000; // FIXME
+    public static final int HOOD_LIMIT_ID = 0;
 
     private ShooterConstants() {
         throw new AssertionError();

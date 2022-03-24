@@ -6,53 +6,73 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.util.TalonSRXBuilder;
 import com.swrobotics.bert.util.Utils;
+import edu.wpi.first.wpilibj.DigitalInput;
 
-import static com.swrobotics.bert.constants.ShooterConstants.*; 
+import static com.swrobotics.bert.constants.ShooterConstants.*;
 
-public class Hood implements Subsystem {
-  private final TalonSRX hood;
+public final class Hood implements Subsystem {
+    private final TalonSRX hood;
+    private final DigitalInput limitSwitch;
 
-  public Hood() {
-    hood = new TalonSRXBuilder(HOOD_ID)
-      .setPIDF(
-          HOOD_KP.get(),
-          HOOD_KI.get(),
-          HOOD_KD.get(),
-          HOOD_KF.get()
-      )
-      .build();
+    private double targetPosition;
+    private boolean isCalibrating;
 
-      hood.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+    public Hood() {
+        hood = new TalonSRXBuilder(HOOD_ID)
+                .setPIDF(
+                        HOOD_KP.get(),
+                        HOOD_KI.get(),
+                        HOOD_KD.get(),
+                        HOOD_KF.get()
+                )
+                .build();
 
+        hood.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 
-      
-      HOOD_KP.onChange(this::updatePID);
-      HOOD_KI.onChange(this::updatePID);
-      HOOD_KD.onChange(this::updatePID);
-      HOOD_KF.onChange(this::updatePID);
-  }
+        limitSwitch = new DigitalInput(HOOD_LIMIT_ID);
 
-  private void updatePID() {
-      hood.config_kP(0, HOOD_KP.get());
-      hood.config_kI(0, HOOD_KI.get());
-      hood.config_kD(0, HOOD_KD.get());
-      hood.config_kF(0, HOOD_KF.get());
-  }
-  
-  public void setPosition(double position) {
-    position = Utils.clamp(position, 0, 3);
+        targetPosition = 0;
+        isCalibrating = true;
 
-    if (position == 0) {
-      zero();
-      return;
+        HOOD_KP.onChange(this::updatePID);
+        HOOD_KI.onChange(this::updatePID);
+        HOOD_KD.onChange(this::updatePID);
+        HOOD_KF.onChange(this::updatePID);
     }
-    hood.set(TalonSRXControlMode.Position, position / 4.0 * HOOD_HIGHEST_TICKS.get());
-  }
 
-  public void zero() {
-    // FIXME Ryan do the thing that was in the old code
+    private void updatePID() {
+        hood.config_kP(0, HOOD_KP.get());
+        hood.config_kI(0, HOOD_KI.get());
+        hood.config_kD(0, HOOD_KD.get());
+        hood.config_kF(0, HOOD_KF.get());
+    }
 
-    hood.setSelectedSensorPosition(-10); // *Suggested* Make this negative so that 0 position isn't constantly touching the limit switch
-  }
+    @Override
+    public void robotPeriodic() {
+        if (isCalibrating) {
+            hood.set(TalonSRXControlMode.PercentOutput, HOOD_CALIBRATE_SPEED.get());
 
+            if (limitSwitch.get()) {
+                isCalibrating = false;
+                hood.setSelectedSensorPosition(0);
+            }
+        } else {
+            hood.set(TalonSRXControlMode.Position, targetPosition);
+        }
+    }
+
+    public void setPosition(double position) {
+        position = Utils.clamp(position, 0, 3);
+
+        if (position == 0) {
+            calibrate();
+            return;
+        }
+
+        targetPosition = Utils.map(position, 0, 3, HOOD_LOWEST_TICKS.get(), HOOD_HIGHEST_TICKS.get());
+    }
+
+    public void calibrate() {
+        isCalibrating = true;
+    }
 }

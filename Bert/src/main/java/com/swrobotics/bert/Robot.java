@@ -20,10 +20,7 @@ import com.swrobotics.bert.subsystems.drive.SwerveDrive;
 import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
 import com.swrobotics.bert.subsystems.intake.Intake;
 import com.swrobotics.bert.subsystems.intake.IntakeController;
-import com.swrobotics.bert.subsystems.shooter.BallDetector;
-import com.swrobotics.bert.subsystems.shooter.Flywheel;
-import com.swrobotics.bert.subsystems.shooter.Hopper;
-import com.swrobotics.bert.subsystems.shooter.ShooterController;
+import com.swrobotics.bert.subsystems.shooter.*;
 import com.swrobotics.messenger.client.MessengerClient;
 import com.swrobotics.taskmanager.api.TaskManagerAPI;
 import edu.wpi.first.hal.HAL;
@@ -105,7 +102,7 @@ public final class Robot extends RobotBase {
         Flywheel flywheel = new Flywheel();
         Hood hood = new Hood();
         ShooterController shooterController = new ShooterController(input, hopper, flywheel, hood);
-        Climber climber = new Climber(input);
+//        Climber climber = new Climber(input);
         // Don't add ClimberController here, it is added after reset
         Lights lights = new Lights();
 
@@ -120,8 +117,10 @@ public final class Robot extends RobotBase {
         Scheduler.get().addSubsystem(intakeController);
         Scheduler.get().addSubsystem(ballDetector);
         Scheduler.get().addSubsystem(hopper);
+        Scheduler.get().addSubsystem(flywheel);
+        Scheduler.get().addSubsystem(hood);
         Scheduler.get().addSubsystem(shooterController);
-        Scheduler.get().addSubsystem(climber);
+//        Scheduler.get().addSubsystem(climber);
         Scheduler.get().addSubsystem(lights);
 
         if (msg != null) {
