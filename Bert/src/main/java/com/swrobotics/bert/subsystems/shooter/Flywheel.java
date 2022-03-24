@@ -35,6 +35,12 @@ public class Flywheel implements Subsystem {
       flywheel.config_kI(0, FLYWHEEL_KI.get());
       flywheel.config_kD(0, FLYWHEEL_KD.get());
       flywheel.config_kF(0, FLYWHEEL_KF.get());
+      flywheel.setIntegralAccumulator(0);
+  }
+
+  @Override
+  public void robotPeriodic() {
+    // flywheel.set(TalonFXControlMode.PercentOutput, 1);
   }
 
   public void setFlywheelSpeed(double rpm) {

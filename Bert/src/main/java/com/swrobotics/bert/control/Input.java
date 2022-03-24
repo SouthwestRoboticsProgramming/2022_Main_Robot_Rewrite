@@ -7,12 +7,12 @@ import com.swrobotics.bert.util.Utils;
 
 // Note: The Y axes on the sticks are backwards from what you would expect: up is negative
 public class Input implements Subsystem {
-    private final XboxController drive;
-    private final XboxController manipulator;
+    private final Controller drive;
+    private final Controller manipulator;
 
     public Input() {
         drive = new XboxController(DRIVE_CONTROLLER_ID);
-        manipulator = new XboxController(MANIPULATOR_CONTROLLER_ID);
+        manipulator = new LogitechController(MANIPULATOR_CONTROLLER_ID);
     }
 
     /* Drive */

@@ -40,7 +40,7 @@ public final class FieldViewer extends PApplet {
         ellipseMode(CENTER);
 
         try {
-            msg = new MessengerClient("localhost", 5805, "FieldViewer");
+            msg = new MessengerClient("10.21.29.3", 5805, "FieldViewer");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -78,11 +78,11 @@ public final class FieldViewer extends PApplet {
         stroke(255);
         point(fieldX, fieldY);
 
-        msg.builder("RoboRIO:Location")
-                .addDouble(rx)
-                .addDouble(ry)
-                .addDouble(0)
-                .send();
+//        msg.builder("RoboRIO:Location")
+//                .addDouble(rx)
+//                .addDouble(ry)
+//                .addDouble(0)
+//                .send();
     }
 
     private double rx, ry;

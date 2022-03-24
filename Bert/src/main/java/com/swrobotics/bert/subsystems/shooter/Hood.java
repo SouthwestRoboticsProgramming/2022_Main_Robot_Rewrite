@@ -3,6 +3,7 @@ package com.swrobotics.bert.subsystems.shooter;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.util.TalonSRXBuilder;
 import com.swrobotics.bert.util.Utils;
@@ -18,16 +19,30 @@ public final class Hood implements Subsystem {
     private boolean isCalibrating;
 
     public Hood() {
-        hood = new TalonSRXBuilder(HOOD_ID)
-                .setPIDF(
-                        HOOD_KP.get(),
-                        HOOD_KI.get(),
-                        HOOD_KD.get(),
-                        HOOD_KF.get()
-                )
-                .build();
+//        hood = new TalonSRXBuilder(HOOD_ID)
+//                .setInverted(true)
+//                .setPIDF(
+//                        HOOD_KP.get(),
+//                        HOOD_KI.get(),
+//                        HOOD_KD.get(),
+//                        HOOD_KF.get()
+//                )
+//                .build();
+//
+//        hood.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 
+        hood = new TalonSRX(HOOD_ID);
+        TalonSRXConfiguration hoodConfig = new TalonSRXConfiguration();
+        hoodConfig.neutralDeadband = 0.001;
+        hoodConfig.slot0.kP = HOOD_KP.get();
+        hoodConfig.slot0.kI = HOOD_KI.get();
+        hoodConfig.slot0.kD = HOOD_KD.get();
+        hoodConfig.slot0.closedLoopPeakOutput = 1;
+        hoodConfig.openloopRamp = 0.5;
+        hoodConfig.closedloopRamp = 0.5;
+        hood.configAllSettings(hoodConfig);
         hood.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        hood.setInverted(true);
 
         limitSwitch = new DigitalInput(HOOD_LIMIT_ID);
 
@@ -50,6 +65,7 @@ public final class Hood implements Subsystem {
     @Override
     public void robotPeriodic() {
         if (isCalibrating) {
+            System.out.println("it is calibrating");
             hood.set(TalonSRXControlMode.PercentOutput, HOOD_CALIBRATE_SPEED.get());
 
             if (limitSwitch.get()) {
@@ -59,15 +75,17 @@ public final class Hood implements Subsystem {
         } else {
             hood.set(TalonSRXControlMode.Position, targetPosition);
         }
+
+        System.out.println("Encoder: " + hood.getSelectedSensorPosition() + ", Limit: " + limitSwitch.get() + ", calibrating: " + isCalibrating);
     }
 
     public void setPosition(double position) {
         position = Utils.clamp(position, 0, 3);
 
-        if (position == 0) {
-            calibrate();
-            return;
-        }
+//        if (position == 0) {
+//            calibrate();
+//            return;
+//        }
 
         targetPosition = Utils.map(position, 0, 3, HOOD_LOWEST_TICKS.get(), HOOD_HIGHEST_TICKS.get());
     }

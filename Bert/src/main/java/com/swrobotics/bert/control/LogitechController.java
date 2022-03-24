@@ -1,25 +1,25 @@
 package com.swrobotics.bert.control;
 
-public final class XboxController extends Controller {
-    private static final int ID_A = 1;
-    private static final int ID_B = 2;
-    private static final int ID_X = 3;
+public class LogitechController extends Controller {
+    private static final int ID_A = 2;
+    private static final int ID_B = 3;
+    private static final int ID_X = 1;
     private static final int ID_Y = 4;
     private static final int ID_LEFT_SHOULDER = 5;
     private static final int ID_RIGHT_SHOULDER = 6;
-    private static final int ID_SELECT = 7;
-    private static final int ID_START = 8;
-    private static final int ID_LEFT_STICK = 9;
-    private static final int ID_RIGHT_STICK = 10;
+    private static final int ID_SELECT = 9;
+    private static final int ID_START = 10;
+    private static final int ID_LEFT_STICK = 11;
+    private static final int ID_RIGHT_STICK = 12;
 
     private static final int AXIS_LEFT_STICK_X = 0;
     private static final int AXIS_LEFT_STICK_Y = 1;
-    private static final int AXIS_LEFT_TRIGGER = 2;
-    private static final int AXIS_RIGHT_TRIGGER = 3;
-    private static final int AXIS_RIGHT_STICK_X = 4;
-    private static final int AXIS_RIGHT_STICK_Y = 5;
+    private static final int AXIS_LEFT_TRIGGER = -1; // Not supported; TODO: map button to axis 0 or 1
+    private static final int AXIS_RIGHT_TRIGGER = -1; // Not supported
+    private static final int AXIS_RIGHT_STICK_X = 2;
+    private static final int AXIS_RIGHT_STICK_Y = 3;
 
-    public XboxController(int id) {
+    public LogitechController(int id) {
         super(
             id,
             ID_A,
