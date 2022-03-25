@@ -19,25 +19,11 @@ public final class ShuffleBoard {
 
     public static final ShuffleboardTab statusTab = Shuffleboard.getTab("Status");
         private static final ShuffleboardLayout valueDisplay = statusTab.getLayout("valueDisplay", BuiltInLayouts.kList);
-            private static final NetworkTableEntry valueDisplayEntry = valueDisplay.add("Value Display", "").getEntry();
 
-    private static final Map<String, Object> values = new LinkedHashMap<>();
+    public static void show(String key, Object value) {
+        String str = String.valueOf(value);
 
-    public static void show(String name, Object value) {
-        values.put(name, value);
-        updateValueDisplay();
-    }
-
-    private static void updateValueDisplay() {
-        StringBuilder builder = new StringBuilder();
-
-        for (Map.Entry<String, Object> entry : values.entrySet()) {
-            builder.append(entry.getKey());
-            builder.append(": ");
-            builder.append(entry.getValue());
-            builder.append("\n");
-        }
-
-        valueDisplayEntry.setString(builder.toString());
+        NetworkTableEntry entry = valueDisplay.add(key, str).getEntry();
+        entry.setString(str);
     }
 }
