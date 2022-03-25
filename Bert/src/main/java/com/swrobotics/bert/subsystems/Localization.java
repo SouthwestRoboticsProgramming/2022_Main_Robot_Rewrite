@@ -5,6 +5,7 @@ import com.swrobotics.bert.subsystems.camera.CameraTurret;
 import com.swrobotics.bert.subsystems.camera.Cameras;
 import com.swrobotics.bert.subsystems.drive.SwerveDrive;
 import com.swrobotics.bert.util.Utils;
+import com.swrobotics.messenger.client.MessengerClient;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
@@ -15,11 +16,24 @@ public class Localization implements Subsystem {
     private final CameraTurret turret;
     private double fieldX, fieldY;
 
-    public Localization(AHRS gyro, SwerveDrive drive, Cameras cameras, CameraTurret turret) {
+    public Localization(AHRS gyro, SwerveDrive drive, Cameras cameras, CameraTurret turret, MessengerClient msg) {
         this.gyro = gyro;
         this.drive = drive;
         this.cameras = cameras;
         this.turret = turret;
+
+        // TODO: Remove this once we get absolute localization with cameras
+        if (msg != null) {
+            msg.makeHandler()
+                    .listen("Config:SetLocation")
+                    .setHandler((type, in) -> {
+                        fieldX = in.readDouble(); // x in meters
+                        fieldY = in.readDouble(); // y in meters
+                        drive.calibrateOdometry(fieldX, fieldY);
+
+                        // gyro not settable yet
+                    });
+        }
     }
 
     public double getFieldX() {

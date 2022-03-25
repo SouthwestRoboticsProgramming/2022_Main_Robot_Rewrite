@@ -94,7 +94,7 @@ public final class Robot extends RobotBase {
         CameraTurret cameraTurret = new CameraTurret();
         CameraTurretController cameraTurretController = new CameraTurretController(input, cameraTurret);
         Cameras cameras = new Cameras();
-        Localization localization = new Localization(gyro, swerveDrive, cameras, cameraTurret);
+        Localization localization = new Localization(gyro, swerveDrive, cameras, cameraTurret, msg);
         Intake intake = new Intake();
         IntakeController intakeController = new IntakeController(input, intake);
 //        BallDetector ballDetector = new BallDetector();

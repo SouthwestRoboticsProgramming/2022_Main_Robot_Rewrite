@@ -77,15 +77,7 @@ public final class FieldViewer extends PApplet {
         strokeWeight(10);
         stroke(255);
         point(fieldX, fieldY);
-
-//        msg.builder("RoboRIO:Location")
-//                .addDouble(rx)
-//                .addDouble(ry)
-//                .addDouble(0)
-//                .send();
     }
-
-    private double rx, ry;
 
     @Override
     public void mousePressed() {
@@ -98,8 +90,10 @@ public final class FieldViewer extends PApplet {
                     .addDouble(fieldY)
                     .send();
         } else if (mouseButton == RIGHT) {
-            rx = fieldX;
-            ry = fieldY;
+            msg.builder("Config:SetLocation")
+                    .addDouble(fieldX)
+                    .addDouble(fieldY)
+                    .send();
         }
     }
 
