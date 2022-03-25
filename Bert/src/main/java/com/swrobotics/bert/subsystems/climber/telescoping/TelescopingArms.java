@@ -10,12 +10,12 @@ public final class TelescopingArms {
         left = new TelescopingArm(
             TELESCOPING_LEFT_MOTOR_ID_ONE,
             TELESCOPING_LEFT_MOTOR_ID_TWO,
-            true
+            false
         );
         right = new TelescopingArm(
             TELESCOPING_RIGHT_MOTOR_ID_ONE,
             TELESCOPING_RIGHT_MOTOR_ID_TWO,
-            false
+            true
         );
     }
 

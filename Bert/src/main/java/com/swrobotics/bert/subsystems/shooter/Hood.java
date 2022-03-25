@@ -32,6 +32,7 @@ public final class Hood implements Subsystem {
 //        hood.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 
         hood = new TalonSRX(HOOD_ID);
+        hood.configFactoryDefault();
         TalonSRXConfiguration hoodConfig = new TalonSRXConfiguration();
         hoodConfig.neutralDeadband = 0.001;
         hoodConfig.slot0.kP = HOOD_KP.get();
@@ -41,8 +42,9 @@ public final class Hood implements Subsystem {
         hoodConfig.openloopRamp = 0.5;
         hoodConfig.closedloopRamp = 0.5;
         hood.configAllSettings(hoodConfig);
-        hood.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        hood.setInverted(true);
+        hood.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        hood.setSensorPhase(true);
+        // hood.setInverted(true);
 
         limitSwitch = new DigitalInput(HOOD_LIMIT_ID);
 
@@ -64,30 +66,30 @@ public final class Hood implements Subsystem {
 
     @Override
     public void robotPeriodic() {
-        if (isCalibrating) {
-            System.out.println("it is calibrating");
-            hood.set(TalonSRXControlMode.PercentOutput, HOOD_CALIBRATE_SPEED.get());
+        // if (isCalibrating) {
+        //     System.out.println("it is calibrating");
+        //     hood.set(TalonSRXControlMode.PercentOutput, HOOD_CALIBRATE_SPEED.get());
 
-            if (limitSwitch.get()) {
-                isCalibrating = false;
-                hood.setSelectedSensorPosition(0);
-            }
-        } else {
-            hood.set(TalonSRXControlMode.Position, targetPosition);
-        }
+        //     if (limitSwitch.get()) {
+        //         isCalibrating = false;
+        //         hood.setSelectedSensorPosition(0);
+        //     }
+        // } else {
+        //     hood.set(TalonSRXControlMode.Position, targetPosition);
+        // }
 
-        System.out.println("Encoder: " + hood.getSelectedSensorPosition() + ", Limit: " + limitSwitch.get() + ", calibrating: " + isCalibrating);
+//        System.out.println("Encoder: " + hood.getSelectedSensorPosition() + ", Limit: " + limitSwitch.get() + ", calibrating: " + isCalibrating);
     }
 
     public void setPosition(double position) {
-        position = Utils.clamp(position, 0, 3);
+//         position = Utils.clamp(position, 0, 3);
 
-//        if (position == 0) {
-//            calibrate();
-//            return;
-//        }
+// //        if (position == 0) {
+// //            calibrate();
+// //            return;
+// //        }
 
-        targetPosition = Utils.map(position, 0, 3, HOOD_LOWEST_TICKS.get(), HOOD_HIGHEST_TICKS.get());
+//         targetPosition = Utils.map(position, 0, 3, HOOD_LOWEST_TICKS.get(), HOOD_HIGHEST_TICKS.get());
     }
 
     public void calibrate() {

@@ -48,10 +48,10 @@ public final class DriveConstants {
 
     // Device IDs and offsets
     public static final SwerveModuleInfo[] SWERVE_INFO = {
-        new SwerveModuleInfo(1 /*Drive*/, 3 /*Cancoder*/, -134.297 - 269.91 /*Offset*/), // Module 1
-        new SwerveModuleInfo(4 /*Drive*/, 6 /*Cancoder*/, -129.375 - 89.91 - 180 /*Offset*/), // Module 2
-        new SwerveModuleInfo(7 /*Drive*/, 9 /*Cancoder*/, -77.344 - 92.55 - 180 /*Offset*/), // Module 3
-        new SwerveModuleInfo(10 /*Drive*/, 12 /*Cancoder*/, 89.318 - 92.64 - 180 /*Offset*/), // Module 4
+        new SwerveModuleInfo(1 /*Drive*/, 3 /*Cancoder*/, -44.473 /*Offset*/), // Module 1
+        new SwerveModuleInfo(4 /*Drive*/, 6 /*Cancoder*/, -219.199 + 180 /*Offset*/), // Module 2
+        new SwerveModuleInfo(7 /*Drive*/, 9 /*Cancoder*/, -170.332 + 180 /*Offset*/), // Module 3
+        new SwerveModuleInfo(10 /*Drive*/, 12 /*Cancoder*/, -182.900 /*Offset*/), // Module 4
         new SwerveModuleInfo(13 /*Drive*/, 15 /*Cancoder*/, 0 /*Offset*/), // Module 5
     };
 

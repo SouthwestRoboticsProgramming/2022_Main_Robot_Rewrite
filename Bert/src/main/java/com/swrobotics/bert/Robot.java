@@ -11,6 +11,7 @@ import com.swrobotics.bert.profiler.Profiler;
 import com.swrobotics.bert.shuffle.ShuffleBoard;
 import com.swrobotics.bert.subsystems.Lights;
 import com.swrobotics.bert.subsystems.Localization;
+import com.swrobotics.bert.subsystems.Pathfinding;
 import com.swrobotics.bert.subsystems.camera.CameraTurret;
 import com.swrobotics.bert.subsystems.camera.CameraTurretController;
 import com.swrobotics.bert.subsystems.camera.Cameras;
@@ -97,12 +98,12 @@ public final class Robot extends RobotBase {
         Localization localization = new Localization(gyro, swerveDrive, cameras, cameraTurret, msg);
         Intake intake = new Intake();
         IntakeController intakeController = new IntakeController(input, intake);
-//        BallDetector ballDetector = new BallDetector();
-//        Hopper hopper = new Hopper(ballDetector, input);
-//        Flywheel flywheel = new Flywheel();
-//        Hood hood = new Hood();
-//        ShooterController shooterController = new ShooterController(input, hopper, flywheel, hood);
-//        Climber climber = new Climber(input);
+        BallDetector ballDetector = new BallDetector();
+        Hopper hopper = new Hopper(ballDetector, input);
+        Flywheel flywheel = new Flywheel();
+        Hood hood = new Hood();
+        ShooterController shooterController = new ShooterController(input, hopper, flywheel, hood);
+        Climber climber = new Climber(input);
         // Don't add ClimberController here, it is added after reset
         Lights lights = new Lights();
 
@@ -115,16 +116,18 @@ public final class Robot extends RobotBase {
         Scheduler.get().addSubsystem(localization);
         Scheduler.get().addSubsystem(intake);
         Scheduler.get().addSubsystem(intakeController);
-//        Scheduler.get().addSubsystem(ballDetector);
-//        Scheduler.get().addSubsystem(hopper);
-//        Scheduler.get().addSubsystem(flywheel);
-//        Scheduler.get().addSubsystem(hood);
-//        Scheduler.get().addSubsystem(shooterController);
-//        Scheduler.get().addSubsystem(climber);
+        Scheduler.get().addSubsystem(ballDetector);
+        Scheduler.get().addSubsystem(hopper);
+        Scheduler.get().addSubsystem(flywheel);
+        Scheduler.get().addSubsystem(hood);
+        Scheduler.get().addSubsystem(shooterController);
+        Scheduler.get().addSubsystem(climber);
         Scheduler.get().addSubsystem(lights);
 
         if (msg != null) {
             Scheduler.get().addCommand(new PublishLocalizationCommand(msg, localization));
+            Pathfinding pathfinding = new Pathfinding(swerveDriveController, localization, input, msg);
+            Scheduler.get().addSubsystem(pathfinding);
         }
     }
 

@@ -12,7 +12,7 @@ public class Input implements Subsystem {
 
     public Input() {
         drive = new XboxController(DRIVE_CONTROLLER_ID);
-        manipulator = new LogitechController(MANIPULATOR_CONTROLLER_ID);
+        manipulator = new XboxController(MANIPULATOR_CONTROLLER_ID);
     }
 
     /* Drive */
@@ -80,6 +80,10 @@ public class Input implements Subsystem {
             return 180;
         else
             return 90;
+    }
+
+    public boolean getFollowPath() {
+        return manipulator.start.isPressed();
     }
 
     @Override
