@@ -223,9 +223,10 @@ public final class TaskManagerAPI {
     private void handleTaskRunning(DataInputStream in) throws IOException {
         String task = in.readUTF();
         Set<CompletableFuture<Boolean>> futures = taskRunningFutures.get(task);
+        boolean running = in.readBoolean();
         if (futures != null) {
             for (CompletableFuture<Boolean> future : futures) {
-                future.complete(in.readBoolean());
+                future.complete(running);
             }
         }
         taskRunningFutures.remove(task);
@@ -234,10 +235,12 @@ public final class TaskManagerAPI {
     private void handleTaskExists(DataInputStream in) throws IOException {
         String task = in.readUTF();
 
+        boolean exists = in.readBoolean();
+
         Set<CompletableFuture<Boolean>> futures = taskExistsFutures.get(task);
         if (futures != null) {
             for (CompletableFuture<Boolean> future : futures) {
-                future.complete(in.readBoolean());
+                future.complete(exists);
             }
         }
 
