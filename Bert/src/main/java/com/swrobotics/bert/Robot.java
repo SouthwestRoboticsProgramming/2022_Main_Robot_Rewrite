@@ -97,11 +97,11 @@ public final class Robot extends RobotBase {
         Localization localization = new Localization(gyro, swerveDrive, cameras, cameraTurret);
         Intake intake = new Intake();
         IntakeController intakeController = new IntakeController(input, intake);
-//        BallDetector ballDetector = new BallDetector();
-//        Hopper hopper = new Hopper(ballDetector, input);
-//        Flywheel flywheel = new Flywheel();
-//        Hood hood = new Hood();
-//        ShooterController shooterController = new ShooterController(input, hopper, flywheel, hood);
+       BallDetector ballDetector = new BallDetector();
+       Hopper hopper = new Hopper(ballDetector, input);
+       Flywheel flywheel = new Flywheel();
+       Hood hood = new Hood();
+       ShooterController shooterController = new ShooterController(input, hopper, flywheel, hood);
 //        Climber climber = new Climber(input);
         // Don't add ClimberController here, it is added after reset
         Lights lights = new Lights();
@@ -115,11 +115,11 @@ public final class Robot extends RobotBase {
         Scheduler.get().addSubsystem(localization);
         Scheduler.get().addSubsystem(intake);
         Scheduler.get().addSubsystem(intakeController);
-//        Scheduler.get().addSubsystem(ballDetector);
-//        Scheduler.get().addSubsystem(hopper);
-//        Scheduler.get().addSubsystem(flywheel);
-//        Scheduler.get().addSubsystem(hood);
-//        Scheduler.get().addSubsystem(shooterController);
+       Scheduler.get().addSubsystem(ballDetector);
+       Scheduler.get().addSubsystem(hopper);
+       Scheduler.get().addSubsystem(flywheel);
+       Scheduler.get().addSubsystem(hood);
+       Scheduler.get().addSubsystem(shooterController);
 //        Scheduler.get().addSubsystem(climber);
         Scheduler.get().addSubsystem(lights);
 

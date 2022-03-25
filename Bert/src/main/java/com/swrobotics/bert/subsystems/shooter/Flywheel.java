@@ -38,9 +38,11 @@ public class Flywheel implements Subsystem {
       flywheel.setIntegralAccumulator(0);
   }
 
+
   @Override
   public void robotPeriodic() {
     // flywheel.set(TalonFXControlMode.PercentOutput, 1);
+    System.out.println(flywheel.getTemperature());
   }
 
   public void setFlywheelSpeed(double rpm) {

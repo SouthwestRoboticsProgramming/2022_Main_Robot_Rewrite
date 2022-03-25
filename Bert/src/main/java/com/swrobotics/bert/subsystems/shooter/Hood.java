@@ -76,7 +76,7 @@ public final class Hood implements Subsystem {
             hood.set(TalonSRXControlMode.Position, targetPosition);
         }
 
-        System.out.println("Encoder: " + hood.getSelectedSensorPosition() + ", Limit: " + limitSwitch.get() + ", calibrating: " + isCalibrating);
+        // System.out.println("Encoder: " + hood.getSelectedSensorPosition() + ", Limit: " + limitSwitch.get() + ", calibrating: " + isCalibrating);
     }
 
     public void setPosition(double position) {
