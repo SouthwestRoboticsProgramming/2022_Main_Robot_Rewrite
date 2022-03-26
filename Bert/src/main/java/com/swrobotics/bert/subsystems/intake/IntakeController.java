@@ -15,7 +15,7 @@ public class IntakeController implements Subsystem {
     @Override
     public void teleopPeriodic() {
         if (input.getToggleIntake()) {
-            intake.setRunning(!intake.isRunning());
+            intake.setState(intake.getState() != Intake.State.OFF ? Intake.State.ON : Intake.State.OFF);
         }
     }
 }

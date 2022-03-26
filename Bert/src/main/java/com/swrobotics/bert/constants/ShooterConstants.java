@@ -23,6 +23,7 @@ public final class ShooterConstants {
         public static final TunableDouble INDEX_KICKBACK_TIME = INDEX.getDouble("Kickback Time", 0.25);
         public static final TunableDouble INDEX_SHOOT_SPEED = INDEX.getDouble("Shoot Speed", -1200);
         public static final TunableDouble INDEX_SHOOT_TIME = INDEX.getDouble("Shoot Time", 1);
+        public static final TunableDouble INDEX_EJECT_SPEED = INDEX.getDouble("Eject Speed", 10000);
 
         public static final TunableDouble INDEX_KP = INDEX.getDouble("kP", 0.017);
         public static final TunableDouble INDEX_KI = INDEX.getDouble("kI", 0);

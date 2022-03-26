@@ -2,6 +2,7 @@ package com.swrobotics.bert.subsystems.intake;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.swrobotics.bert.shuffle.TunableDouble;
 import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.util.TalonFXBuilder;
 
@@ -10,8 +11,24 @@ import static com.swrobotics.bert.constants.IntakeConstants.*;
 import static com.swrobotics.bert.constants.DriveConstants.TALON_FX_NATIVE_SENSOR_UNITS_PER_ROTATION;
 
 public class Intake implements Subsystem {
+    public enum State {
+        ON(INTAKE_SPEED),
+        OFF(IDLE_SPEED),
+        EJECT(EJECT_SPEED);
+
+        private final TunableDouble speed;
+
+        State(TunableDouble speed) {
+            this.speed = speed;
+        }
+
+        public double getSpeed() {
+            return speed.get();
+        }
+    }
+
     private final TalonFX motor;
-    private boolean running;
+    private State state;
 
     public Intake() {
         motor = new TalonFXBuilder(INTAKE_MOTOR_ID)
@@ -25,7 +42,7 @@ public class Intake implements Subsystem {
                 .build();
 
         motor.set(ControlMode.PercentOutput, 0);
-        running = false;
+        state = State.OFF;
 
         INTAKE_KP.onChange(this::updatePID);
         INTAKE_KI.onChange(this::updatePID);
@@ -41,18 +58,16 @@ public class Intake implements Subsystem {
         motor.config_kF(0, INTAKE_KF.get());
     }
 
-    public boolean isRunning() {
-        return running;
+    public State getState() {
+        return state;
     }
 
-    public void setRunning(boolean running) {
-        System.out.println("Setting run state: " + (running ? "RUNNING" : "STOP"));
+    public void setState(State state) {
+        System.out.println("Setting run state: " + state);
 
-        if (running && !this.running) {
-            motor.set(ControlMode.Velocity, INTAKE_SPEED.get() * TALON_FX_NATIVE_SENSOR_UNITS_PER_ROTATION);
-        } else if (!running && this.running) {
-            motor.set(ControlMode.Velocity, 0);
+        if (state != this.state) {
+            motor.set(ControlMode.Velocity, state.getSpeed() * TALON_FX_NATIVE_SENSOR_UNITS_PER_ROTATION);
         }
-        this.running = running;
+        this.state = state;
     }
 }
