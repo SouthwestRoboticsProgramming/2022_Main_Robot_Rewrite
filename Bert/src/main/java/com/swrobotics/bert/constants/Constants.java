@@ -8,7 +8,7 @@ public final class Constants {
 
     public static final int FX_SENSOR_PER_ROT = 2048;
     // Rotations per minute -> native sensor ticks per 100ms
-    public static final double RPM_TO_FX_VELOCITY = FX_SENSOR_PER_ROT / 600;
+    public static final double RPM_TO_FX_VELOCITY = FX_SENSOR_PER_ROT / 600.0;
 
     private Constants() {
         throw new AssertionError();
