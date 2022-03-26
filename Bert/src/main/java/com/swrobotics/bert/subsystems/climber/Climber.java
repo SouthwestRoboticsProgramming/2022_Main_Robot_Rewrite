@@ -20,6 +20,7 @@ public final class Climber implements Subsystem {
 
     public void setTargetState(ClimberState state) {
         telescoping.setTargetDistancePercent(state.getTelescopingDistance());
+        telescoping.setLoaded(state.isLoaded());
         rotating.setTargetAngleDegrees(state.getRotatingAngle());
     }
 
@@ -31,6 +32,10 @@ public final class Climber implements Subsystem {
     public void zero() {
         telescoping.zero();
         rotating.zero();
+    }
+
+    public boolean isInTolarence() {
+        return telescoping.isInTolarence() && rotating.isInTolarence();
     }
 
     @Override

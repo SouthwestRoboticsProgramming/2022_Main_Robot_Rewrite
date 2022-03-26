@@ -170,13 +170,24 @@ public class SwerveDrive implements Subsystem {
         SwerveModuleState[] realStates = {frontLeft.getRealState(), frontRight.getRealState(), backRight.getRealState(), backLeft.getRealState()};
         odometry.updateWithTime(System.currentTimeMillis() / 1000.0, gyro.getRotation2d(), realStates);
 
-        // System.out.printf(
-        //     "CANCoders: %3.3f %3.3f %3.3f %3.3f %n",
-        //     frontLeft.getCANCoderAngle(),
-        //     frontRight.getCANCoderAngle(),
-        //     backRight.getCANCoderAngle(),
-        //     backLeft.getCANCoderAngle()
-        // );
+        // System.out.println(gyro.getRotation2d().getDegrees());
+
+//        StringBuilder builder = new StringBuilder("States: ");
+//        for (int i = 0; i < realStates.length; i++) {
+//            builder.append(i);
+//            builder.append(": ");
+//            builder.append(realStates[i]);
+//            builder.append(" ");
+//        }
+//        System.out.println(builder.toString());
+
+//         System.out.printf(
+//             "CANCoders: %3.3f %3.3f %3.3f %3.3f %n",
+//             frontLeft.getCANCoderAngle(),
+//             frontRight.getCANCoderAngle(),
+//             backRight.getCANCoderAngle(),
+//             backLeft.getCANCoderAngle()
+//         );
 
         //System.out.print(frontLeft);
     }

@@ -15,13 +15,15 @@ public final class TelescopingArm {
     private final CANSparkMax motor2;
     private final RelativeEncoder encoder;
     private final PIDController pid;
+    private final String name;
 
     private boolean manualMoving;
     private boolean loaded;
     private double kF;
     private double target;
 
-    public TelescopingArm(int motor1ID, int motor2ID, boolean inverted) {
+    public TelescopingArm(int motor1ID, int motor2ID, boolean inverted, String name) {
+        this.name = name;
         motor1 = new CANSparkMax(motor1ID, MotorType.kBrushless);
         motor1.restoreFactoryDefaults();
         motor1.setIdleMode(IdleMode.kBrake);
@@ -82,6 +84,17 @@ public final class TelescopingArm {
         target = percentOutput;
     }
 
+    public boolean isInTolarence() {
+        double offset = Math.abs((Math.abs(target) - Math.abs((Utils.map(encoder.getPosition(), TELESCOPING_MIN_TICKS.get(), TELESCOPING_MAX_TICKS.get(), 0, 1)))));
+        boolean inTolarence = TELESCOPING_TOLERANCE.get() > offset;
+        if (inTolarence) {
+            return true;
+        } else {
+            System.out.println(name + " not in tolarence with offset of " + offset);
+            return false;
+        }
+    }
+
     public void zero() {
         encoder.setPosition(0);
     }
@@ -92,9 +105,13 @@ public final class TelescopingArm {
             percentOut = target;
         } else {
             double targetTicks = Utils.map(target, 0, 1, TELESCOPING_MIN_TICKS.get(), TELESCOPING_MAX_TICKS.get());
-            double pidOut = pid.calculate(encoder.getPosition(), targetTicks);
+            double pidOut = pid.calculate(encoder.getPosition(), targetTicks) + kF;
 
-            percentOut = Utils.clamp(pidOut, -0.5, 0.5) + kF;
+            if (loaded) {
+                percentOut = Utils.clamp(pidOut, -TELESCOPING_MAX_LOADED_PERCENT.get(), TELESCOPING_MAX_LOADED_PERCENT.get());
+            } else {
+                percentOut = Utils.clamp(pidOut, -TELESCOPING_MAX_UNLOADED_PERCENT.get(), TELESCOPING_MAX_UNLOADED_PERCENT.get());
+            }
         }
         motor1.set(percentOut);
         motor2.set(percentOut);

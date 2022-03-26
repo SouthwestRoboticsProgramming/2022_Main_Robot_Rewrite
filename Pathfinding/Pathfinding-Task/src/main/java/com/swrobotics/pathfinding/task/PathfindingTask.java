@@ -43,7 +43,7 @@ public final class PathfindingTask {
             config.setProperty("host", "localhost");
             config.setProperty("port", "5805");
             config.setProperty("name", "Pathfinder");
-            config.setProperty("agentRadius", "5.89");
+            config.setProperty("agentRadius", "2.94");
             config.setProperty("collisionPadding", "1");
             try {
                 config.store(new FileWriter(CONFIG_FILE), "Configuration for Pathfinder");
@@ -168,6 +168,7 @@ public final class PathfindingTask {
                             }
 
                             finalMsg.sendMessage(OUT_SCENE_DATA, b.toByteArray());
+                            break;
                         }
                         case IN_LIDAR_POINT: {
                             int quality = in.readInt();
@@ -179,6 +180,7 @@ public final class PathfindingTask {
 
                             lidarGrid.addLidarPoint(cx, cy);
                             lidarPoints.add(new LidarPoint(cx, cy, System.currentTimeMillis()));
+                            break;
                         }
                     }
                 });

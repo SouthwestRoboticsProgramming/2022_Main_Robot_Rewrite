@@ -10,12 +10,14 @@ public final class TelescopingArms {
         left = new TelescopingArm(
             TELESCOPING_LEFT_MOTOR_ID_ONE,
             TELESCOPING_LEFT_MOTOR_ID_TWO,
-            true
+            true,
+            "Left Tele"
         );
         right = new TelescopingArm(
             TELESCOPING_RIGHT_MOTOR_ID_ONE,
             TELESCOPING_RIGHT_MOTOR_ID_TWO,
-            false
+            false,
+            "Right Tele"
         );
     }
 
@@ -32,6 +34,10 @@ public final class TelescopingArms {
     public void setLoaded(boolean loaded) {
         left.setLoaded(loaded);
         right.setLoaded(loaded);
+    }
+
+    public boolean isInTolarence() {
+        return left.isInTolarence() && right.isInTolarence();
     }
 
     public void zero() {

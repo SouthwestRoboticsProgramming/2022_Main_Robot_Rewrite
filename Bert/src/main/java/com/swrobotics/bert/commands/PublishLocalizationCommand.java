@@ -24,7 +24,7 @@ public final class PublishLocalizationCommand implements Command {
         msg.builder(LOCALIZATION_MSG)
                 .addDouble(loc.getFieldX())
                 .addDouble(loc.getFieldY())
-                .addDouble(loc.getFieldRot().getDegrees())
+                .addDouble(-loc.getFieldRot().getDegrees())
                 .send();
 
         return false;

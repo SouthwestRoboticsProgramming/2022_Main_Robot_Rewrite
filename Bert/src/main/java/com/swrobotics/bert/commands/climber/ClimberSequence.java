@@ -13,13 +13,21 @@ public final class ClimberSequence extends CommandSequence {
         this.input = input;
 
         // append(new ClimberStep(tele, rot, loaded));
-        append(new ClimberStep(climber, CLIMB_STEP_1_TELE.get(), CLIMB_STEP_1_ROT.get(), false)); // Arms up
-        append(new ClimberStep(climber, CLIMB_STEP_2_TELE.get(), CLIMB_STEP_1_ROT.get(), true)); // Pull up
-        append(new ClimberStep(climber, CLIMB_STEP_2_TELE.get(), CLIMB_STEP_3_ROT.get(), true)); // Snap in
-        append(new ClimberStep(climber, CLIMB_STEP_4_TELE.get(), CLIMB_STEP_3_ROT.get(), true)); // Release tele
-        append(new ClimberStep(climber, CLIMB_STEP_4_TELE.get(), CLIMB_STEP_5_ROT.get(), true)); // Big swing
-        append(new ClimberStep(climber, CLIMB_STEP_6_TELE.get(), CLIMB_STEP_5_ROT.get(), true)); // Extend to third
-        append(new ClimberStep(climber, CLIMB_STEP_6_TELE.get(), CLIMB_STEP_7_ROT.get(), true)); // Third bar compression
+        append(new ClimberStep(input, climber, CLIMB_STEP_1_TELE, CLIMB_STEP_1_ROT, false)); // 1:Base
+        append(new ClimberStep(input, climber, CLIMB_STEP_1_5_TELE, CLIMB_STEP_1_ROT, false)); // 1.5:Arms up
+        append(new ClimberStep(input, climber, CLIMB_STEP_2_TELE, CLIMB_STEP_1_ROT, true)); // 2:Pull up
+        append(new ClimberStep(input, climber, CLIMB_STEP_2_TELE, CLIMB_STEP_3_ROT, true)); // 3:Lock in
+        append(new ClimberStep(input, climber, CLIMB_STEP_4_TELE, CLIMB_STEP_4_ROT, false)); // 4:Handoff
+        append(new ClimberStep(input, climber, CLIMB_STEP_5_TELE, CLIMB_STEP_4_ROT, false)); // 5:Extend to 3
+        append(new ClimberStep(input, climber, CLIMB_STEP_5_TELE, CLIMB_STEP_6_ROT, false)); // 6:Pressure on 3
+        append(new ClimberStep(input, climber, CLIMB_STEP_2_TELE, CLIMB_STEP_1_ROT, true)); // 2:Pull Up
+        append(new ClimberStep(input, climber, CLIMB_STEP_2_TELE, CLIMB_STEP_3_ROT, true)); // 3:Lock in
+        append(new ClimberStep(input, climber, CLIMB_STEP_4_TELE, CLIMB_STEP_4_ROT, false)); // 4:Handoff
+        append(new ClimberStep(input, climber, CLIMB_STEP_5_TELE, CLIMB_STEP_4_ROT, false)); // 5:Extend to 3
+        append(new ClimberStep(input, climber, CLIMB_STEP_5_TELE, CLIMB_STEP_6_ROT, false)); // 6:Pressure on 3
+        append(new ClimberStep(input, climber, CLIMB_STEP_2_TELE, CLIMB_STEP_1_ROT, true)); // 2:Pull Up
+        append(new ClimberStep(input, climber, CLIMB_STEP_2_TELE, CLIMB_STEP_3_ROT, true)); // 3:Lock in
+        // append(new ClimberStep(climber, CLIMB_STEP_6_TELE.get(), CLIMB_STEP_7_ROT.get(), true)); // 7:Pull up to 3
 
         // TODO: What happens after compression?
 
@@ -28,15 +36,15 @@ public final class ClimberSequence extends CommandSequence {
         // TODO: Finish steps
     }
 
-    @Override
-    public boolean run() {
-        if (input.getClimberNextStep()) {
-            next();
-        }
-        if (input.getClimberPreviousStep()) {
-            back();
-        }
+    // @Override
+    // public boolean run() {
+        // if (input.getClimberNextStep()) {
+        //     next();
+        // }
+        // if (input.getClimberPreviousStep()) {
+        //     back();
+        // }
 
-        return super.run();
-    }
+    //     return super.run();
+    // }
 }

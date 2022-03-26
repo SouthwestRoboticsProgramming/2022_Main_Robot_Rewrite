@@ -103,7 +103,7 @@ public class SwerveModule {
     }
 
     public SwerveModuleState getRealState() {
-        return new SwerveModuleState(drive.getSelectedSensorVelocity() / DRIVE_SPEED_TO_NATIVE_VELOCITY, Rotation2d.fromDegrees(turn.getSelectedSensorPosition()));
+        return new SwerveModuleState(drive.getSelectedSensorVelocity() / DRIVE_SPEED_TO_NATIVE_VELOCITY, Rotation2d.fromDegrees(canCoder.getAbsolutePosition()));
     }
 
     private double fixCurrentAngle(double degreesAngle) {
