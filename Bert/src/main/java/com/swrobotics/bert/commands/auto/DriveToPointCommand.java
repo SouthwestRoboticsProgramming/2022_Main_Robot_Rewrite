@@ -1,27 +1,20 @@
 package com.swrobotics.bert.commands.auto;
 
 import com.swrobotics.bert.commands.Command;
-import com.swrobotics.bert.commands.auto.path.Point;
-import com.swrobotics.bert.subsystems.Localization;
-import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
+import com.swrobotics.bert.subsystems.auto.Pathfinding;
+import com.swrobotics.messenger.client.MessengerClient;
 
-public class DriveToPointCommand implements Command {
-    private final SwerveDriveController drive;
-    private final Localization loc;
-    private final Point target;
+public final class DriveToPointCommand implements Command {
+    private final MessengerClient msg;
+    private final Pathfinding pathfinder;
+    private final double x;
+    private final double y;
 
-    public DriveToPointCommand(SwerveDriveController drive, Localization loc, Point target) {
-        this.drive = drive;
-        this.loc = loc;
-        this.target = target;
-    }
-
-    private boolean atTarget() {
-        double deltaX = target.getX() - loc.getFieldX();
-        double deltaY = target.getY() - loc.getFieldY();
-        double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-        return distance < 0.20;
+    public DriveToPointCommand(MessengerClient msg, Pathfinding pathfinder, double x, double y) {
+        this.msg = msg;
+        this.pathfinder = pathfinder;
+        this.x = x;
+        this.y = y;
     }
 
     @Override
@@ -31,19 +24,12 @@ public class DriveToPointCommand implements Command {
 
     @Override
     public boolean run() {
-        double locX = loc.getFieldX();
-        double locY = loc.getFieldY();
+        msg.builder("Pathfinder:SetTarget")
+                .addDouble(x)
+                .addDouble(y)
+                .send();
 
-        double deltaX = target.getX() - locX;
-        double deltaY = target.getY() - locY;
-        double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-        deltaX /= distance;
-        deltaY /= distance;
-
-        deltaX *= 0.25;
-        deltaY *= 0.25;
-
-        return atTarget();
+        return pathfinder.isAtPathTarget();
     }
 
     @Override

@@ -57,6 +57,9 @@ public final class ShooterConstants {
     public static final int HOOD_ID = 41;
     public static final int HOOD_LIMIT_ID = 0;
 
+    public static final int HOOD_ENCODER_ID_1 = 8;
+    public static final int HOOD_ENCODER_ID_2 = 7;
+
     private ShooterConstants() {
         throw new AssertionError();
     }
