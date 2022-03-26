@@ -3,6 +3,7 @@ package com.swrobotics.bert.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 import com.swrobotics.bert.subsystems.camera.CameraTurret;
 import com.swrobotics.bert.subsystems.camera.Cameras;
+import com.swrobotics.bert.subsystems.camera.Limelight;
 import com.swrobotics.bert.subsystems.drive.SwerveDrive;
 import com.swrobotics.bert.util.Utils;
 import com.swrobotics.messenger.client.MessengerClient;
@@ -13,13 +14,15 @@ public final class Localization implements Subsystem {
     private final AHRS gyro;
     private final SwerveDrive drive;
     private final Cameras cameras;
+    private final Limelight limelight;
     private final CameraTurret turret;
     private double fieldX, fieldY;
 
-    public Localization(AHRS gyro, SwerveDrive drive, Cameras cameras, CameraTurret turret, MessengerClient msg) {
+    public Localization(AHRS gyro, SwerveDrive drive, Cameras cameras, Limelight limelight, CameraTurret turret, MessengerClient msg) {
         this.gyro = gyro;
         this.drive = drive;
         this.cameras = cameras;
+        this.limelight = limelight;
         this.turret = turret;
 
         // TODO: Remove this once we get absolute localization with cameras
@@ -50,10 +53,10 @@ public final class Localization implements Subsystem {
 
     @Override
     public void robotPeriodic() {
-        if (cameras.hubMeasurementsValid()) {
-            // TODO Ryan: Check if all the angle stuff is correct here
-            double visionAngle = Utils.normalizeRadians(turret.getAngle() + cameras.getHubAngle());
-            double visionDist = cameras.getHubDistance();
+        if (true) { // FIXME
+
+            double visionAngle = limelight.getXangle();
+            double visionDist = limelight.getDistance();
             double gyroAngle = gyro.getRotation2d().getDegrees();
 
             double angleDiff = visionAngle - gyroAngle;
