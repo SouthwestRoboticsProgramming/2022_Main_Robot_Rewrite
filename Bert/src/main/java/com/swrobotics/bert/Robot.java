@@ -17,6 +17,7 @@ import com.swrobotics.bert.subsystems.auto.Pathfinding;
 import com.swrobotics.bert.subsystems.camera.CameraTurret;
 import com.swrobotics.bert.subsystems.camera.CameraTurretController;
 import com.swrobotics.bert.subsystems.camera.Cameras;
+import com.swrobotics.bert.subsystems.camera.Limelight;
 import com.swrobotics.bert.subsystems.drive.SwerveDrive;
 import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
 import com.swrobotics.bert.subsystems.intake.Intake;
@@ -95,7 +96,8 @@ public final class Robot extends RobotBase {
         CameraTurret cameraTurret = new CameraTurret();
         CameraTurretController cameraTurretController = new CameraTurretController(input, cameraTurret);
         Cameras cameras = new Cameras();
-        Localization localization = new Localization(gyro, swerveDrive, cameras, cameraTurret, msg);
+        Limelight limelight = new Limelight();
+        Localization localization = new Localization(gyro, swerveDrive, limelight, msg);
         Intake intake = new Intake();
         IntakeController intakeController = new IntakeController(input, intake);
         BallDetector ballDetector = new BallDetector();

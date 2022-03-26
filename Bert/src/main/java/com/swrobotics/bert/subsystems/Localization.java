@@ -13,17 +13,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 public final class Localization implements Subsystem {
     private final AHRS gyro;
     private final SwerveDrive drive;
-    private final Cameras cameras;
     private final Limelight limelight;
-    private final CameraTurret turret;
     private double fieldX, fieldY;
 
-    public Localization(AHRS gyro, SwerveDrive drive, Cameras cameras, Limelight limelight, CameraTurret turret, MessengerClient msg) {
+    public Localization(AHRS gyro, SwerveDrive drive, Limelight limelight, MessengerClient msg) {
         this.gyro = gyro;
         this.drive = drive;
-        this.cameras = cameras;
         this.limelight = limelight;
-        this.turret = turret;
 
         // TODO: Remove this once we get absolute localization with cameras
         if (msg != null) {

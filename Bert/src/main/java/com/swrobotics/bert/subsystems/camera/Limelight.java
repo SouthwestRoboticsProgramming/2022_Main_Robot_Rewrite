@@ -7,9 +7,9 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 import static com.swrobotics.bert.constants.CameraConstants.*;
+import static com.swrobotics.bert.constants.Settings.LIMELIGHT_LIGHTS;
 
 public final class Limelight implements Subsystem {
-
     private final NetworkTableEntry xAngle;
     private final NetworkTableEntry yAngle;
     private final NetworkTableEntry targetArea;
@@ -27,6 +27,9 @@ public final class Limelight implements Subsystem {
         this.targetArea = table.getEntry("ta");
 
         this.lightsOn = table.getEntry("ledMode");
+
+        setLights(LIMELIGHT_LIGHTS.get());
+        LIMELIGHT_LIGHTS.onChange(() -> setLights(LIMELIGHT_LIGHTS.get()));
     }
 
     public double getXangle() {
@@ -47,7 +50,6 @@ public final class Limelight implements Subsystem {
 
 
     public double getDistance() {
-
         double heightDiff = TARGET_HEIGHT - LIMELIGHT_MOUNT_HEIGHT;
         double angle = LIMELIGHT_MOUNT_ANGLE + y;
 
