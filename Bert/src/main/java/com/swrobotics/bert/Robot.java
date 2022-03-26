@@ -11,6 +11,7 @@ import com.swrobotics.bert.profiler.Profiler;
 import com.swrobotics.bert.shuffle.ShuffleBoard;
 import com.swrobotics.bert.subsystems.Lights;
 import com.swrobotics.bert.subsystems.Localization;
+import com.swrobotics.bert.subsystems.PDP;
 import com.swrobotics.bert.subsystems.auto.Autonomous;
 import com.swrobotics.bert.subsystems.auto.Pathfinding;
 import com.swrobotics.bert.subsystems.camera.CameraTurret;
@@ -105,6 +106,7 @@ public final class Robot extends RobotBase {
 //        Climber climber = new Climber(input);
         // Don't add ClimberController here, it is added after reset
         Lights lights = new Lights();
+        PDP pdp = new PDP();
 
         Scheduler.get().addSubsystem(input);
         Scheduler.get().addSubsystem(swerveDrive);
@@ -122,6 +124,7 @@ public final class Robot extends RobotBase {
 //        Scheduler.get().addSubsystem(shooterController);
 //        Scheduler.get().addSubsystem(climber);
         Scheduler.get().addSubsystem(lights);
+        Scheduler.get().addSubsystem(pdp);
 
         Pathfinding pathfinding = null;
         if (msg != null) {
