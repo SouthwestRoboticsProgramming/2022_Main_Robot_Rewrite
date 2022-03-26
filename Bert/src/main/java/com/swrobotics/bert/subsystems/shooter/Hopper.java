@@ -52,7 +52,7 @@ public final class Hopper implements Subsystem {
     @Override
     public void robotPeriodic() {
         if (!shooting) {
-            if (true || !detector.isBallDetected() || input.getShoot()) {
+            if (!detector.isBallDetected() || input.getShoot()) {
                 index.set(TalonFXControlMode.Velocity, INDEX_IDLE_SPEED.get() * RPM_TO_FX_VELOCITY);
             } else {
                 index.set(TalonFXControlMode.Velocity, 0);

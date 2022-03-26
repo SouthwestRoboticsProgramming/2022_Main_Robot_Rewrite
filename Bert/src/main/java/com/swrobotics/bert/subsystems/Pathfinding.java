@@ -3,16 +3,21 @@ package com.swrobotics.bert.subsystems;
 import com.swrobotics.bert.commands.auto.path.Point;
 import com.swrobotics.bert.control.Input;
 import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
+import com.swrobotics.bert.util.Utils;
 import com.swrobotics.messenger.client.MessengerClient;
+import edu.wpi.first.math.controller.PIDController;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.swrobotics.bert.constants.AutonomousConstants.*;
 
 public class Pathfinding implements Subsystem {
     private final SwerveDriveController drive;
     private final Localization loc;
     private final Input input;
     private final List<Point> path;
+    private final PIDController pid;
 
     public Pathfinding(SwerveDriveController drive, Localization loc, Input input, MessengerClient msg) {
         this.drive = drive;
@@ -36,6 +41,24 @@ public class Pathfinding implements Subsystem {
                         }
                     }
                 });
+
+        pid = new PIDController(
+                PATH_KP.get(),
+                PATH_KI.get(),
+                PATH_KD.get()
+        );
+
+        PATH_KP.onChange(this::updatePID);
+        PATH_KI.onChange(this::updatePID);
+        PATH_KD.onChange(this::updatePID);
+    }
+
+    private void updatePID() {
+        pid.setPID(
+                PATH_KP.get(),
+                PATH_KI.get(),
+                PATH_KD.get()
+        );
     }
 
     @Override
@@ -54,7 +77,12 @@ public class Pathfinding implements Subsystem {
         deltaX /= distance;
         deltaY /= distance;
 
-        double speed = 1;
+        Point finalTarget = path.get(path.size() - 1);
+        double finalX = finalTarget.getX() - locX;
+        double finalY = finalTarget.getY() - locY;
+        double finalDistance = Math.sqrt(finalX * finalX + finalY * finalY);
+
+        double speed = Utils.clamp(-pid.calculate(finalDistance, 0), 0, 1);
 
         deltaX *= speed;
         deltaY *= speed;

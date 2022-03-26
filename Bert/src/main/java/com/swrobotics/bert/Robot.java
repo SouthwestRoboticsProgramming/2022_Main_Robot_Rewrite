@@ -103,7 +103,7 @@ public final class Robot extends RobotBase {
         Flywheel flywheel = new Flywheel();
         Hood hood = new Hood();
         ShooterController shooterController = new ShooterController(input, hopper, flywheel, hood);
-        Climber climber = new Climber(input);
+//        Climber climber = new Climber(input);
         // Don't add ClimberController here, it is added after reset
         Lights lights = new Lights();
 
@@ -121,7 +121,7 @@ public final class Robot extends RobotBase {
         Scheduler.get().addSubsystem(flywheel);
         Scheduler.get().addSubsystem(hood);
         Scheduler.get().addSubsystem(shooterController);
-        Scheduler.get().addSubsystem(climber);
+//        Scheduler.get().addSubsystem(climber);
         Scheduler.get().addSubsystem(lights);
 
         if (msg != null) {

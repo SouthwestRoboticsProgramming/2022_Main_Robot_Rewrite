@@ -39,6 +39,14 @@ public class SwerveDriveController implements Subsystem {
         isAuto = true;
     }
 
+    public void turnToAngle(double angle) {
+
+    }
+
+    public void turn(double amount) {
+
+    }
+
     @Override
     public void teleopPeriodic() {
         double driveXControl, driveYControl;
@@ -65,5 +73,7 @@ public class SwerveDriveController implements Subsystem {
             chassis = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeX, fieldRelativeY, rotation, gyroRotation); // Away velocity, left velocity, counter-clockwise speed, counter-clockwise gyro
             drive.update(chassis);
         }
+
+//        System.out.printf("Gyro: P: %3.3f Y: %3.3f R: %3.3f %n", gyro.getPitch(), gyro.getYaw(), gyro.getRoll());
     }
 }
