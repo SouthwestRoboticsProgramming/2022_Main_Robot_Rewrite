@@ -17,6 +17,7 @@ public final class ShuffleBoard {
     public static final ShuffleboardTab settingsTab = Shuffleboard.getTab("Settings");
     public static final ShuffleboardTab shooterTab  = Shuffleboard.getTab("Shooter");
     public static final ShuffleboardTab autoTab     = Shuffleboard.getTab("Auto");
+    public static final ShuffleboardTab cameraTab   = Shuffleboard.getTab("Camera");
 
     public static final ShuffleboardTab statusTab = Shuffleboard.getTab("Status");
         private static final ShuffleboardLayout valueDisplay = statusTab.getLayout("valueDisplay", BuiltInLayouts.kList);
