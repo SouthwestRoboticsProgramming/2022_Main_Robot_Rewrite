@@ -1,6 +1,6 @@
 package com.swrobotics.bert.subsystems.auto;
 
-public class Point {
+public final class Point {
     private final double x;
     private final double y;
 

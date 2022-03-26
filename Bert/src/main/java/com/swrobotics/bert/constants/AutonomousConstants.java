@@ -4,7 +4,7 @@ import com.swrobotics.bert.shuffle.ShuffleBoard;
 import com.swrobotics.bert.shuffle.TunableDouble;
 import com.swrobotics.bert.shuffle.TuneGroup;
 
-public class AutonomousConstants {
+public final class AutonomousConstants {
     private static final TuneGroup PID = new TuneGroup("PID", ShuffleBoard.autoTab);
         public static final TunableDouble PATH_KP = PID.getDouble("kP", 0);
         public static final TunableDouble PATH_KI = PID.getDouble("kI", 0);

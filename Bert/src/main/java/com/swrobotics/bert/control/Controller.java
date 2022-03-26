@@ -3,7 +3,7 @@ package com.swrobotics.bert.control;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
-public class Controller {
+public abstract class Controller {
     public static class Button {
         private final JoystickButton button;
 

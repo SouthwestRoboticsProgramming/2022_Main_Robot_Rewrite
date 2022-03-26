@@ -3,7 +3,7 @@ package com.swrobotics.bert.subsystems;
 import com.swrobotics.bert.control.Input;
 import edu.wpi.first.wpilibj.Servo;
 
-public class ServoTest implements Subsystem {
+public final class ServoTest implements Subsystem {
     private final Input input;
     private final Servo servo;
 

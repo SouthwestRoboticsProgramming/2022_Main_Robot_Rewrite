@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.Servo;
 
 import static com.swrobotics.bert.constants.CameraTurretConstants.*;
 
-public class CameraTurret implements Subsystem {
+public final class CameraTurret implements Subsystem {
     private final Servo servo;
     private double targetAngle;
     private double predictedAngle;

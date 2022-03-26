@@ -3,7 +3,7 @@ package com.swrobotics.bert.subsystems.intake;
 import com.swrobotics.bert.control.Input;
 import com.swrobotics.bert.subsystems.Subsystem;
 
-public class IntakeController implements Subsystem {
+public final class IntakeController implements Subsystem {
     private final Input input;
     private final Intake intake;
 

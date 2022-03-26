@@ -5,7 +5,7 @@ import static com.swrobotics.bert.constants.CameraConstants.*;
 
 // TODO Mason: implement this
 // No.
-public class Cameras implements Subsystem {
+public final class Cameras implements Subsystem {
     // Whether the hub measurements are accurate (i.e. hub is visible and not touching edge of frame)
     public boolean hubMeasurementsValid() {
         return false;

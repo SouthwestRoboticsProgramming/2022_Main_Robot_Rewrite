@@ -8,7 +8,7 @@ import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
 import com.swrobotics.messenger.client.MessengerClient;
 
-public class Autonomous implements Subsystem {
+public final class Autonomous implements Subsystem {
     private final SwerveDriveController drive;
     private final MessengerClient msg;
     private final Pathfinding path;

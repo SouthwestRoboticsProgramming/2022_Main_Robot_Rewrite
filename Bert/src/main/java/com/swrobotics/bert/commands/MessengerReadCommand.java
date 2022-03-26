@@ -2,7 +2,7 @@ package com.swrobotics.bert.commands;
 
 import com.swrobotics.messenger.client.MessengerClient;
 
-public class MessengerReadCommand implements Command {
+public final class MessengerReadCommand implements Command {
     private final MessengerClient msg;
 
     public MessengerReadCommand(MessengerClient msg) {

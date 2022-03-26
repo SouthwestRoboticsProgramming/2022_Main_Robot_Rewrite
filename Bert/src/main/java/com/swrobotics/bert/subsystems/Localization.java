@@ -9,7 +9,7 @@ import com.swrobotics.messenger.client.MessengerClient;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
-public class Localization implements Subsystem {
+public final class Localization implements Subsystem {
     private final AHRS gyro;
     private final SwerveDrive drive;
     private final Cameras cameras;

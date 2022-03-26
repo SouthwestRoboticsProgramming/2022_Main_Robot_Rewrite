@@ -1,6 +1,6 @@
 package com.swrobotics.bert.subsystems.drive;
 
-public class SwerveModuleInfo {
+public final class SwerveModuleInfo {
     private final int driveID;
     private final int cancoderID;
     private final double cancoderOffset;

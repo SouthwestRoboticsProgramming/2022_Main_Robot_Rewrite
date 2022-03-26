@@ -10,7 +10,7 @@ import static com.swrobotics.bert.constants.Constants.CANIVORE;
 import static com.swrobotics.bert.constants.IntakeConstants.*;
 import static com.swrobotics.bert.constants.DriveConstants.TALON_FX_NATIVE_SENSOR_UNITS_PER_ROTATION;
 
-public class Intake implements Subsystem {
+public final class Intake implements Subsystem {
     public enum State {
         ON(INTAKE_SPEED),
         OFF(IDLE_SPEED),

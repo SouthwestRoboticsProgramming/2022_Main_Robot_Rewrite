@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.Encoder;
 
 import static com.swrobotics.bert.constants.ShooterConstants.*;
 
-public class NewHood implements Subsystem {
+public final class NewHood implements Subsystem {
     private final Encoder encoder;
 
     public NewHood() {

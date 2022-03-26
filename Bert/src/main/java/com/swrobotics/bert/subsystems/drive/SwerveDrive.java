@@ -15,7 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 import static com.swrobotics.bert.constants.DriveConstants.*;
 
-public class SwerveDrive implements Subsystem {
+public final class SwerveDrive implements Subsystem {
     /*
      * Wheel Layout:
      * 

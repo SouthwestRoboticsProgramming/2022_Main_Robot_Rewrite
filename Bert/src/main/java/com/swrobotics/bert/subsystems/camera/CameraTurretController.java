@@ -3,7 +3,7 @@ package com.swrobotics.bert.subsystems.camera;
 import com.swrobotics.bert.control.Input;
 import com.swrobotics.bert.subsystems.Subsystem;
 
-public class CameraTurretController implements Subsystem {
+public final class CameraTurretController implements Subsystem {
     private final Input input;
     private final CameraTurret turret;
 

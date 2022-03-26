@@ -13,7 +13,7 @@ import java.util.List;
 
 import static com.swrobotics.bert.constants.AutonomousConstants.*;
 
-public class Pathfinding implements Subsystem {
+public final class Pathfinding implements Subsystem {
     private final SwerveDriveController drive;
     private final Localization loc;
     private final Input input;

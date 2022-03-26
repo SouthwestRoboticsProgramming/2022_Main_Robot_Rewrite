@@ -8,10 +8,10 @@ import com.swrobotics.bert.util.TalonFXBuilder;
 import static com.swrobotics.bert.constants.ShooterConstants.*;
 import static com.swrobotics.bert.constants.Constants.*;
 
-public class Flywheel implements Subsystem {
+public final class Flywheel implements Subsystem {
   private final TalonFX flywheel;
 
-  public Flywheel() {
+    public Flywheel() {
     flywheel = new TalonFXBuilder(FLYWHEEL_ID)
       .setCANBus(CANIVORE)
       .setPIDF(

@@ -6,7 +6,7 @@ import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.util.Utils;
 
 // Note: The Y axes on the sticks are backwards from what you would expect: up is negative
-public class Input implements Subsystem {
+public final class Input implements Subsystem {
     private final Controller drive;
     private final Controller manipulator;
 

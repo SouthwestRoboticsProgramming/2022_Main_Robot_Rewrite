@@ -3,7 +3,7 @@ package com.swrobotics.bert.shuffle;
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 
-public class TunableDoubleArray extends ShuffleBoardTunable<double[]> {
+public final class TunableDoubleArray extends ShuffleBoardTunable<double[]> {
     private final double[] defaultValues;
 
     public TunableDoubleArray(ShuffleboardLayout layout, String name, double... defaultValues) {

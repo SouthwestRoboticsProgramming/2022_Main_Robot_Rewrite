@@ -1,6 +1,6 @@
 package com.swrobotics.bert.control;
 
-public class LogitechController extends Controller {
+public final class LogitechController extends Controller {
     private static final int ID_A = 2;
     private static final int ID_B = 3;
     private static final int ID_X = 1;
