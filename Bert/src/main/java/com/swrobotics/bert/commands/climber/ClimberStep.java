@@ -31,11 +31,13 @@ public final class ClimberStep implements Command {
     public boolean run() {
         climber.setTargetState(new ClimberState(telePercent.get(), rotAngle.get(), loaded));
 
-        if (input.getClimberNextStep() && climber.isInTolarence()) {
-            return true;
-        } else {
-            return false;
-        }
+        return false;
+
+        // if (input.getClimberNextStep() && climber.isInTolarence()) {
+        //     return true;
+        // } else {
+        //     return false;
+        // }
     }
 
     @Override

@@ -8,9 +8,11 @@ import static com.swrobotics.bert.constants.ClimberConstants.*;
 
 public final class ClimberSequence extends CommandSequence {
     private final Input input;
+    private final Climber climber;
 
     public ClimberSequence(Climber climber, Input input) {
         this.input = input;
+        this.climber = climber;
 
         // append(new ClimberStep(tele, rot, loaded));
         append(new ClimberStep(input, climber, CLIMB_STEP_1_TELE, CLIMB_STEP_1_ROT, false)); // 1:Base
@@ -36,15 +38,15 @@ public final class ClimberSequence extends CommandSequence {
         // TODO: Finish steps
     }
 
-    // @Override
-    // public boolean run() {
-        // if (input.getClimberNextStep()) {
-        //     next();
-        // }
-        // if (input.getClimberPreviousStep()) {
-        //     back();
-        // }
+    @Override
+    public boolean run() {
+        if (input.getClimberNextStep() && climber.isInTolarence()) {
+            next();
+        }
+        if (input.getClimberPreviousStep()) {
+            back();
+        }
 
-    //     return super.run();
-    // }
+        return super.run();
+    }
 }

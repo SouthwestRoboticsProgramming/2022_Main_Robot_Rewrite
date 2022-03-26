@@ -53,8 +53,8 @@ public class SwerveModule {
             driveConfig.slot0.kI = DRIVE_KI.get();
             driveConfig.slot0.kD = DRIVE_KD.get();
             driveConfig.slot0.closedLoopPeakOutput = 1;
-            driveConfig.openloopRamp = 0.5;
-            driveConfig.closedloopRamp = 0.5;
+            // driveConfig.openloopRamp = 0.5;
+            // driveConfig.closedloopRamp = 0.5;
         }
         drive.configAllSettings(driveConfig);
         drive.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
