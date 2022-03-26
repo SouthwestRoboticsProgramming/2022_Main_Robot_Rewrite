@@ -43,13 +43,19 @@ public abstract class CommandSequence implements Command {
         }
     }
 
+    public void goTo(int index) {
+        this.index = index;
+    }
+
     @Override
     public boolean run() {
+        if (!running()) return true;
+
         if (cmds.get(index).run()) {
             next();
         }
 
-        return !running();
+        return false;
     }
 
     @Override
