@@ -27,6 +27,11 @@ public final class DriveConstants {
         public static final TunableDouble TURN_KI = PID.getDouble("Turn KI", 0.0);
         public static final TunableDouble TURN_KD = PID.getDouble("Turn KD", 0.0001);
 
+    private static final TuneGroup BODY_SPIN_PID = new TuneGroup("Body Spin PID", ShuffleBoard.driveTab);
+        public static final TunableDouble BODY_SPIN_KP = BODY_SPIN_PID.getDouble("kP", 0);
+        public static final TunableDouble BODY_SPIN_KI = BODY_SPIN_PID.getDouble("kI", 0);
+        public static final TunableDouble BODY_SPIN_KD = BODY_SPIN_PID.getDouble("kD", 0);
+
     private static final TuneGroup LERP = new TuneGroup("Lerp", ShuffleBoard.driveTab);
         public static final TunableDouble DRIVE_FULL_THRESHOLD = LERP.getDouble("Full Threshold", 10);
         public static final TunableDouble DRIVE_STOP_THRESHOLD = LERP.getDouble("Stop Threshold", 20);

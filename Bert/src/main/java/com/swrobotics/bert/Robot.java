@@ -11,12 +11,11 @@ import com.swrobotics.bert.profiler.Profiler;
 import com.swrobotics.bert.shuffle.ShuffleBoard;
 import com.swrobotics.bert.subsystems.Lights;
 import com.swrobotics.bert.subsystems.Localization;
-import com.swrobotics.bert.subsystems.Pathfinding;
+import com.swrobotics.bert.subsystems.auto.Autonomous;
+import com.swrobotics.bert.subsystems.auto.Pathfinding;
 import com.swrobotics.bert.subsystems.camera.CameraTurret;
 import com.swrobotics.bert.subsystems.camera.CameraTurretController;
 import com.swrobotics.bert.subsystems.camera.Cameras;
-import com.swrobotics.bert.subsystems.climber.Climber;
-import com.swrobotics.bert.subsystems.climber.ClimberController;
 import com.swrobotics.bert.subsystems.drive.SwerveDrive;
 import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
 import com.swrobotics.bert.subsystems.intake.Intake;
@@ -101,8 +100,8 @@ public final class Robot extends RobotBase {
         BallDetector ballDetector = new BallDetector();
         Hopper hopper = new Hopper(ballDetector, input);
         Flywheel flywheel = new Flywheel();
-        Hood hood = new Hood();
-        ShooterController shooterController = new ShooterController(input, hopper, flywheel, hood);
+        NewHood hood = new NewHood();
+//        ShooterController shooterController = new ShooterController(input, hopper, flywheel, hood);
 //        Climber climber = new Climber(input);
         // Don't add ClimberController here, it is added after reset
         Lights lights = new Lights();
@@ -120,15 +119,19 @@ public final class Robot extends RobotBase {
         Scheduler.get().addSubsystem(hopper);
         Scheduler.get().addSubsystem(flywheel);
         Scheduler.get().addSubsystem(hood);
-        Scheduler.get().addSubsystem(shooterController);
+//        Scheduler.get().addSubsystem(shooterController);
 //        Scheduler.get().addSubsystem(climber);
         Scheduler.get().addSubsystem(lights);
 
+        Pathfinding pathfinding = null;
         if (msg != null) {
             Scheduler.get().addCommand(new PublishLocalizationCommand(msg, localization));
-            Pathfinding pathfinding = new Pathfinding(swerveDriveController, localization, input, msg);
+            pathfinding = new Pathfinding(swerveDriveController, localization, input, msg);
             Scheduler.get().addSubsystem(pathfinding);
         }
+
+        Autonomous auto = new Autonomous(swerveDriveController, msg, pathfinding);
+        Scheduler.get().addSubsystem(auto);
     }
 
     @Override

@@ -1,7 +1,8 @@
-package com.swrobotics.bert.subsystems;
+package com.swrobotics.bert.subsystems.auto;
 
-import com.swrobotics.bert.commands.auto.path.Point;
 import com.swrobotics.bert.control.Input;
+import com.swrobotics.bert.subsystems.Localization;
+import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
 import com.swrobotics.bert.util.Utils;
 import com.swrobotics.messenger.client.MessengerClient;
@@ -61,10 +62,21 @@ public class Pathfinding implements Subsystem {
         );
     }
 
+    public boolean isAtPathTarget() {
+        if (path.size() < 1) return false; // No path
+
+        Point target = path.get(path.size() - 1);
+        double deltaX = target.getX() - loc.getFieldX();
+        double deltaY = target.getY() - loc.getFieldY();
+        double distanceSq = deltaX * deltaX + deltaY * deltaY;
+
+        double tolerance = TARGET_THRESHOLD_DIST.get();
+        return distanceSq <= tolerance * tolerance;
+    }
+
     @Override
-    public void robotPeriodic() {
-        if (!input.getFollowPath() || path.size() < 2)
-            return;
+    public void autonomousPeriodic() {
+        if (path.size() < 2) return;
 
         double locX = loc.getFieldX();
         double locY = loc.getFieldY();

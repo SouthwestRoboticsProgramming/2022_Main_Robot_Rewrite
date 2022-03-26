@@ -1,4 +1,4 @@
-package com.swrobotics.bert.commands.auto.path;
+package com.swrobotics.bert.subsystems.auto;
 
 public class Point {
     private final double x;
