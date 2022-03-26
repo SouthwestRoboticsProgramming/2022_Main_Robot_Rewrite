@@ -14,6 +14,8 @@ public final class Limelight implements Subsystem {
     private final NetworkTableEntry yAngle;
     private final NetworkTableEntry targetArea;
 
+    private final NetworkTableEntry lightsOn;
+
     private double x;
     private double y;
     private double area;
@@ -23,6 +25,8 @@ public final class Limelight implements Subsystem {
         this.xAngle = table.getEntry("tx");
         this.yAngle = table.getEntry("ty");
         this.targetArea = table.getEntry("ta");
+
+        this.lightsOn = table.getEntry("ledMode");
     }
 
     public double getXangle() {
@@ -49,6 +53,12 @@ public final class Limelight implements Subsystem {
 
         double distance = heightDiff / Math.tan(Math.toRadians(angle));
         return distance;
+    }
+
+    public void setLights(boolean on) {
+        int value = 1;
+        if (on) { value = 3;}
+        lightsOn.setNumber(value);
     }
 
 
