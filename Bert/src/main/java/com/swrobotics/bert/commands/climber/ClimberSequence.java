@@ -10,12 +10,10 @@ import static com.swrobotics.bert.constants.ClimberConstants.*;
 public final class ClimberSequence extends CommandSequence {
     private final Input input;
     private final Climber climber;
-    private final AHRS gyro;
 
     public ClimberSequence(Climber climber, Input input, AHRS gyro) {
         this.input = input;
         this.climber = climber;
-        this.gyro = gyro;
 
         // append(new ClimberStep(tele, rot, loaded));
         append(new ClimberStep(input, climber, CLIMB_STEP_1_TELE, CLIMB_STEP_1_ROT, false)); // 1:Base

@@ -112,7 +112,6 @@ public final class SwerveDriveController implements Subsystem {
         double driveRotControl;
         if (isAutoTurn) {
             if (isAutoTurnToTarget) {
-                // TODO: May need to be inverted
                 driveRotControl = Utils.clamp(-autoTurnPID.calculate(gyroRotation.getDegrees(), autoTurn), -1, 1);
             } else {
                 driveRotControl = autoTurn;

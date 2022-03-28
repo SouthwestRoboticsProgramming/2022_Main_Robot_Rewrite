@@ -18,7 +18,6 @@ import com.swrobotics.bert.subsystems.camera.CameraTurret;
 import com.swrobotics.bert.subsystems.camera.CameraTurretController;
 import com.swrobotics.bert.subsystems.camera.Cameras;
 import com.swrobotics.bert.subsystems.camera.Limelight;
-import com.swrobotics.bert.subsystems.climber.Climber;
 import com.swrobotics.bert.subsystems.drive.SwerveDrive;
 import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
 import com.swrobotics.bert.subsystems.intake.Intake;
@@ -27,7 +26,6 @@ import com.swrobotics.bert.subsystems.shooter.*;
 import com.swrobotics.messenger.client.MessengerClient;
 import com.swrobotics.taskmanager.api.TaskManagerAPI;
 import edu.wpi.first.hal.HAL;
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.SPI;
 
@@ -106,7 +104,7 @@ public final class Robot extends RobotBase {
         Hopper hopper = new Hopper(ballDetector, input);
         Flywheel flywheel = new Flywheel();
         NewHood hood = new NewHood();
-       ShooterController shooterController = new ShooterController(input, hopper, flywheel, hood);
+        ShooterController shooterController = new ShooterController(input, hopper, flywheel, hood, localization);
     //    Climber climber = new Climber(input, gyro);
         // Don't add ClimberController here, it is added after reset
         Lights lights = new Lights();

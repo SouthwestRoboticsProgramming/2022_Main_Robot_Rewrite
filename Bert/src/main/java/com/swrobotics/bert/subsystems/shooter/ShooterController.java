@@ -3,6 +3,7 @@ package com.swrobotics.bert.subsystems.shooter;
 import com.swrobotics.bert.Scheduler;
 import com.swrobotics.bert.commands.shooter.ShootCommand;
 import com.swrobotics.bert.control.Input;
+import com.swrobotics.bert.subsystems.Localization;
 import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.util.Utils;
 
@@ -13,12 +14,14 @@ public final class ShooterController implements Subsystem {
     private final Hopper hopper;
     private final Flywheel flywheel;
     private final NewHood hood;
+    private final Localization loc;
 
-    public ShooterController(Input input, Hopper hopper, Flywheel flywheel, NewHood hood) {
+    public ShooterController(Input input, Hopper hopper, Flywheel flywheel, NewHood hood, Localization loc) {
         this.input = input;
         this.hopper = hopper;
         this.flywheel = flywheel;
         this.hood = hood;
+        this.loc = loc;
     }
 
     private double calculateHood(double distance, boolean highGoal) {
@@ -33,9 +36,12 @@ public final class ShooterController implements Subsystem {
         }
     }
 
-    private double calculateRPM(double distance, boolean highGoal, double hoodAngle) {
-        // More smackrels of math here
-        return 1000000; // ONE MILLION RPM!!!!!
+    private double calculateRPM(double distance, boolean highGoal) {
+        if (highGoal) {
+            return Math.max(98.4 * distance + 1584, 2058.75);
+        } else {
+            return -1000; // do something useless because TODO
+        }
     }
 
     @Override
@@ -46,9 +52,11 @@ public final class ShooterController implements Subsystem {
         // double hoodAngle = calculateHood(distance, shootHigh);
         // double rpm = calculateRPM(distance, shootHigh, hoodAngle);
 
+        double distance = loc.getDistanceToTarget(); // TODO
+
         // HOOD
-        hood.setPosition(calculateHood(HOOD_POSITION.get(), AIM_HIGH_GOAL.get()));
-        flywheel.setFlywheelSpeed(FLYWHEEL_RPM.get());
+        hood.setPosition(calculateHood(distance, AIM_HIGH_GOAL.get()));
+        flywheel.setFlywheelSpeed(calculateRPM(distance, AIM_HIGH_GOAL.get()));
 
         if (input.getShoot()) {
             Scheduler.get().addCommand(new ShootCommand(hopper));
