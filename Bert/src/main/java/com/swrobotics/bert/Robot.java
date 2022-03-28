@@ -127,6 +127,7 @@ public final class Robot extends RobotBase {
         Scheduler.get().addSubsystem(hood);
         Scheduler.get().addSubsystem(shooterController);
         // Scheduler.get().addSubsystem(climber);
+        Scheduler.get().addSubsystem(limelight);
         Scheduler.get().addSubsystem(lights);
         Scheduler.get().addSubsystem(pdp);
 
