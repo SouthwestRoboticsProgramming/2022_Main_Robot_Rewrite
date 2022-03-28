@@ -69,6 +69,7 @@ public final class Localization implements Subsystem {
 
     @Override
     public void robotPeriodic() {
+        System.out.println("Y angle: " + limelight.getRealYangle() + " Distance: " + limelight.getDistance());
         if (false && limelight.isAccurate() && Math.abs(getAngleToTarget().getDegrees()) < 60) { // If the limelight finds a target and is actually pointing at the target
             double visionAngle = limelight.getXangle();
             double visionDist = limelight.getDistance();
