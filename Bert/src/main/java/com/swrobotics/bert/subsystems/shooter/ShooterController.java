@@ -4,6 +4,7 @@ import com.swrobotics.bert.Scheduler;
 import com.swrobotics.bert.commands.shooter.ShootCommand;
 import com.swrobotics.bert.control.Input;
 import com.swrobotics.bert.subsystems.Subsystem;
+import com.swrobotics.bert.util.Utils;
 
 import static com.swrobotics.bert.constants.ShooterConstants.*;
 
@@ -11,9 +12,9 @@ public final class ShooterController implements Subsystem {
     private final Input input;
     private final Hopper hopper;
     private final Flywheel flywheel;
-    private final Hood hood;
+    private final NewHood hood;
 
-    public ShooterController(Input input, Hopper hopper, Flywheel flywheel, Hood hood) {
+    public ShooterController(Input input, Hopper hopper, Flywheel flywheel, NewHood hood) {
         this.input = input;
         this.hopper = hopper;
         this.flywheel = flywheel;
@@ -23,10 +24,7 @@ public final class ShooterController implements Subsystem {
     private double calculateHood(double distance, boolean highGoal) {
         // Mathy stuff here
         if (highGoal) {
-            if (distance > 2000 /*Highest hood*/) { return 4; }
-            if (distance > 1000 /*Medium hood*/) { return 3; }
-            if (distance > 500 /*Low hood*/) { return 2; }
-            return 1; /*Lower hood*/
+            return Utils.map(distance, 1, 27, 0, 3); // Remap min - max distance to min - max hood
         } else {
             if (distance > 2000 /*Medium hood*/) { return 3; }
             if (distance > 1000 /*Low hood*/) { return 2; }
@@ -49,7 +47,7 @@ public final class ShooterController implements Subsystem {
         // double rpm = calculateRPM(distance, shootHigh, hoodAngle);
 
         // HOOD
-        hood.setPosition(HOOD_POSITION.get());
+        hood.setPosition(calculateHood(HOOD_POSITION.get(), AIM_HIGH_GOAL.get()));
         flywheel.setFlywheelSpeed(FLYWHEEL_RPM.get());
 
         if (input.getShoot()) {
