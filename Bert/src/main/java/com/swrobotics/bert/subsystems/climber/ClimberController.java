@@ -4,14 +4,17 @@ import com.swrobotics.bert.Scheduler;
 import com.swrobotics.bert.commands.climber.ClimberSequence;
 import com.swrobotics.bert.control.Input;
 import com.swrobotics.bert.subsystems.Subsystem;
+import com.kauailabs.navx.frc.AHRS;
 
 public final class ClimberController implements Subsystem {
     private final Input input;
     private final Climber climber;
+    private final AHRS gyro;
 
-    public ClimberController(Input input, Climber climber) {
+    public ClimberController(Input input, Climber climber, AHRS gyro) {
         this.input = input;
         this.climber = climber;
+        this.gyro = gyro;
     }
 
     @Override
@@ -23,7 +26,7 @@ public final class ClimberController implements Subsystem {
     @Override
     public void teleopPeriodic() {
         if (!hasStartedCommand) {
-            Scheduler.get().addCommand(new ClimberSequence(climber, input));
+            Scheduler.get().addCommand(new ClimberSequence(climber, input, gyro));
             hasStartedCommand = true;
         }
 

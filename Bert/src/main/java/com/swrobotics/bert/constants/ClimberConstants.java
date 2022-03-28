@@ -63,13 +63,10 @@ public final class ClimberConstants {
         public static final TunableDouble CLIMB_STEP_2_TELE = STEPS.getDouble("2-Tel: Retract Height", 0.1);
         public static final TunableDouble CLIMB_STEP_3_ROT = STEPS.getDouble("3-Rot: Handoff Angle", 88);
         public static final TunableDouble CLIMB_STEP_4_ROT = STEPS.getDouble("4-Rot: Aim At 3 Angle", 60);
+        public static final TunableDouble CLIMB_STEP_4_5_GYRO = STEPS.getDouble("4.5-Gyro: Pressure Angle", 60);
         public static final TunableDouble CLIMB_STEP_4_TELE = STEPS.getDouble("4-Tel: Release Height", .2);
         public static final TunableDouble CLIMB_STEP_5_TELE = STEPS.getDouble("5-Tel: Extend to 3", .8);
         public static final TunableDouble CLIMB_STEP_6_ROT = STEPS.getDouble("6-Rot: Pressure On 3", 65);
-        // public static final TunableDouble CLIMB_STEP_7_TELE = STEPS.getDouble("7-Tel: Extend to 3", 65);
-
-        // public static final TunableDouble CLIMB_STEP_6_TELE = STEPS.getDouble("Step Six Tele 2-3 Length", 0.8);
-        // public static final TunableDouble CLIMB_STEP_7_ROT = STEPS.getDouble("Step Seven Compression Angle", 60);
 
     private ClimberConstants() {
         throw new AssertionError();

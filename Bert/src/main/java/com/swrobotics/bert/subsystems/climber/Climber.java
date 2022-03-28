@@ -6,16 +6,19 @@ import com.swrobotics.bert.control.Input;
 import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.subsystems.climber.rotating.RotatingArms;
 import com.swrobotics.bert.subsystems.climber.telescoping.TelescopingArms;
+import com.kauailabs.navx.frc.AHRS;
 
 public final class Climber implements Subsystem {
     private final TelescopingArms telescoping;
     private final RotatingArms rotating;
     private final Input input;
+    private final AHRS gyro;
 
-    public Climber(Input input) {
+    public Climber(Input input, AHRS gyro) {
         telescoping = new TelescopingArms();
         rotating = new RotatingArms();
         this.input = input;
+        this.gyro = gyro;
     }
 
     public void setTargetState(ClimberState state) {
@@ -40,7 +43,7 @@ public final class Climber implements Subsystem {
 
     @Override
     public void teleopInit() {
-        Scheduler.get().addCommand(new ResetClimberCommand(this, input));
+        Scheduler.get().addCommand(new ResetClimberCommand(this, input, gyro));
     }
 
     @Override
