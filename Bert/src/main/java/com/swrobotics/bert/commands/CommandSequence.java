@@ -3,9 +3,6 @@ package com.swrobotics.bert.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.swrobotics.bert.commands.climber.ClimberStep;
-import com.swrobotics.bert.commands.climber.WaitForAngle;
-
 public abstract class CommandSequence implements Command {
     private final List<Command> cmds;
     private int index;
@@ -14,8 +11,8 @@ public abstract class CommandSequence implements Command {
         cmds = new ArrayList<>();
     }
 
-    protected void append(ClimberStep climberStep) {
-        cmds.add(climberStep);
+    protected void append(Command cmd) {
+        cmds.add(cmd);
     }
 
     @Override

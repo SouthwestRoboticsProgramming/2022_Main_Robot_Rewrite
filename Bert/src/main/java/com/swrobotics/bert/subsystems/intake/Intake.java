@@ -69,5 +69,6 @@ public final class Intake implements Subsystem {
             motor.set(ControlMode.Velocity, state.getSpeed() * TALON_FX_NATIVE_SENSOR_UNITS_PER_ROTATION);
         }
         this.state = state;
+        System.out.println(state);
     }
 }

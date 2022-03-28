@@ -24,7 +24,7 @@ public final class ShooterController implements Subsystem {
     private double calculateHood(double distance, boolean highGoal) {
         // Mathy stuff here
         if (highGoal) {
-            return Utils.map(distance, 1, 27, 0, 3); // Remap min - max distance to min - max hood
+            return Utils.map(distance, 1, 18, 0, 3); // Remap min - max distance to min - max hood
         } else {
             if (distance > 2000 /*Medium hood*/) { return 3; }
             if (distance > 1000 /*Low hood*/) { return 2; }
@@ -52,6 +52,7 @@ public final class ShooterController implements Subsystem {
 
         if (input.getShoot()) {
             Scheduler.get().addCommand(new ShootCommand(hopper));
+            hood.calibrate();
         }
     }
 }

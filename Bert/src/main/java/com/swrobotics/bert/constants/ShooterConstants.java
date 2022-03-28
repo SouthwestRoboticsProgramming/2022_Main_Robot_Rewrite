@@ -55,7 +55,7 @@ public final class ShooterConstants {
 
         public static final TunableDouble HOOD_CALIBRATE_SPEED = HOOD.getDouble("Calibration Speed", -0.2);
 
-    public static final int HOOD_ID = 41;
+    public static final int HOOD_ID = 31;
     public static final int HOOD_LIMIT_ID = 0;
 
     public static final int HOOD_ENCODER_ID_1 = 8;

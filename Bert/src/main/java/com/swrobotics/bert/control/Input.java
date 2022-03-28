@@ -38,6 +38,7 @@ public final class Input implements Subsystem {
     /* Manipulator */
     public boolean getToggleIntake() {
         return manipulator.y.leadingEdge();
+
     }
 
     public double getTeleDistance() {

@@ -15,7 +15,11 @@ public final class IntakeController implements Subsystem {
     @Override
     public void teleopPeriodic() {
         if (input.getToggleIntake()) {
-            intake.setState(intake.getState() != Intake.State.OFF ? Intake.State.ON : Intake.State.OFF);
+            // intake.setState(intake.getState() != Intake.State.OFF ? Intake.State.ON : Intake.State.OFF);
+            if (intake.getState() == Intake.State.OFF) { 
+                intake.setState(Intake.State.ON);} else {
+                    intake.setState(Intake.State.OFF);
+                }
         }
     }
 }
