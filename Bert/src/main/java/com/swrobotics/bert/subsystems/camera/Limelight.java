@@ -57,6 +57,12 @@ public final class Limelight implements Subsystem {
         return distance;
     }
 
+    public boolean isAccurate() {
+        if (x == 0.0 || y == 0.0) {return false;} // If it can't find a target
+        if (getDistance() < 0 || getDistance() > 20) {return false;} // If the distance is negative or massive
+        return true;
+    }
+
     public void setLights(boolean on) {
         int value = 1;
         if (on) { value = 3;}
