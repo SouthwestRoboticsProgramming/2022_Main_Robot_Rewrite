@@ -84,9 +84,9 @@ public final class Robot extends RobotBase {
 
             // Connect to TaskManager instances
             raspberryPi = new TaskManagerAPI(msg, RASPBERRY_PI_PREFIX);
-            jetsonNano = new TaskManagerAPI(msg, JETSON_NANO_PREFIX);
+            // jetsonNano = new TaskManagerAPI(msg, JETSON_NANO_PREFIX);
             Scheduler.get().addCommand(new TaskManagerSetupCommand(raspberryPi, LIDAR_NAME, PATHFINDING_NAME));
-            Scheduler.get().addCommand(new TaskManagerSetupCommand(jetsonNano, VISION_NAME));
+            // Scheduler.get().addCommand(new TaskManagerSetupCommand(jetsonNano, VISION_NAME));
         }
 
         AHRS gyro = new AHRS(SPI.Port.kMXP, (byte) 200);

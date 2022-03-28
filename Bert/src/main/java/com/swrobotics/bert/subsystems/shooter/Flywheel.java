@@ -49,8 +49,8 @@ public final class Flywheel implements Subsystem {
   
   public void setFlywheelSpeed(double rpm) {
     flywheel.set(TalonFXControlMode.Velocity, rpm * RPM_TO_FX_VELOCITY * FLYWHEEL_GEAR_RATIO);
-    System.out.println("Current: " + flywheel.getSelectedSensorVelocity() / 
-    RPM_TO_FX_VELOCITY / FLYWHEEL_GEAR_RATIO + " Target: " + rpm);
+//    System.out.println("Current: " + flywheel.getSelectedSensorVelocity() /
+//    RPM_TO_FX_VELOCITY / FLYWHEEL_GEAR_RATIO + " Target: " + rpm);
   }
 
 }

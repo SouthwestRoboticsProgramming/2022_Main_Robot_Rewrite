@@ -48,23 +48,28 @@ public final class Localization implements Subsystem {
     }
 
     public double getDistanceToTarget() {
-        double hubX = 54.0;
-        double hubY = 27.0;
+        double hubX = 0;
+        double hubY = 0;
         double robotX = drive.getOdometryPose().getX();
         double robotY = drive.getOdometryPose().getY();
 
         /* Distance Formula */
-        double distance = Math.sqrt(Math.pow(robotX - hubX, 2) + Math.pow(robotY - hubY, 2));
+        double distance = Math.sqrt(robotX * robotX + robotY * robotY);
         return distance;
     }
 
     public Rotation2d getAngleToTarget() {
-        return new Rotation2d();
+        double robotX = drive.getOdometryPose().getX();
+        double robotY = drive.getOdometryPose().getY();
+
+        double angleRadians = Math.atan2(-robotY, -robotX);
+
+        return new Rotation2d(angleRadians);
     }
 
     @Override
     public void robotPeriodic() {
-        if (limelight.isAccurate() && Math.abs(getAngleToTarget().getDegrees()) < 60) { // If the limelight finds a target and is actually pointing at the target
+        if (false && limelight.isAccurate() && Math.abs(getAngleToTarget().getDegrees()) < 60) { // If the limelight finds a target and is actually pointing at the target
             double visionAngle = limelight.getXangle();
             double visionDist = limelight.getDistance();
             double gyroAngle = gyro.getRotation2d().getDegrees();

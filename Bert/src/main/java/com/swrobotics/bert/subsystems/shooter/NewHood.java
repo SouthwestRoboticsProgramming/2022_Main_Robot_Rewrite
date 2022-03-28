@@ -65,7 +65,7 @@ public final class NewHood implements Subsystem {
     @Override
     public void robotPeriodic() {
         if (isCalibrating) {
-            System.out.println("Calibrating Hood");
+//            System.out.println("Calibrating Hood");
             hood.set(TalonSRXControlMode.PercentOutput, HOOD_CALIBRATE_SPEED.get());
 
             if (limitSwitch.get()) {

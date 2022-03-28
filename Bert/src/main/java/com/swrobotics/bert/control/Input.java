@@ -35,6 +35,10 @@ public final class Input implements Subsystem {
         return Math.signum(amount) * Utils.map(Math.abs(amount), JOYSTICK_DEAD_ZONE.get(), 1, 0, 1);
     }
 
+    public boolean getAim() {
+        return drive.a.isPressed();
+    }
+
     /* Manipulator */
     public boolean getToggleIntake() {
         return manipulator.y.leadingEdge();
