@@ -88,7 +88,7 @@ public final class SwerveDriveController implements Subsystem {
 
         double angleRadians = Math.atan2(-robotY, -robotX);
 
-        return new Rotation2d(angleRadians);
+        return new Rotation2d(angleRadians + Math.PI / 2);
     }
 
     @Override
