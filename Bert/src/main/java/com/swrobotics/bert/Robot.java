@@ -18,6 +18,7 @@ import com.swrobotics.bert.subsystems.camera.CameraTurret;
 import com.swrobotics.bert.subsystems.camera.CameraTurretController;
 import com.swrobotics.bert.subsystems.camera.Cameras;
 import com.swrobotics.bert.subsystems.camera.Limelight;
+import com.swrobotics.bert.subsystems.climber.Climber;
 import com.swrobotics.bert.subsystems.drive.SwerveDrive;
 import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
 import com.swrobotics.bert.subsystems.intake.Intake;
@@ -105,7 +106,7 @@ public final class Robot extends RobotBase {
         Flywheel flywheel = new Flywheel();
         NewHood hood = new NewHood();
        ShooterController shooterController = new ShooterController(input, hopper, flywheel, hood);
-       Climber climber = new Climber(input, AHRS);
+    //    Climber climber = new Climber(input, gyro);
         // Don't add ClimberController here, it is added after reset
         Lights lights = new Lights();
         PDP pdp = new PDP();
@@ -123,8 +124,8 @@ public final class Robot extends RobotBase {
         Scheduler.get().addSubsystem(hopper);
         Scheduler.get().addSubsystem(flywheel);
         Scheduler.get().addSubsystem(hood);
-       Scheduler.get().addSubsystem(shooterController);
-//        Scheduler.get().addSubsystem(climber);
+        Scheduler.get().addSubsystem(shooterController);
+        // Scheduler.get().addSubsystem(climber);
         Scheduler.get().addSubsystem(lights);
         Scheduler.get().addSubsystem(pdp);
 

@@ -8,7 +8,7 @@ import com.swrobotics.bert.commands.Command;
 import com.kauailabs.navx.frc.AHRS;
 import com.swrobotics.bert.shuffle.TunableDouble;
 
-public class WaitForAngle extends Command {
+public class WaitForAngle implements Command {
   private AHRS gyro;
   private TunableDouble setAngle;
   private double previousAngle = 0;
