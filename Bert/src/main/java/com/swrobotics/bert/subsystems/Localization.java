@@ -48,8 +48,6 @@ public final class Localization implements Subsystem {
     }
 
     public double getDistanceToTarget() {
-        double hubX = 0;
-        double hubY = 0;
         double robotX = drive.getOdometryPose().getX();
         double robotY = drive.getOdometryPose().getY();
 
@@ -70,7 +68,7 @@ public final class Localization implements Subsystem {
     @Override
     public void robotPeriodic() {
         System.out.println("Y angle: " + limelight.getRealYangle() + " Distance: " + limelight.getDistance());
-        if (false && limelight.isAccurate() && Math.abs(getAngleToTarget().getDegrees()) < 60) { // If the limelight finds a target and is actually pointing at the target
+        if (limelight.isAccurate() && Math.abs(getAngleToTarget().getDegrees()) < 80) { // If the limelight finds a target and is actually pointing at the target
             double visionAngle = limelight.getXangle();
             double visionDist = limelight.getDistance();
             double gyroAngle = gyro.getRotation2d().getDegrees();

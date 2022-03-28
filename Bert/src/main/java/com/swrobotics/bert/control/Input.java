@@ -36,7 +36,11 @@ public final class Input implements Subsystem {
     }
 
     public boolean getAim() {
-        return drive.a.isPressed();
+        return manipulator.rightShoulder.isPressed() || drive.rightShoulder.isPressed();
+    }
+
+    public boolean getSlowMode() {
+        return drive.leftShoulder.isPressed();
     }
 
     /* Manipulator */

@@ -106,7 +106,7 @@ public final class Robot extends RobotBase {
         Hopper hopper = new Hopper(ballDetector, input);
         Flywheel flywheel = new Flywheel();
         NewHood hood = new NewHood();
-       ShooterController shooterController = new ShooterController(input, hopper, flywheel, hood);
+       ShooterController shooterController = new ShooterController(input, hopper, flywheel, hood, localization);
     //    Climber climber = new Climber(input, gyro);
         // Don't add ClimberController here, it is added after reset
         Lights lights = new Lights();

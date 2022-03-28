@@ -129,6 +129,11 @@ public final class SwerveDriveController implements Subsystem {
         double fieldRelativeY = -driveXControl * maxVelocity;
         double rotation = -driveRotControl * maxTurnVelocity;
 
+        if (input.getSlowMode()) {
+            fieldRelativeX *= SLOW_MODE_MULTIPLIER.get();
+            fieldRelativeY *= SLOW_MODE_MULTIPLIER.get();
+        }
+
         if (fieldRelativeX == 0 && fieldRelativeY == 0 && rotation == 0) {
             drive.stop();
         } else {
