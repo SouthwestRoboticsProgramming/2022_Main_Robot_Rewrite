@@ -16,6 +16,7 @@ public final class DriveConstants {
     private static final TuneGroup CONTROLS = new TuneGroup("Controls", ShuffleBoard.driveTab);
         public static final TunableDouble MAX_VELOCITY = CONTROLS.getDouble("Max Velocity", 0.05); // Meters per Seconda
         public static final TunableDouble MAX_TURN_VELOCITY = CONTROLS.getDouble("Max Turn Velocity", Math.PI); // Radians per Second
+        public static final TunableDouble SLOW_MODE_MULTIPLIER = CONTROLS.getDouble("Slow Mode Multiplier", 0.5);
 
     private static final TuneGroup PID = new TuneGroup("PID", ShuffleBoard.driveTab);
         public static final TunableDouble DRIVE_KP = PID.getDouble("Drive KP", 0.05);
