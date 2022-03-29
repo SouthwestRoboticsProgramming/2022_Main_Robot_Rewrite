@@ -7,7 +7,6 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 import static com.swrobotics.bert.constants.CameraConstants.*;
-import static com.swrobotics.bert.constants.Settings.LIMELIGHT_LIGHTS;
 
 public final class Limelight implements Subsystem {
     private final NetworkTableEntry xAngle;
