@@ -62,7 +62,7 @@ public final class ShooterController implements Subsystem {
         flywheel.setFlywheelSpeed(calculateRPM(distance, AIM_HIGH_GOAL.get()));
 
         if (input.getShoot() && (shoot == null || !Scheduler.get().isCommandRunning(shoot))) {
-            Scheduler.get().addCommand(shoot = new ShootCommand(hopper));
+            Scheduler.get().addCommand(shoot = new ShootCommand(hopper, input));
             hood.calibrate();
         }
     }
