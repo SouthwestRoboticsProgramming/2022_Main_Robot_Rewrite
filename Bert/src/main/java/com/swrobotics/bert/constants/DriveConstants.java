@@ -56,7 +56,7 @@ public final class DriveConstants {
     public static final SwerveModuleInfo[] SWERVE_INFO = {
         new SwerveModuleInfo(1 /*Drive*/, 3 /*Cancoder*/, -42.979 /*Offset*/), // Module 1
         new SwerveModuleInfo(4 /*Drive*/, 6 /*Cancoder*/, -218.760 + 180 /*Offset*/), // Module 2
-        new SwerveModuleInfo(7 /*Drive*/, 9 /*Cancoder*/, -170.508 + 180/*Offset*/), // Module 3
+        new SwerveModuleInfo(7 /*Drive*/, 9 /*Cancoder*/, -170.508 + 180 /*Offset*/), // Module 3
         new SwerveModuleInfo(10 /*Drive*/, 12 /*Cancoder*/, -183.779 /*Offset*/), // Module 4
         new SwerveModuleInfo(13 /*Drive*/, 15 /*Cancoder*/, 0 /*Offset*/), // Module 5
     };
