@@ -15,6 +15,7 @@ public final class ShooterController implements Subsystem {
     private final Flywheel flywheel;
     private final NewHood hood;
     private final Localization loc;
+    private ShootCommand shoot;
 
     public ShooterController(Input input, Hopper hopper, Flywheel flywheel, NewHood hood, Localization loc) {
         this.input = input;
@@ -22,6 +23,8 @@ public final class ShooterController implements Subsystem {
         this.flywheel = flywheel;
         this.hood = hood;
         this.loc = loc;
+
+        shoot = null;
     }
 
     private double calculateHood(double distance, boolean highGoal) {
@@ -64,8 +67,8 @@ public final class ShooterController implements Subsystem {
         flywheel.setFlywheelSpeed(calculateRPM(distance, AIM_HIGH_GOAL.get()));
         // flywheel.setFlywheelSpeed(0);
 
-        if (input.getShoot()) {
-            Scheduler.get().addCommand(new ShootCommand(hopper));
+        if (input.getShoot() && (shoot == null || !Scheduler.get().isCommandRunning(shoot))) {
+            Scheduler.get().addCommand(shoot = new ShootCommand(hopper));
             hood.calibrate();
         }
     }
