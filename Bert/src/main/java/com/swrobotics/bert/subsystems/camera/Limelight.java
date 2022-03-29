@@ -66,6 +66,7 @@ public final class Limelight implements Subsystem {
         int value = 1;
         if (on) { value = 3;}
         lightsOn.setNumber(value);
+        LIMELIGHT_LIGHTS.set(on);
     }
 
 

@@ -50,26 +50,24 @@ public final class ShooterController implements Subsystem {
     @Override
     public void robotPeriodic() {
 
-        // boolean shootHigh = AIM_HIGH_GOAL.get();
-        // double distance = 200; /* TODO: Bert */
-        // double hoodAngle = calculateHood(distance, shootHigh);
-        // double rpm = calculateRPM(distance, shootHigh, hoodAngle);
-
-        double distance = loc.getDistanceToTarget(); // TODO
+        double distance = loc.getDistanceToTarget();
         distance -= 1; // Account for offset from center of hub
         distance *= 3.28024; // Convert meters to feet
         distance -= 1.29166666666666; // Account for robot center to front dist
 
-        System.out.println("Distance: " + distance);
+        // System.out.println("Distance: " + distance);
 
         // HOOD
-        hood.setPosition(calculateHood(distance, AIM_HIGH_GOAL.get()));
-        flywheel.setFlywheelSpeed(calculateRPM(distance, AIM_HIGH_GOAL.get()));
-        // flywheel.setFlywheelSpeed(0);
+        if (loc.isLookingAtTarget() || input.getAim() || input.getAimOverride()) {
+            hood.setPosition(calculateHood(distance, AIM_HIGH_GOAL.get()));
+            flywheel.setFlywheelSpeed(calculateRPM(distance, AIM_HIGH_GOAL.get()));
+        } else {
+            hood.calibrate();
+            flywheel.setFlywheelSpeed(FLYWHEEL_IDLE_SPEED.get());
+        }
 
         if (input.getShoot() && (shoot == null || !Scheduler.get().isCommandRunning(shoot))) {
             Scheduler.get().addCommand(shoot = new ShootCommand(hopper, input));
-            hood.calibrate();
         }
     }
 }
