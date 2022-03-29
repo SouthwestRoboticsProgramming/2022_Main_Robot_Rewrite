@@ -32,6 +32,21 @@ public final class Input implements Subsystem {
         return drive.leftShoulder.isPressed();
     }
 
+    
+    
+    /* Manipulator */
+    public boolean getToggleIntake() {
+        return manipulator.y.leadingEdge();
+    }
+    
+    public boolean getShoot() {
+        return manipulator.a.leadingEdge();
+    }
+    
+    public boolean getEject() {
+        return manipulator.start.leadingEdge();
+    }
+
     public boolean getAim() { // Both drive an manipulator
         return drive.rightShoulder.isPressed() || manipulator.rightShoulder.isPressed();
     }
@@ -39,18 +54,8 @@ public final class Input implements Subsystem {
     public boolean getAimOverride() { // Both drive and manipulator
         return drive.select.leadingEdge() || manipulator.select.leadingEdge();
     }
-
-
-    /* Manipulator */
-    public boolean getToggleIntake() {
-        return manipulator.y.leadingEdge();
-    }
-
-    public boolean getShoot() {
-        return manipulator.a.leadingEdge();
-    }
-
-        /* Climb */
+    
+    /* Climb */
     public boolean getClimberNextStep() {
         return manipulator.x.isPressed();
     }

@@ -6,9 +6,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 public final class ShuffleBoard {
     public static final ShuffleboardTab driveTab    = Shuffleboard.getTab("Drive");
     public static final ShuffleboardTab intakeTab   = Shuffleboard.getTab("Intake");

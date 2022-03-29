@@ -1,6 +1,5 @@
 package com.swrobotics.bert.subsystems.auto;
 
-import com.swrobotics.bert.control.Input;
 import com.swrobotics.bert.subsystems.Localization;
 import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
@@ -16,14 +15,12 @@ import static com.swrobotics.bert.constants.AutonomousConstants.*;
 public final class Pathfinding implements Subsystem {
     private final SwerveDriveController drive;
     private final Localization loc;
-    private final Input input;
     private final List<Point> path;
     private final PIDController pid;
 
-    public Pathfinding(SwerveDriveController drive, Localization loc, Input input, MessengerClient msg) {
+    public Pathfinding(SwerveDriveController drive, Localization loc, MessengerClient msg) {
         this.drive = drive;
         this.loc = loc;
-        this.input = input;
         path = new ArrayList<>();
 
         msg.makeHandler()

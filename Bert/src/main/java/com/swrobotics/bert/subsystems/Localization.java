@@ -1,11 +1,8 @@
 package com.swrobotics.bert.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.swrobotics.bert.subsystems.camera.CameraTurret;
-import com.swrobotics.bert.subsystems.camera.Cameras;
 import com.swrobotics.bert.subsystems.camera.Limelight;
 import com.swrobotics.bert.subsystems.drive.SwerveDrive;
-import com.swrobotics.bert.util.Utils;
 import com.swrobotics.messenger.client.MessengerClient;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -21,7 +18,6 @@ public final class Localization implements Subsystem {
         this.drive = drive;
         this.limelight = limelight;
 
-        // TODO: Remove this once we get absolute localization with cameras
         if (msg != null) {
             msg.makeHandler()
                     .listen("Config:SetLocation")
@@ -83,8 +79,11 @@ public final class Localization implements Subsystem {
             double visionDist = limelight.getDistance();
             double gyroAngle = gyro.getRotation2d().getDegrees();
 
-            double angleDiff = visionAngle - gyroAngle;
+            double angleDiff = gyroAngle - visionAngle;
+            angleDiff -= 90;
+            angleDiff = Math.toRadians(angleDiff);
 
+            visionDist += 1.355852 / 2.0; // hub radius
             fieldX = visionDist * Math.cos(angleDiff);
             fieldY = visionDist * Math.sin(angleDiff);
 
