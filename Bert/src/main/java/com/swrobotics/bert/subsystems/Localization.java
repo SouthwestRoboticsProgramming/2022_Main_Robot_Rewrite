@@ -61,10 +61,20 @@ public final class Localization implements Subsystem {
         return new Rotation2d(angleRadians);
     }
 
+    public Rotation2d getLocalAngleToTarget() {
+        double gyroAngle = gyro.getAngle();
+        double angleToTarget = getAngleToTarget().getDegrees();
+
+        double diff = angleToTarget - gyroAngle;
+        double normalized = Utils.normalizeRadians(Math.toRadians(diff));
+
+        return new Rotation2d(normalized);
+    }
+
     @Override
     public void robotPeriodic() {
         // System.out.println("Y angle: " + limelight.getRealYangle() + " Distance: " + limelight.getDistance());
-        if (limelight.isAccurate()) { // If the limelight finds a target and is actually pointing at the target
+        if (Math.abs(getLocalAngleToTarget().getDegrees()) < 100) { // If the limelight finds a target and is actually pointing at the target
             double visionAngle = limelight.getXangle();
             double visionDist = limelight.getDistance();
             double gyroAngle = gyro.getRotation2d().getDegrees();

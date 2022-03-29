@@ -28,55 +28,34 @@ public final class Input implements Subsystem {
         return deadzone(drive.rightStickX.get());
     }
 
-    private double deadzone(double amount) {
-        if (Math.abs(amount) < JOYSTICK_DEAD_ZONE.get()) {
-            return 0;
-        }
-        return Math.signum(amount) * Utils.map(Math.abs(amount), JOYSTICK_DEAD_ZONE.get(), 1, 0, 1);
-    }
-
-    public boolean getAim() {
-        return manipulator.rightShoulder.isPressed() || drive.rightShoulder.isPressed();
-    }
-
     public boolean getSlowMode() {
         return drive.leftShoulder.isPressed();
     }
 
+    
+    
     /* Manipulator */
     public boolean getToggleIntake() {
         return manipulator.y.leadingEdge();
-
     }
-
+    
+    public boolean getShoot() {
+        return manipulator.a.leadingEdge();
+    }
+    
     public boolean getEject() {
         return manipulator.start.leadingEdge();
     }
 
-    public double getTeleDistance() {
-        return Utils.clamp(deadzone(manipulator.leftStickY.get()), 0, 1);
+    public boolean getAim() { // Both drive an manipulator
+        return drive.rightShoulder.isPressed() || manipulator.rightShoulder.isPressed();
     }
 
-    public double getRotAngle() {
-        return Utils.map(deadzone(manipulator.leftStickX.get()), -1, 1, 60, 120);
+    public boolean getAimOverride() { // Both drive and manipulator
+        return drive.select.leadingEdge() || manipulator.select.leadingEdge();
     }
-
-    public boolean getClimberManualOverride() {
-        return manipulator.select.isPressed();
-    }
-
-    public double getTeleManual() {
-        return deadzone(manipulator.leftStickY.get());
-    }
-
-    public double getRotManual() {
-        return deadzone(manipulator.leftStickX.get()) * 0.25;
-    }
-
-    public boolean getShoot() {
-        return manipulator.a.leadingEdge();
-    }
-
+    
+    /* Climb */
     public boolean getClimberNextStep() {
         return manipulator.x.isPressed();
     }
@@ -85,19 +64,21 @@ public final class Input implements Subsystem {
         return manipulator.b.leadingEdge();
     }
 
-    /* Temporary things */
-    public int getServoAngle() {
-        if (manipulator.x.isPressed())
-            return 0;
-        else if (manipulator.b.isPressed())
-            return 180;
-        else
-            return 90;
-    }
 
+    /* Temporary */
     public boolean getFollowPath() {
         return manipulator.start.isPressed();
     }
+
+
+    
+    private double deadzone(double amount) {
+        if (Math.abs(amount) < JOYSTICK_DEAD_ZONE.get()) {
+            return 0;
+        }
+        return Math.signum(amount) * Utils.map(Math.abs(amount), JOYSTICK_DEAD_ZONE.get(), 1, 0, 1);
+    }
+
 
     @Override
     public void robotPeriodic() {

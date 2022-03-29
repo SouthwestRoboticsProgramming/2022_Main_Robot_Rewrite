@@ -8,7 +8,7 @@ public final class FieldImageOverlay implements FieldOverlay {
     private final PImage image;
 
     public FieldImageOverlay(PApplet applet) {
-        image = applet.loadImage("field-image.jpg");
+        image = applet.loadImage("field-image-2.jpg");
     }
 
     @Override
