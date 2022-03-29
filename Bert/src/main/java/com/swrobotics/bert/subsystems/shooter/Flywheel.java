@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.util.TalonFXBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static com.swrobotics.bert.constants.ShooterConstants.*;
 import static com.swrobotics.bert.constants.Constants.*;
@@ -50,8 +51,6 @@ public final class Flywheel implements Subsystem {
     public void robotPeriodic() {
         // flywheel.set(TalonFXControlMode.PercentOutput, 1);
         // System.out.println(flywheel.getTemperature());
-
-
     }
 
     public void setState(State state) {
