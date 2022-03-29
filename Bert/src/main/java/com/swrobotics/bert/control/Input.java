@@ -36,7 +36,7 @@ public final class Input implements Subsystem {
         return drive.rightShoulder.isPressed() || manipulator.rightShoulder.isPressed();
     }
 
-    public boolean getAimOverride() {
+    public boolean getAimOverride() { // Both drive and manipulator
         return drive.select.leadingEdge() || manipulator.select.leadingEdge();
     }
 
@@ -59,28 +59,6 @@ public final class Input implements Subsystem {
         return manipulator.b.leadingEdge();
     }
 
-        /* Manual Climb */
-    public boolean getClimberManualOverride() {
-        return manipulator.select.isPressed();
-    }
-
-    public double getTeleManual() {
-        return deadzone(manipulator.leftStickY.get());
-    }
-
-    public double getRotManual() {
-        return deadzone(manipulator.leftStickX.get()) * 0.25;
-    }
-
-    // FIXME Ryan: Why are there two? Is only one used? Do we need them at all?
-    public double getTeleDistance() {
-        return Utils.clamp(deadzone(manipulator.leftStickY.get()), 0, 1);
-    }
-
-    public double getRotAngle() {
-        return Utils.map(deadzone(manipulator.leftStickX.get()), -1, 1, 60, 120);
-    }
-
 
     /* Temporary */
     public boolean getFollowPath() {
@@ -88,9 +66,7 @@ public final class Input implements Subsystem {
     }
 
 
-
-
-
+    
     private double deadzone(double amount) {
         if (Math.abs(amount) < JOYSTICK_DEAD_ZONE.get()) {
             return 0;
