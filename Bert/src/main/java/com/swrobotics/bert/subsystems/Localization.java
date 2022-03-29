@@ -1,6 +1,7 @@
 package com.swrobotics.bert.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.swrobotics.bert.control.Input;
 import com.swrobotics.bert.subsystems.camera.Limelight;
 import com.swrobotics.bert.subsystems.drive.SwerveDrive;
 import com.swrobotics.bert.util.Utils;
@@ -12,12 +13,14 @@ public final class Localization implements Subsystem {
     private final AHRS gyro;
     private final SwerveDrive drive;
     private final Limelight limelight;
+    private final Input input;
     private double fieldX, fieldY;
 
-    public Localization(AHRS gyro, SwerveDrive drive, Limelight limelight, MessengerClient msg) {
+    public Localization(AHRS gyro, SwerveDrive drive, Limelight limelight, MessengerClient msg, Input input) {
         this.gyro = gyro;
         this.drive = drive;
         this.limelight = limelight;
+        this.input = input;
 
         if (msg != null) {
             msg.makeHandler()
@@ -79,7 +82,7 @@ public final class Localization implements Subsystem {
     @Override
     public void robotPeriodic() {
         // System.out.println("Y angle: " + limelight.getRealYangle() + " Distance: " + limelight.getDistance());
-        if (isLookingAtTarget()) { // If the limelight finds a target and is actually pointing at the target
+        if ((isLookingAtTarget() || input.getAimOverride()) && limelight.isAccurate()) { // If the limelight finds a target and is actually pointing at the target
             double visionAngle = limelight.getXangle();
             double visionDist = limelight.getDistance();
             double gyroAngle = gyro.getRotation2d().getDegrees();

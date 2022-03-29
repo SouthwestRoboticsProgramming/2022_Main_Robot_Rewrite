@@ -14,6 +14,7 @@ import com.swrobotics.bert.subsystems.Localization;
 import com.swrobotics.bert.subsystems.PDP;
 import com.swrobotics.bert.subsystems.auto.Autonomous;
 import com.swrobotics.bert.subsystems.auto.Pathfinding;
+import com.swrobotics.bert.subsystems.camera.CameraController;
 import com.swrobotics.bert.subsystems.camera.Limelight;
 import com.swrobotics.bert.subsystems.drive.SwerveDrive;
 import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
@@ -92,6 +93,7 @@ public final class Robot extends RobotBase {
         SwerveDriveController swerveDriveController = new SwerveDriveController(input, gyro, swerveDrive);
         Limelight limelight = new Limelight();
         Localization localization = new Localization(gyro, swerveDrive, limelight, msg);
+        CameraController cameraController = new CameraController(limelight, localization, input);
         BallDetector ballDetector = new BallDetector();
         Hopper hopper = new Hopper(ballDetector, input);
         Flywheel flywheel = new Flywheel();
@@ -117,6 +119,7 @@ public final class Robot extends RobotBase {
         Scheduler.get().addSubsystem(shooterController);
         // Scheduler.get().addSubsystem(climber);
         Scheduler.get().addSubsystem(limelight);
+        Scheduler.get().addSubsystem(cameraController);
         Scheduler.get().addSubsystem(lights);
         Scheduler.get().addSubsystem(pdp);
 
