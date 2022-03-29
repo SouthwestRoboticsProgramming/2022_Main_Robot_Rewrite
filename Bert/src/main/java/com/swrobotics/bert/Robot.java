@@ -92,7 +92,7 @@ public final class Robot extends RobotBase {
         SwerveDrive swerveDrive = new SwerveDrive(gyro);
         SwerveDriveController swerveDriveController = new SwerveDriveController(input, gyro, swerveDrive);
         Limelight limelight = new Limelight();
-        Localization localization = new Localization(gyro, swerveDrive, limelight, msg);
+        Localization localization = new Localization(gyro, swerveDrive, limelight, msg, input);
         CameraController cameraController = new CameraController(limelight, localization, input);
         BallDetector ballDetector = new BallDetector();
         Hopper hopper = new Hopper(ballDetector, input);
