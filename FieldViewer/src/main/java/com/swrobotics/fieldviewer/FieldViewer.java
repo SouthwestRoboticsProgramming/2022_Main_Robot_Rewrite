@@ -77,6 +77,14 @@ public final class FieldViewer extends PApplet {
         strokeWeight(10);
         stroke(255);
         point(fieldX, fieldY);
+
+        noStroke();
+        fill(255);
+        translate(fieldX, fieldY);
+        pushMatrix();
+        scale(1/PIXELS_PER_METER, -1/PIXELS_PER_METER);
+        text("(" + nf(fieldX, 3, 3) + ", " + nf(fieldY, 3, 3) + ")",  -75, -75);
+        popMatrix();
     }
 
     @Override
