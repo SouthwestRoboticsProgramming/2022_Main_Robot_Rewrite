@@ -54,6 +54,16 @@ public final class Scheduler {
         }
     }
 
+    public boolean isCommandRunning(Command command) {
+        for (CommandTimer timer : commands) {
+            if (timer.command.equals(command)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private static class CommandTimer {
         private final Command command;
         private int timer;

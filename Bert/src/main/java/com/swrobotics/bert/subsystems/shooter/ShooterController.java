@@ -15,6 +15,7 @@ public final class ShooterController implements Subsystem {
     private final Flywheel flywheel;
     private final NewHood hood;
     private final Localization loc;
+    private ShootCommand shoot;
 
     public ShooterController(Input input, Hopper hopper, Flywheel flywheel, NewHood hood, Localization loc) {
         this.input = input;
@@ -22,6 +23,8 @@ public final class ShooterController implements Subsystem {
         this.flywheel = flywheel;
         this.hood = hood;
         this.loc = loc;
+
+        shoot = null;
     }
 
     private double calculateHood(double distance, boolean highGoal) {
@@ -53,13 +56,19 @@ public final class ShooterController implements Subsystem {
         // double rpm = calculateRPM(distance, shootHigh, hoodAngle);
 
         double distance = loc.getDistanceToTarget(); // TODO
+        distance -= 1; // Account for offset from center of hub
+        distance *= 3.28024; // Convert meters to feet
+        distance -= 1.29166666666666; // Account for robot center to front dist
+
+        System.out.println("Distance: " + distance);
 
         // HOOD
         hood.setPosition(calculateHood(distance, AIM_HIGH_GOAL.get()));
         flywheel.setFlywheelSpeed(calculateRPM(distance, AIM_HIGH_GOAL.get()));
+        // flywheel.setFlywheelSpeed(0);
 
-        if (input.getShoot()) {
-            Scheduler.get().addCommand(new ShootCommand(hopper));
+        if (input.getShoot() && (shoot == null || !Scheduler.get().isCommandRunning(shoot))) {
+            Scheduler.get().addCommand(shoot = new ShootCommand(hopper, input));
             hood.calibrate();
         }
     }

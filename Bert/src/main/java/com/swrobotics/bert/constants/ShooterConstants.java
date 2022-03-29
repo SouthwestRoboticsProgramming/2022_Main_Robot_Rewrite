@@ -1,7 +1,6 @@
 package com.swrobotics.bert.constants;
 
 import com.swrobotics.bert.shuffle.ShuffleBoard;
-import com.swrobotics.bert.shuffle.Tunable;
 import com.swrobotics.bert.shuffle.TunableBoolean;
 import com.swrobotics.bert.shuffle.TunableDouble;
 import com.swrobotics.bert.shuffle.TuneGroup;

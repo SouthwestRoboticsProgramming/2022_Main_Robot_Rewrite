@@ -35,12 +35,10 @@ public final class ClimberConstants {
         public static final TunableDouble ROTATING_PID_KP = ROTATING.getDouble("kP", 0.2);
         public static final TunableDouble ROTATING_PID_KI = ROTATING.getDouble("kI", 0);
         public static final TunableDouble ROTATING_PID_KD = ROTATING.getDouble("kD", 0);
-        public static final TunableDouble ROTATING_PID_KF = ROTATING.getDouble("kF", 0);
 
         public static final TunableDouble ROTATING_PID_LOADED_KP = ROTATING.getDouble("Loaded kP", 0);
         public static final TunableDouble ROTATING_PID_LOADED_KI = ROTATING.getDouble("Loaded kI", 0);
         public static final TunableDouble ROTATING_PID_LOADED_KD = ROTATING.getDouble("Loaded kD", 0);
-        public static final TunableDouble ROTATING_PID_LOADED_KF = ROTATING.getDouble("Loaded kF", 0);
 
     private static final TuneGroup TEST = new TuneGroup("Test", ShuffleBoard.climberTab);
         public static final TunableDoubleArray TEST_ARRAY = TEST.getDoubleArray("Test Array", 1, 2, 3, 4, 5, 6, 7, 8, 9);

@@ -1,7 +1,6 @@
 package com.swrobotics.bert.subsystems.drive;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.swrobotics.bert.shuffle.ShuffleBoard;
 import com.swrobotics.bert.subsystems.Subsystem;
 
 import com.swrobotics.bert.util.Utils;
@@ -181,13 +180,13 @@ public final class SwerveDrive implements Subsystem {
 //        }
 //        System.out.println(builder.toString());
 
-//         System.out.printf(
-//             "CANCoders: %3.3f %3.3f %3.3f %3.3f %n",
-//             frontLeft.getCANCoderAngle(),
-//             frontRight.getCANCoderAngle(),
-//             backRight.getCANCoderAngle(),
-//             backLeft.getCANCoderAngle()
-//         );
+        System.out.printf(
+            "CANCoders: %3.3f %3.3f %3.3f %3.3f %n",
+            frontLeft.getCANCoderAngle(),
+            frontRight.getCANCoderAngle(),
+            backRight.getCANCoderAngle(),
+            backLeft.getCANCoderAngle()
+        );
 
         //System.out.print(frontLeft);
     }
