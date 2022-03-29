@@ -14,9 +14,6 @@ import com.swrobotics.bert.subsystems.Localization;
 import com.swrobotics.bert.subsystems.PDP;
 import com.swrobotics.bert.subsystems.auto.Autonomous;
 import com.swrobotics.bert.subsystems.auto.Pathfinding;
-import com.swrobotics.bert.subsystems.camera.CameraTurret;
-import com.swrobotics.bert.subsystems.camera.CameraTurretController;
-import com.swrobotics.bert.subsystems.camera.Cameras;
 import com.swrobotics.bert.subsystems.camera.Limelight;
 import com.swrobotics.bert.subsystems.drive.SwerveDrive;
 import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
@@ -48,7 +45,7 @@ public final class Robot extends RobotBase {
 
     private MessengerClient msg = null;
     private TaskManagerAPI raspberryPi;
-    private TaskManagerAPI jetsonNano;
+    //private TaskManagerAPI jetsonNano;
 
     public boolean isMessengerConnected() {
         return msg != null;
@@ -93,17 +90,14 @@ public final class Robot extends RobotBase {
         Input input = new Input();
         SwerveDrive swerveDrive = new SwerveDrive(gyro);
         SwerveDriveController swerveDriveController = new SwerveDriveController(input, gyro, swerveDrive);
-        CameraTurret cameraTurret = new CameraTurret();
-        CameraTurretController cameraTurretController = new CameraTurretController(input, cameraTurret);
-        Cameras cameras = new Cameras();
         Limelight limelight = new Limelight();
         Localization localization = new Localization(gyro, swerveDrive, limelight, msg);
-        Intake intake = new Intake();
-        IntakeController intakeController = new IntakeController(input, intake);
         BallDetector ballDetector = new BallDetector();
         Hopper hopper = new Hopper(ballDetector, input);
         Flywheel flywheel = new Flywheel();
         NewHood hood = new NewHood();
+        Intake intake = new Intake();
+        IntakeController intakeController = new IntakeController(input, intake, hopper);
         ShooterController shooterController = new ShooterController(input, hopper, flywheel, hood, localization);
     //    Climber climber = new Climber(input, gyro);
         // Don't add ClimberController here, it is added after reset
@@ -113,9 +107,6 @@ public final class Robot extends RobotBase {
         Scheduler.get().addSubsystem(input);
         Scheduler.get().addSubsystem(swerveDrive);
         Scheduler.get().addSubsystem(swerveDriveController);
-        Scheduler.get().addSubsystem(cameraTurret);
-        Scheduler.get().addSubsystem(cameraTurretController);
-        Scheduler.get().addSubsystem(cameras);
         Scheduler.get().addSubsystem(localization);
         Scheduler.get().addSubsystem(intake);
         Scheduler.get().addSubsystem(intakeController);
@@ -132,7 +123,7 @@ public final class Robot extends RobotBase {
         Pathfinding pathfinding = null;
         if (msg != null) {
             Scheduler.get().addCommand(new PublishLocalizationCommand(msg, localization));
-            pathfinding = new Pathfinding(swerveDriveController, localization, input, msg);
+            pathfinding = new Pathfinding(swerveDriveController, localization, msg);
             Scheduler.get().addSubsystem(pathfinding);
         }
 

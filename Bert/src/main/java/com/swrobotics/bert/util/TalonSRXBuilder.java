@@ -1,7 +1,5 @@
 package com.swrobotics.bert.util;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
@@ -13,7 +11,6 @@ public final class TalonSRXBuilder {
 
     private boolean inverted = false;
     private double sensorOffset = 0;
-    private double deadband = 0.001;
 
     public TalonSRXBuilder(int canID) {
         this.canID = canID;

@@ -1,15 +1,20 @@
 package com.swrobotics.bert.subsystems.intake;
 
+import com.swrobotics.bert.Scheduler;
+import com.swrobotics.bert.commands.intake.IntakeEjectCommand;
 import com.swrobotics.bert.control.Input;
 import com.swrobotics.bert.subsystems.Subsystem;
+import com.swrobotics.bert.subsystems.shooter.Hopper;
 
 public final class IntakeController implements Subsystem {
     private final Input input;
     private final Intake intake;
+    private final Hopper hopper;
 
-    public IntakeController(Input input, Intake intake) {
+    public IntakeController(Input input, Intake intake, Hopper hopper) {
         this.input = input;
         this.intake = intake;
+        this.hopper = hopper;
     }
 
     @Override
@@ -20,6 +25,10 @@ public final class IntakeController implements Subsystem {
                 intake.setState(Intake.State.ON);} else {
                     intake.setState(Intake.State.OFF);
                 }
+        }
+
+        if (input.getEject()) {
+            Scheduler.get().addCommand(new IntakeEjectCommand(intake, hopper));
         }
     }
 }

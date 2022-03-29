@@ -1,6 +1,5 @@
 package com.swrobotics.bert.subsystems.shooter;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.swrobotics.bert.control.Input;

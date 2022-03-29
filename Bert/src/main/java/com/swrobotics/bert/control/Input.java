@@ -49,6 +49,10 @@ public final class Input implements Subsystem {
 
     }
 
+    public boolean getEject() {
+        return manipulator.start.leadingEdge();
+    }
+
     public double getTeleDistance() {
         return Utils.clamp(deadzone(manipulator.leftStickY.get()), 0, 1);
     }
