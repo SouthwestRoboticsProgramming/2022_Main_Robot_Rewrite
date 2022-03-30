@@ -64,12 +64,15 @@ public final class ShooterController implements Subsystem {
 //            System.out.println("I'm supposed to be shooting");
             hood.setPosition(calculateHood(distance, AIM_HIGH_GOAL.get()));
             flywheel.setFlywheelSpeed(calculateRPM(distance, AIM_HIGH_GOAL.get()));
+            System.out.println("Full speed");
         } else if (hopper.isBallDetected()){
             hood.calibrate();
             flywheel.setFlywheelSpeed(FLYWHEEL_IDLE_SPEED.get());
+            System.out.println("Idle speed");
         }else { // Don't spin the falcon when there is no ball
             hood.calibrate();
             flywheel.setFlywheelSpeed(0);
+            System.out.println("No speed");
         }
 
         if (input.getShoot() && (shoot == null || !Scheduler.get().isCommandRunning(shoot))) {
