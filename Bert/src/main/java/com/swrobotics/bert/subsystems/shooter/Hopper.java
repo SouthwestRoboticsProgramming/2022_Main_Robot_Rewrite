@@ -48,6 +48,10 @@ public final class Hopper implements Subsystem {
         index.set(TalonFXControlMode.Velocity, speed * RPM_TO_FX_VELOCITY);
     }
 
+    public boolean isBallDetected() {
+        return detector.isBallDetected();
+    }
+
     @Override
     public void robotPeriodic() {
         if (!shooting) {

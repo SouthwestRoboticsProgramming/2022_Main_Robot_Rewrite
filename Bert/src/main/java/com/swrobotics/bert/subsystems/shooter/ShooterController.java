@@ -46,7 +46,7 @@ public final class ShooterController implements Subsystem {
             return -1000; // do something useless because TODO
         }
     }
-
+//eat foos
     @Override
     public void robotPeriodic() {
 
@@ -61,9 +61,12 @@ public final class ShooterController implements Subsystem {
         if (loc.isLookingAtTarget() || input.getAim() || input.getAimOverride()) {
             hood.setPosition(calculateHood(distance, AIM_HIGH_GOAL.get()));
             flywheel.setFlywheelSpeed(calculateRPM(distance, AIM_HIGH_GOAL.get()));
-        } else {
+        } else if (hopper.isBallDetected()){
             hood.calibrate();
             flywheel.setFlywheelSpeed(FLYWHEEL_IDLE_SPEED.get());
+        }else { // Don't spin the falcon when there is no ball
+            hood.calibrate();
+            flywheel.setFlywheelSpeed(0);
         }
 
         if (input.getShoot() && (shoot == null || !Scheduler.get().isCommandRunning(shoot))) {
