@@ -39,6 +39,7 @@ public final class Intake implements Subsystem {
                     INTAKE_KD.get(),
                     INTAKE_KF.get()
                 )
+                .setRamp(1)
                 .build();
 
         motor.set(ControlMode.PercentOutput, 0);
