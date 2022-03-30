@@ -35,7 +35,7 @@ public final class Flywheel implements Subsystem {
         FLYWHEEL_KD.onChange(this::updatePID);
         FLYWHEEL_KF.onChange(this::updatePID);
 
-        state = State.IDLE;
+        state = State.ON;
     }
 
     private void updatePID() {

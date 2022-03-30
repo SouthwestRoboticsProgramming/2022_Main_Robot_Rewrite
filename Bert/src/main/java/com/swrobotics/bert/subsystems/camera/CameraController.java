@@ -19,6 +19,8 @@ public class CameraController implements Subsystem{
     public void robotPeriodic() {
         if (loc.isLookingAtTarget() || input.getAimOverride()) {
             limelight.setLights(true);
+        } else {
+            limelight.setLights(false);
         }
     }
 

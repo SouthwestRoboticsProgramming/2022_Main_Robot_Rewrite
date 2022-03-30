@@ -4,11 +4,8 @@ import com.swrobotics.bert.commands.Command;
 import com.swrobotics.bert.profiler.Profiler;
 import com.swrobotics.bert.subsystems.Subsystem;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public final class Scheduler {
     private static final Scheduler INSTANCE = new Scheduler();
@@ -16,14 +13,14 @@ public final class Scheduler {
         return INSTANCE;
     }
 
-    private final List<Subsystem> subsystems;
-    private final List<CommandTimer> commands;
+    private final Queue<Subsystem> subsystems;
+    private final Queue<CommandTimer> commands;
 
     private final Set<Subsystem> subsystemsToRemove;
 
     private Scheduler() {
-        subsystems = new ArrayList<>();
-        commands = new ArrayList<>();
+        subsystems = new ConcurrentLinkedQueue<>();
+        commands = new ConcurrentLinkedQueue<>();
 
         subsystemsToRemove = new HashSet<>();
     }

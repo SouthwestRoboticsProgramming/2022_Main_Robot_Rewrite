@@ -77,6 +77,7 @@ public final class NewHood implements Subsystem {
             out = Utils.clamp(out, -1, 1);
             // System.out.println("Current: " + encoder.getDistance() + " Target: " + targetPosition * 588 / 3 + " Out: " + out);
             hood.set(TalonSRXControlMode.PercentOutput, out);
+            //System.out.println("The hood is NOT calibrating");
         }
 
 //        System.out.println("Encoder: " + hood.getSelectedSensorPosition() + ", Limit: " + limitSwitch.get() + ", calibrating: " + isCalibrating);
