@@ -45,6 +45,12 @@ public final class TalonFXBuilder {
         return this;
     }
 
+    public TalonFXBuilder setRamp(double ramp) {
+        config.closedloopRamp = ramp;
+        config.openloopRamp = ramp;
+        return this;
+    }
+
     public TalonFX build() {
         TalonFX fx = new TalonFX(canID, canBus);
 

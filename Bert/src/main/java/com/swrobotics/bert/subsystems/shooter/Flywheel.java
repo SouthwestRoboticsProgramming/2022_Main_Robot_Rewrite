@@ -10,10 +10,6 @@ import static com.swrobotics.bert.constants.ShooterConstants.*;
 import static com.swrobotics.bert.constants.Constants.*;
 
 public final class Flywheel implements Subsystem {
-    public enum State {
-        IDLE,
-        ON
-    }
 
     private final TalonFX flywheel;
     private State state;
