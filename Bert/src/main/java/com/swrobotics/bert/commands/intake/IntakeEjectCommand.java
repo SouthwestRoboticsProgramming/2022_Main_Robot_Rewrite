@@ -11,10 +11,16 @@ import static com.swrobotics.bert.constants.ShooterConstants.*;
 public final class IntakeEjectCommand implements Command {
     private final Intake intake;
     private final Hopper hopper;
+    private final Intake.State savedState;
     private int timer;
 
     public IntakeEjectCommand(Intake intake, Hopper hopper) {
         this.intake = intake;
+        Intake.State state = intake.getState();
+        if (state == Intake.State.EJECT) {
+            state = Intake.State.OFF;
+        }
+        savedState = state;
         this.hopper = hopper;
         this.timer = (int) (EJECT_TIME.get() * PERIODIC_PER_SECOND);
     }
@@ -34,7 +40,7 @@ public final class IntakeEjectCommand implements Command {
 
     @Override
     public void end() {
-        intake.setState(Intake.State.OFF);
+        intake.setState(savedState);
         hopper.setIndexSpeed(0);
     }
 }

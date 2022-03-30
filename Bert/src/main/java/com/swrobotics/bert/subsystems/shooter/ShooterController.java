@@ -57,8 +57,11 @@ public final class ShooterController implements Subsystem {
 
         // System.out.println("Distance: " + distance);
 
+        System.out.println("Local angle: " + loc.getLocalAngleToTarget());
+
         // HOOD
         if (loc.isLookingAtTarget() || input.getAim() || input.getAimOverride()) {
+//            System.out.println("I'm supposed to be shooting");
             hood.setPosition(calculateHood(distance, AIM_HIGH_GOAL.get()));
             flywheel.setFlywheelSpeed(calculateRPM(distance, AIM_HIGH_GOAL.get()));
         } else if (hopper.isBallDetected()){

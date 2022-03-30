@@ -69,9 +69,11 @@ public final class Localization implements Subsystem {
         double gyroAngle = gyro.getAngle();
         double angleToTarget = getAngleToTarget().getDegrees();
 
-        double diff = angleToTarget - gyroAngle;
+        double diff = -gyroAngle - angleToTarget + 90;
         double normalized = Utils.normalizeRadians(Math.toRadians(diff));
 
+
+        // System.out.println("Gyro: " + gyroAngle + " Angle to target " + angleToTarget + " Diff (normalized): " + Math.toDegrees(normalized));
         return new Rotation2d(normalized);
     }
 
