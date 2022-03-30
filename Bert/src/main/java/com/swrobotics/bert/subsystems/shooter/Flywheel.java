@@ -10,9 +10,7 @@ import static com.swrobotics.bert.constants.ShooterConstants.*;
 import static com.swrobotics.bert.constants.Constants.*;
 
 public final class Flywheel implements Subsystem {
-
     private final TalonFX flywheel;
-    private State state;
 
     public Flywheel() {
         flywheel = new TalonFXBuilder(FLYWHEEL_ID)
@@ -30,8 +28,6 @@ public final class Flywheel implements Subsystem {
         FLYWHEEL_KI.onChange(this::updatePID);
         FLYWHEEL_KD.onChange(this::updatePID);
         FLYWHEEL_KF.onChange(this::updatePID);
-
-        state = State.ON;
     }
 
     private void updatePID() {
@@ -49,16 +45,9 @@ public final class Flywheel implements Subsystem {
         // System.out.println(flywheel.getTemperature());
     }
 
-    public void setState(State state) {
-        this.state = state;
-    }
-
     public void setFlywheelSpeed(double rpm) {
-        if (state == State.ON) {
-            flywheel.set(TalonFXControlMode.Velocity, rpm * RPM_TO_FX_VELOCITY * FLYWHEEL_GEAR_RATIO);
-        } else {
-            flywheel.set(TalonFXControlMode.Velocity, FLYWHEEL_IDLE_SPEED.get() * RPM_TO_FX_VELOCITY * FLYWHEEL_GEAR_RATIO);
-        }
+        System.out.println("Flywheel: " + rpm);
+        flywheel.set(TalonFXControlMode.Velocity, rpm * RPM_TO_FX_VELOCITY * FLYWHEEL_GEAR_RATIO);
 //    System.out.println("Current: " + flywheel.getSelectedSensorVelocity() /
 //    RPM_TO_FX_VELOCITY / FLYWHEEL_GEAR_RATIO + " Target: " + rpm);
     }

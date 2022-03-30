@@ -6,11 +6,16 @@
       "style": "0",
       "userScale": "2",
       "width": "1280",
-      "xpos": "363",
-      "ypos": "82"
+      "xpos": "588",
+      "ypos": "48"
     }
   },
   "Window": {
+    "###DIO": {
+      "Collapsed": "0",
+      "Pos": "527,572",
+      "Size": "162,123"
+    },
     "###FMS": {
       "Collapsed": "0",
       "Pos": "5,540",
@@ -39,7 +44,7 @@
     "###Timing": {
       "Collapsed": "0",
       "Pos": "5,150",
-      "Size": "133,104"
+      "Size": "133,77"
     },
     "Debug##Default": {
       "Collapsed": "0",
