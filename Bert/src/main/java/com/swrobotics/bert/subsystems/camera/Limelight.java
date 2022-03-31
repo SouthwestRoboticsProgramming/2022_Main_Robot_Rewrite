@@ -19,6 +19,9 @@ public final class Limelight implements Subsystem {
     private double y;
     private double area;
 
+    private LimelightOutputFilter xFilter;
+    private LimelightOutputFilter yFilter;
+
     public Limelight() {
         NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
         this.xAngle = table.getEntry("tx");
@@ -29,6 +32,10 @@ public final class Limelight implements Subsystem {
 
         setLights(LIMELIGHT_LIGHTS.get());
         LIMELIGHT_LIGHTS.onChange(() -> setLights(LIMELIGHT_LIGHTS.get()));
+    
+        int span = 5;
+        xFilter = new LimelightOutputFilter(span);
+        yFilter = new LimelightOutputFilter(span);
     }
 
     public double getXangle() {
@@ -73,8 +80,8 @@ public final class Limelight implements Subsystem {
 
     @Override
     public void robotPeriodic() {
-        x = xAngle.getDouble(0.0);
-        y = yAngle.getDouble(0.0);
+        x = xFilter.filter(xAngle.getDouble(0.0));
+        y = yFilter.filter(yAngle.getDouble(0.0));
         area = targetArea.getDouble(0.0);
     }
 }

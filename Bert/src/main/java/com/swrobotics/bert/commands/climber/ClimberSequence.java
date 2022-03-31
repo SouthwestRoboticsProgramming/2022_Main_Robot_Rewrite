@@ -45,7 +45,7 @@ public final class ClimberSequence extends CommandSequence {
 
     @Override
     public boolean run() {
-        if (input.getClimberNextStep() && climber.isInTolarence()) {
+        if (!(getCurrent() instanceof WaitForAngle) && input.getClimberNextStep() && climber.isInTolarence()) {
             next();
         }
         if (input.getClimberPreviousStep()) {

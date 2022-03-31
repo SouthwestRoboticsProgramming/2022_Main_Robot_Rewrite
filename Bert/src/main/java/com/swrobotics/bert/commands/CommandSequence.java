@@ -15,6 +15,13 @@ public abstract class CommandSequence implements Command {
         cmds.add(cmd);
     }
 
+    protected Command getCurrent() {
+        if (running())
+            return cmds.get(index);
+        else
+            return null;
+    }
+
     @Override
     public void init() {
         if (cmds.size() == 0) {
