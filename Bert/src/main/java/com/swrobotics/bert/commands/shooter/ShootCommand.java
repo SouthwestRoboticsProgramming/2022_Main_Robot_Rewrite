@@ -34,6 +34,10 @@ public final class ShootCommand extends CommandSequence {
                 INDEX_SHOOT_SPEED.get(),
                 INDEX_SHOOT_TIME.get()
         ));
+
+        append(new ReindexCommand(
+                hopper
+        ));
     }
 
     @Override
