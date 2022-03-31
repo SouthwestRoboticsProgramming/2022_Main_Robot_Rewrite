@@ -42,7 +42,7 @@ public class WaitForAngle implements Command {
   }
 
   private double getAngle() {
-    return gyro.getPitch();
+    return -gyro.getPitch();
   }
 
 }
