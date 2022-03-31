@@ -85,8 +85,16 @@ public final class TelescopingArm {
     }
 
     public boolean isInTolarence() {
-        double offset = Math.abs((Math.abs(target) - Math.abs((Utils.map(encoder.getPosition(), TELESCOPING_MIN_TICKS.get(), TELESCOPING_MAX_TICKS.get(), 0, 1)))));
-        boolean inTolarence = TELESCOPING_TOLERANCE.get() > offset;
+        return isInTolarence(TELESCOPING_TOLERANCE.get());
+    }
+
+    private double encoderPerc() {
+        return Utils.map(encoder.getPosition(), TELESCOPING_MIN_TICKS.get(), TELESCOPING_MAX_TICKS.get(), 0, 1);
+    }
+
+    private boolean isInTolarence(double tollerence) {
+        double offset = Math.abs(Math.abs(target) - Math.abs(encoderPerc()));
+        boolean inTolarence = tollerence > offset;
         if (inTolarence) {
             return true;
         } else {
@@ -104,13 +112,17 @@ public final class TelescopingArm {
         if (manualMoving) {
             percentOut = target;
         } else {
-            double targetTicks = Utils.map(target, 0, 1, TELESCOPING_MIN_TICKS.get(), TELESCOPING_MAX_TICKS.get());
-            double pidOut = pid.calculate(encoder.getPosition(), targetTicks) + kF;
+            if (loaded && isInTolarence(TELESCOPING_LOADED_PID_ENGAGE_PERC.get())) {
+                percentOut = TELESCOPING_LOADED_PERCENT_OUT.get();
+            } else {
+                double targetTicks = Utils.map(target, 0, 1, TELESCOPING_MIN_TICKS.get(), TELESCOPING_MAX_TICKS.get());
+                percentOut = pid.calculate(encoder.getPosition(), targetTicks) + kF;
+            }
 
             if (loaded) {
-                percentOut = Utils.clamp(pidOut, -TELESCOPING_MAX_LOADED_PERCENT.get(), TELESCOPING_MAX_LOADED_PERCENT.get());
+                percentOut = Utils.clamp(percentOut, -TELESCOPING_MAX_LOADED_PERCENT.get(), TELESCOPING_MAX_LOADED_PERCENT.get());
             } else {
-                percentOut = Utils.clamp(pidOut, -TELESCOPING_MAX_UNLOADED_PERCENT.get(), TELESCOPING_MAX_UNLOADED_PERCENT.get());
+                percentOut = Utils.clamp(percentOut, -TELESCOPING_MAX_UNLOADED_PERCENT.get(), TELESCOPING_MAX_UNLOADED_PERCENT.get());
             }
         }
         motor1.set(percentOut);

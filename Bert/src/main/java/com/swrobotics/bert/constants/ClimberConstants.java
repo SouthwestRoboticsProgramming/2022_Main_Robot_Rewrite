@@ -12,6 +12,8 @@ public final class ClimberConstants {
         public static final TunableDouble TELESCOPING_TOLERANCE = TELESCOPING.getDouble("Tele Tolerance", 0.05);
         public static final TunableDouble TELESCOPING_MAX_LOADED_PERCENT = TELESCOPING.getDouble("Tele Max Loaded Output", 0.8);
         public static final TunableDouble TELESCOPING_MAX_UNLOADED_PERCENT = TELESCOPING.getDouble("Tele Max Unloaded Output", 0.5);
+        public static final TunableDouble TELESCOPING_LOADED_PERCENT_OUT = TELESCOPING.getDouble("Tele Loaded Percent Out", -0.75);
+        public static final TunableDouble TELESCOPING_LOADED_PID_ENGAGE_PERC = TELESCOPING.getDouble("Tele Loaded Engague Percent", 0.05);
 
         public static final TunableDouble TELESCOPING_PID_KP = TELESCOPING.getDouble("kP", 0.2);
         public static final TunableDouble TELESCOPING_PID_KI = TELESCOPING.getDouble("kI", 0.001);
