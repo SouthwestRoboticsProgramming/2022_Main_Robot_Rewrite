@@ -2,6 +2,7 @@ package com.swrobotics.bert.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.swrobotics.bert.constants.CameraConstants;
+import com.swrobotics.bert.constants.ball.BallLocation;
 import com.swrobotics.bert.control.Input;
 import com.swrobotics.bert.subsystems.camera.Limelight;
 import com.swrobotics.bert.subsystems.drive.SwerveDrive;
@@ -80,6 +81,18 @@ public final class Localization implements Subsystem {
 
     public boolean isLookingAtTarget() {
         return Math.abs(getLocalAngleToTarget().getDegrees()) < CameraConstants.LOOKING_AT_TARGET_THRESH.get();
+    }
+
+    public Rotation2d getAngleToBall(BallLocation ball) {
+        double robotX = drive.getOdometryPose().getX();
+        double robotY = drive.getOdometryPose().getY();
+
+        double ballX = ball.getX();
+        double ballY = ball.getY();
+
+        double angleRadians = Math.atan2(ballY - robotY,ballX - robotX);
+
+        return new Rotation2d(angleRadians);
     }
 
     @Override

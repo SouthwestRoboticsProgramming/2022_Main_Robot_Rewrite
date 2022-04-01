@@ -36,8 +36,8 @@ public final class RotatingArms {
         right.update();
     }
 
-    public boolean isInTolarence() {
-        return left.isInTolarence() && right.isInTolarence();
+    public boolean isInTolerance() {
+        return left.isInTolerance() && right.isInTolerance();
     }
 
     @Override

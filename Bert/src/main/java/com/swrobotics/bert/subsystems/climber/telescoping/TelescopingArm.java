@@ -85,16 +85,16 @@ public final class TelescopingArm {
     }
 
     public boolean isInTolarence() {
-        return isInTolarence(TELESCOPING_TOLERANCE.get()); // TODO: Why Nate Why?
+        return isInTolarence(TELESCOPING_TOLERANCE.get()); // TODO: Why Nate
     }
 
     private double encoderPerc() {
         return Utils.map(encoder.getPosition(), TELESCOPING_MIN_TICKS.get(), TELESCOPING_MAX_TICKS.get(), 0, 1);
     }
 
-    private boolean isInTolarence(double tollerence) {
+    private boolean isInTolarence(double tolerance) {
         double offset = Math.abs(Math.abs(target) - Math.abs(encoderPerc()));
-        boolean inTolarence = tollerence > offset;
+        boolean inTolarence = tolerance > offset;
         if (inTolarence) {
             return true;
         } else {

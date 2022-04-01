@@ -81,13 +81,13 @@ public final class RotatingArm {
         target = percentOutput;
     }
 
-    public boolean isInTolarence() {
+    public boolean isInTolerance() {
         double offset = Math.abs((Math.abs(target) - Math.abs(getCurrentAngle())));
-        boolean inTolarence = ROTATING_TOLERANCE.get() > offset;
-        if (inTolarence) {
+        boolean inTolerance = ROTATING_TOLERANCE.get() > offset;
+        if (inTolerance) {
             return true;
         } else {
-            System.out.println(name + " not in tolarence with offset of " + offset);
+            System.out.println(name + " not in tolerance with offset of " + offset);
             return false;
         }
     }

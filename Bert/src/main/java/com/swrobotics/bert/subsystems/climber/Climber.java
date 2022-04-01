@@ -38,7 +38,7 @@ public final class Climber implements Subsystem {
     }
 
     public boolean isInTolarence() {
-        return telescoping.isInTolarence() && rotating.isInTolarence();
+        return telescoping.isInTolarence() && rotating.isInTolerance();
     }
 
     @Override
