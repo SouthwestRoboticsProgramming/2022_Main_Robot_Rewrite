@@ -23,8 +23,8 @@ public final class ShooterConstants {
         public static final TunableDouble INDEX_SHOOT_SPEED = INDEX.getDouble("Shoot Speed", -10000);
         public static final TunableDouble INDEX_SHOOT_TIME = INDEX.getDouble("Shoot Time", 0.2);
         public static final TunableDouble INDEX_EJECT_SPEED = INDEX.getDouble("Eject Speed", 10000);
-        public static final TunableDouble INDEX_REINDEX_SPEED = INDEX.getDouble("Reindex Speed", -150.0); // TODO: FIXME: fix it
-        public static final TunableDouble INDEX_REINDEX_TIME = INDEX.getDouble("Reindex Time", 2); // TODO: FIXME: fix it
+        public static final TunableDouble INDEX_REINDEX_SPEED = INDEX.getDouble("Reindex Speed", 750.0);
+        public static final TunableDouble INDEX_REINDEX_TIME = INDEX.getDouble("Reindex Time", 0.2);
 
         public static final TunableDouble INDEX_KP = INDEX.getDouble("kP", 0.07);
         public static final TunableDouble INDEX_KI = INDEX.getDouble("kI", 0);
