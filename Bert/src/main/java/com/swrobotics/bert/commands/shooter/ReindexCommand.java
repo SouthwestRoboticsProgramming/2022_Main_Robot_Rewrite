@@ -24,6 +24,8 @@ public final class ReindexCommand implements Command {
     @Override
     public boolean run() {
         hopper.setIndexSpeed(INDEX_REINDEX_SPEED.get());
+        // System.out.println("Timer: " + timer + " Ball Not Detected: " + !hopper.isBallDetected());
+        timer--;
 
         return timer <= 0 && !hopper.isBallDetected();
     }

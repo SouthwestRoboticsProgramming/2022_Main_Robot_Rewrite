@@ -80,6 +80,11 @@ public final class NewHood implements Subsystem {
             //System.out.println("The hood is NOT calibrating");
         }
 
+        if (limitSwitch.get()) {
+            offset = -encoder.getDistance();
+            System.out.println("Got the switch");
+        }
+
 //        System.out.println("Encoder: " + hood.getSelectedSensorPosition() + ", Limit: " + limitSwitch.get() + ", calibrating: " + isCalibrating);
     }
 }

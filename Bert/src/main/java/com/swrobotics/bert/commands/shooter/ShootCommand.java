@@ -2,6 +2,7 @@ package com.swrobotics.bert.commands.shooter;
 
 import com.swrobotics.bert.Scheduler;
 import com.swrobotics.bert.commands.CommandSequence;
+import com.swrobotics.bert.commands.WaitCommand;
 import com.swrobotics.bert.control.Input;
 import com.swrobotics.bert.subsystems.shooter.Hopper;
 
@@ -34,6 +35,8 @@ public final class ShootCommand extends CommandSequence {
                 INDEX_SHOOT_SPEED.get(),
                 INDEX_SHOOT_TIME.get()
         ));
+
+        append(new WaitCommand(0.5));
 
         append(new ReindexCommand(
                 hopper

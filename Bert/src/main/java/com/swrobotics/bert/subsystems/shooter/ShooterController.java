@@ -41,6 +41,7 @@ public final class ShooterController implements Subsystem {
 
     private double calculateRPM(double distance, boolean highGoal) {
         if (highGoal) {
+            if (distance > 16) { return 75 * distance + 1584;}
             return Math.max(98.4 * distance + 1584, 2058.75);
         } else {
             return -1000; // do something useless because TODO
