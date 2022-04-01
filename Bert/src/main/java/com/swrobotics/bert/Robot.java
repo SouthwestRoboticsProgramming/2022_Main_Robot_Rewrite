@@ -16,6 +16,7 @@ import com.swrobotics.bert.subsystems.auto.Autonomous;
 import com.swrobotics.bert.subsystems.auto.Pathfinding;
 import com.swrobotics.bert.subsystems.camera.CameraController;
 import com.swrobotics.bert.subsystems.camera.Limelight;
+import com.swrobotics.bert.subsystems.climber.Climber;
 import com.swrobotics.bert.subsystems.drive.SwerveDrive;
 import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
 import com.swrobotics.bert.subsystems.intake.Intake;
@@ -101,7 +102,7 @@ public final class Robot extends RobotBase {
         Intake intake = new Intake();
         IntakeController intakeController = new IntakeController(input, intake, hopper);
         ShooterController shooterController = new ShooterController(input, hopper, flywheel, hood, localization);
-    //    Climber climber = new Climber(input, gyro);
+        Climber climber = new Climber(input, gyro);
         // Don't add ClimberController here, it is added after reset
         Lights lights = new Lights();
         PDP pdp = new PDP();

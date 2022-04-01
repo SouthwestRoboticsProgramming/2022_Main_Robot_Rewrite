@@ -141,4 +141,8 @@ public final class SwerveModule {
         drive.set(TalonFXControlMode.Velocity, moduleState.speedMetersPerSecond * DRIVE_SPEED_TO_NATIVE_VELOCITY);
     }
 
+    public void resetPID() {
+        pid.reset();
+    }
+
 }

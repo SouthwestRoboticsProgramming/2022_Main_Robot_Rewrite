@@ -180,14 +180,21 @@ public final class SwerveDrive implements Subsystem {
 //        }
 //        System.out.println(builder.toString());
 
-//        System.out.printf(
-//            "CANCoders: %3.3f %3.3f %3.3f %3.3f %n",
-//            frontLeft.getCANCoderAngle(),
-//            frontRight.getCANCoderAngle(),
-//            backRight.getCANCoderAngle(),
-//            backLeft.getCANCoderAngle()
-//        );
+    //    System.out.printf(
+    //        "CANCoders: %3.3f %3.3f %3.3f %3.3f %n",
+    //        frontLeft.getCANCoderAngle(),
+    //        frontRight.getCANCoderAngle(),
+    //        backRight.getCANCoderAngle(),
+    //        backLeft.getCANCoderAngle()
+    //    );
 
         //System.out.print(frontLeft);
+    }
+    @Override
+    public void disabledInit() {
+        frontLeft.resetPID();
+        frontRight.resetPID();
+        backLeft.resetPID();
+        backRight.resetPID();
     }
 }
