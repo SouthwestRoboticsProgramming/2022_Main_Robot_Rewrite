@@ -85,7 +85,7 @@ public final class TelescopingArm {
     }
 
     public boolean isInTolarence() {
-        return isInTolarence(TELESCOPING_TOLERANCE.get());
+        return isInTolarence(TELESCOPING_TOLERANCE.get()); // TODO: Why Nate Why?
     }
 
     private double encoderPerc() {
