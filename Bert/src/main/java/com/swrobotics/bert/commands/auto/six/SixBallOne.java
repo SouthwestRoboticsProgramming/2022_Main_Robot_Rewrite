@@ -27,7 +27,7 @@ public final class SixBallOne extends CommandSequence {
         append(new TurnToAngleCommand(drive, loc, loc.getAngleToBall(BLUE_7).getDegrees()));  // Turn to terminal ball
         append(new DriveToPointCommand(msg, path, BLUE_7.getX(), BLUE_7.getY()));             // Drive to terminal ball
         append(new WaitCommand(3.0));                                                         // Wait for human player to feed in ball
-        append(new DriveToPointCommand(msg, path, BLUE_2.getX() - 5, BLUE_2.getY()));         // Drive next to ball 2
+        append(new DriveToPointCommand(msg, path, BLUE_2.getX() - 0.5, BLUE_2.getY()));         // Drive next to ball 2
         append(new TurnToAngleCommand(drive, loc, loc.getAngleToTarget().getDegrees()));      // Turn to target
         append(new ShootCommand(hopper, input)); // FIXME                                     // Shoot
         append(new TurnToAngleCommand(drive, loc, loc.getAngleToBall(BLUE_2).getDegrees()));  // Turn to ball 2
