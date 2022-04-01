@@ -29,6 +29,10 @@ public final class Scheduler {
         subsystems.add(subsystem);
     }
 
+    public boolean hasSubsystem(Subsystem subsystem) {
+        return subsystems.contains(subsystem);
+    }
+
     public void removeSubsystem(Subsystem subsystem) {
         subsystemsToRemove.add(subsystem);
     }
