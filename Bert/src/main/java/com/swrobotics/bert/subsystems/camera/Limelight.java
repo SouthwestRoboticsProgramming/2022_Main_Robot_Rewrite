@@ -80,8 +80,10 @@ public final class Limelight implements Subsystem {
 
     @Override
     public void robotPeriodic() {
-        x = xFilter.filter(xAngle.getDouble(0.0));
-        y = yFilter.filter(yAngle.getDouble(0.0));
+        // x = xFilter.filter(xAngle.getDouble(0.0));
+        // y = yFilter.filter(yAngle.getDouble(0.0));
+        x = xAngle.getDouble(0.0);
+        y = yAngle.getDouble(0.0);
         area = targetArea.getDouble(0.0);
     }
 }

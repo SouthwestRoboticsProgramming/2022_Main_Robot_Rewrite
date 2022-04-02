@@ -1,32 +1,27 @@
 package com.swrobotics.bert.subsystems.auto;
 
+import com.swrobotics.bert.RobotContainer;
 import com.swrobotics.bert.Scheduler;
 import com.swrobotics.bert.commands.Command;
 import com.swrobotics.bert.commands.auto.AutonomousSequence;
 import com.swrobotics.bert.commands.auto.BackupAutonomousSequence;
 import com.swrobotics.bert.subsystems.Subsystem;
-import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
-import com.swrobotics.messenger.client.MessengerClient;
 
 public final class Autonomous implements Subsystem {
-    private final SwerveDriveController drive;
-    private final MessengerClient msg;
-    private final Pathfinding path;
+    private final RobotContainer robot;
 
     private Command autoCommand;
 
-    public Autonomous(SwerveDriveController drive, MessengerClient msg, Pathfinding path) {
-        this.drive = drive;
-        this.msg = msg;
-        this.path = path;
+    public Autonomous(RobotContainer robot) {
+        this.robot = robot;
     }
 
     @Override
     public void autonomousInit() {
-        if (msg != null) {
-            autoCommand = new AutonomousSequence(msg, path);
+        if (robot.msg != null) {
+            autoCommand = new AutonomousSequence(robot);
         } else {
-            autoCommand = new BackupAutonomousSequence(drive);
+            // autoCommand = new BackupAutonomousSequence(drive);
         }
 
         Scheduler.get().addCommand(autoCommand);

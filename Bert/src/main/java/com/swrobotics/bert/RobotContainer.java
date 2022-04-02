@@ -1,6 +1,8 @@
 package com.swrobotics.bert;
 
 import com.swrobotics.bert.commands.MessengerReadCommand;
+import com.swrobotics.bert.commands.PublishLocalizationCommand;
+import com.swrobotics.bert.commands.taskmanager.TaskManagerSetupCommand;
 import com.swrobotics.bert.control.Input;
 import com.swrobotics.bert.subsystems.Lights;
 import com.swrobotics.bert.subsystems.Localization;
@@ -67,6 +69,7 @@ public final class RobotContainer {
             if (msg != null) {
                 Scheduler.get().addCommand(new MessengerReadCommand(msg));
                 raspberryPi = new TaskManagerAPI(msg, RASPBERRY_PI_PREFIX);
+                Scheduler.get().addCommand(new TaskManagerSetupCommand(raspberryPi, "Pathfinding"));
             } else {
                 raspberryPi = null;
             }
@@ -97,12 +100,13 @@ public final class RobotContainer {
             pdp = new PDP();
 
             if (msg != null) {
-                pathfinding = new Pathfinding(driveController, localization, msg);
+                pathfinding = new Pathfinding(this);
+                Scheduler.get().addCommand(new PublishLocalizationCommand(msg, localization));
             } else {
                 pathfinding = null;
             }
 
-            autonomous = new Autonomous(driveController, msg, pathfinding);
+            autonomous = new Autonomous(this);
         }
 
 

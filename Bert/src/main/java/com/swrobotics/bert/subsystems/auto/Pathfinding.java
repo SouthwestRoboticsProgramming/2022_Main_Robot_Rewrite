@@ -1,5 +1,6 @@
 package com.swrobotics.bert.subsystems.auto;
 
+import com.swrobotics.bert.RobotContainer;
 import com.swrobotics.bert.subsystems.Localization;
 import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
@@ -13,17 +14,15 @@ import java.util.List;
 import static com.swrobotics.bert.constants.AutonomousConstants.*;
 
 public final class Pathfinding implements Subsystem {
-    private final SwerveDriveController drive;
-    private final Localization loc;
+    private final RobotContainer robot;
     private final List<Point> path;
     private final PIDController pid;
 
-    public Pathfinding(SwerveDriveController drive, Localization loc, MessengerClient msg) {
-        this.drive = drive;
-        this.loc = loc;
+    public Pathfinding(RobotContainer robot) {
+        this.robot = robot;
         path = new ArrayList<>();
 
-        msg.makeHandler()
+        robot.msg.makeHandler()
                 .listen("Pathfinder:Path")
                 .setHandler((type, in) -> {
                     boolean pathValid = in.readBoolean();
@@ -62,6 +61,8 @@ public final class Pathfinding implements Subsystem {
     public boolean isAtPathTarget() {
         if (path.size() < 1) return false; // No path
 
+        Localization loc = robot.localization;
+
         Point target = path.get(path.size() - 1);
         double deltaX = target.getX() - loc.getFieldX();
         double deltaY = target.getY() - loc.getFieldY();
@@ -72,8 +73,18 @@ public final class Pathfinding implements Subsystem {
     }
 
     @Override
+    public void teleopPeriodic() {
+        if (robot.input.getFollowPath()) {
+            autonomousPeriodic();
+        }
+    }
+
+    @Override
     public void autonomousPeriodic() {
         if (path.size() < 2) return;
+
+        Localization loc = robot.localization;
+        SwerveDriveController drive = robot.driveController;
 
         double locX = loc.getFieldX();
         double locY = loc.getFieldY();

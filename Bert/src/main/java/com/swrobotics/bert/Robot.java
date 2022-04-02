@@ -1,39 +1,16 @@
 package com.swrobotics.bert;
 
-import com.kauailabs.navx.frc.AHRS;
-import com.swrobotics.bert.commands.MessengerReadCommand;
-import com.swrobotics.bert.commands.PublishLocalizationCommand;
-import com.swrobotics.bert.commands.taskmanager.TaskManagerSetupCommand;
 import com.swrobotics.bert.constants.Settings;
-import com.swrobotics.bert.control.Input;
 import com.swrobotics.bert.profiler.ProfileNode;
 import com.swrobotics.bert.profiler.Profiler;
-import com.swrobotics.bert.shuffle.ShuffleBoard;
-import com.swrobotics.bert.subsystems.Lights;
-import com.swrobotics.bert.subsystems.Localization;
-import com.swrobotics.bert.subsystems.PDP;
-import com.swrobotics.bert.subsystems.auto.Autonomous;
-import com.swrobotics.bert.subsystems.auto.Pathfinding;
-import com.swrobotics.bert.subsystems.camera.CameraController;
-import com.swrobotics.bert.subsystems.camera.Limelight;
-import com.swrobotics.bert.subsystems.climber.Climber;
-import com.swrobotics.bert.subsystems.drive.SwerveDrive;
-import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
-import com.swrobotics.bert.subsystems.intake.Intake;
-import com.swrobotics.bert.subsystems.intake.IntakeController;
-import com.swrobotics.bert.subsystems.shooter.*;
-import com.swrobotics.messenger.client.MessengerClient;
-import com.swrobotics.taskmanager.api.TaskManagerAPI;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.SPI;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import static com.swrobotics.bert.constants.CommunicationConstants.*;
 import static com.swrobotics.bert.constants.Constants.PERIODIC_PER_SECOND;
 
 public final class Robot extends RobotBase {
@@ -45,101 +22,11 @@ public final class Robot extends RobotBase {
 
     private boolean running;
 
-    private MessengerClient msg = null;
-    private TaskManagerAPI raspberryPi;
-    //private TaskManagerAPI jetsonNano;
-
-    public boolean isMessengerConnected() {
-        return msg != null;
-    }
-
-    private void init() {
-        // Connect to Messenger
-        int attempts;
-        for (attempts = 0; attempts < MESSENGER_CONNECT_MAX_ATTEMPTS && msg == null; attempts++) {
-            try {
-                msg = new MessengerClient(
-                        MESSENGER_HOST,
-                        MESSENGER_PORT,
-                        MESSENGER_NAME
-                );
-            } catch (IOException e) {
-                System.out.println("Messenger connection failed, trying again");
-            }
-
-            try {
-                Thread.sleep(MESSENGER_CONNECT_RETRY_INTERVAL);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        ShuffleBoard.show("Messenger connected", msg != null);
-        ShuffleBoard.show("Messenger attempts", attempts);
-
-        if (msg != null) {
-            Scheduler.get().addCommand(new MessengerReadCommand(msg));
-
-            // Connect to TaskManager instances
-            raspberryPi = new TaskManagerAPI(msg, RASPBERRY_PI_PREFIX);
-            // jetsonNano = new TaskManagerAPI(msg, JETSON_NANO_PREFIX);
-            Scheduler.get().addCommand(new TaskManagerSetupCommand(raspberryPi, LIDAR_NAME, PATHFINDING_NAME));
-            // Scheduler.get().addCommand(new TaskManagerSetupCommand(jetsonNano, VISION_NAME));
-        }
-
-        AHRS gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
-
-        Input input = new Input();
-        SwerveDrive swerveDrive = new SwerveDrive(gyro);
-        SwerveDriveController swerveDriveController = new SwerveDriveController(input, gyro, swerveDrive);
-        Limelight limelight = new Limelight();
-        Localization localization = new Localization(gyro, swerveDrive, limelight, msg, input);
-        CameraController cameraController = new CameraController(limelight, localization, input);
-        BallDetector ballDetector = new BallDetector();
-        Hopper hopper = new Hopper(ballDetector, input);
-        Flywheel flywheel = new Flywheel();
-        NewHood hood = new NewHood();
-        Intake intake = new Intake();
-        IntakeController intakeController = new IntakeController(input, intake, hopper);
-        ShooterController shooterController = new ShooterController(input, hopper, flywheel, hood, localization);
-        Climber climber = new Climber(input, gyro);
-        // Don't add ClimberController here, it is added after reset
-        Lights lights = new Lights();
-        PDP pdp = new PDP();
-
-        Scheduler.get().addSubsystem(input);
-        Scheduler.get().addSubsystem(swerveDrive);
-        Scheduler.get().addSubsystem(swerveDriveController);
-        Scheduler.get().addSubsystem(localization);
-        Scheduler.get().addSubsystem(intake);
-        Scheduler.get().addSubsystem(intakeController);
-        Scheduler.get().addSubsystem(ballDetector);
-        Scheduler.get().addSubsystem(hopper);
-        Scheduler.get().addSubsystem(flywheel);
-        Scheduler.get().addSubsystem(hood);
-        Scheduler.get().addSubsystem(shooterController);
-        // Scheduler.get().addSubsystem(climber);
-        Scheduler.get().addSubsystem(limelight);
-        Scheduler.get().addSubsystem(cameraController);
-        Scheduler.get().addSubsystem(lights);
-        Scheduler.get().addSubsystem(pdp);
-
-        Pathfinding pathfinding = null;
-        if (msg != null) {
-            Scheduler.get().addCommand(new PublishLocalizationCommand(msg, localization));
-            pathfinding = new Pathfinding(swerveDriveController, localization, msg);
-            Scheduler.get().addSubsystem(pathfinding);
-        }
-
-        Autonomous auto = new Autonomous(swerveDriveController, msg, pathfinding);
-        Scheduler.get().addSubsystem(auto);
-    }
-
     @Override
     public void startCompetition() {
         running = true;
 
-        init();
+        RobotContainer container = new RobotContainer();
         Scheduler.get().robotInit();
         System.out.println("****** Robot program startup complete ******");
 
@@ -220,7 +107,7 @@ public final class Robot extends RobotBase {
                         e.printStackTrace();
                     }
 
-                    msg.sendMessage("RoboRIO:ProfileData", b.toByteArray());
+                    container.msg.sendMessage("RoboRIO:ProfileData", b.toByteArray());
                 }
             }
         }

@@ -1,11 +1,11 @@
 package com.swrobotics.bert.commands.auto;
 
+import com.swrobotics.bert.RobotContainer;
 import com.swrobotics.bert.commands.CommandSequence;
-import com.swrobotics.bert.subsystems.auto.Pathfinding;
-import com.swrobotics.messenger.client.MessengerClient;
+import com.swrobotics.bert.commands.auto.six.SixBallOne;
 
 public final class AutonomousSequence extends CommandSequence {
-    public AutonomousSequence(MessengerClient msg, Pathfinding path) {
-        append(new DriveToPointCommand(msg, path, 0, -5));
+    public AutonomousSequence(RobotContainer robot) {
+        append(new SixBallOne(robot));
     }
 }

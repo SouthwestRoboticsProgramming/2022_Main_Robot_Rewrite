@@ -40,7 +40,7 @@ public final class FieldViewer extends PApplet {
         ellipseMode(CENTER);
 
         try {
-            msg = new MessengerClient("localhost", 5805, "FieldViewer");
+            msg = new MessengerClient("10.21.29.3", 5805, "FieldViewer");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

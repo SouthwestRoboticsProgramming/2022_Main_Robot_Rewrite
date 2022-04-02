@@ -12,12 +12,21 @@ import com.swrobotics.bert.subsystems.auto.Pathfinding;
 import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
 import com.swrobotics.bert.subsystems.intake.Intake;
 import com.swrobotics.bert.subsystems.shooter.Hopper;
-import com.swrobotics.bert.subsystems.shooter.ShooterController;
 import com.swrobotics.messenger.client.MessengerClient;
 import static com.swrobotics.bert.constants.ball.BallLocationConstants.*;
 
+import com.swrobotics.bert.RobotContainer;
+
 public final class SixBallOne extends CommandSequence {
-    public SixBallOne(MessengerClient msg, Pathfinding path, SwerveDriveController drive, Intake intake, ShooterController shooter, Localization loc, Hopper hopper, Input input) {
+    public SixBallOne(RobotContainer robot) {
+        Intake intake = robot.intake;
+        Localization loc = robot.localization;
+        SwerveDriveController drive = robot.driveController;
+        MessengerClient msg = robot.msg;
+        Pathfinding path = robot.pathfinding;
+        Hopper hopper = robot.hopper;
+        Input input = robot.input;
+
         append(new IntakeSetCommand(intake, Intake.State.ON));                                // Intake on
         append(new TurnToAngleCommand(drive, loc, loc.getAngleToBall(BLUE_3).getDegrees()));  // Turn to ball 3
         append(new DriveToPointCommand(msg, path, BLUE_3.getX(),BLUE_3.getY()));              // Drive to ball 3

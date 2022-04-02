@@ -36,11 +36,11 @@ public final class ShootCommand extends CommandSequence {
                 INDEX_SHOOT_TIME.get()
         ));
 
-        append(new WaitCommand(0.5));
+        // append(new WaitCommand(0.5));
 
-        append(new ReindexCommand(
-                hopper
-        ));
+        // append(new ReindexCommand(
+        //         hopper
+        // ));
     }
 
     @Override
