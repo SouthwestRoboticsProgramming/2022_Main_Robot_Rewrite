@@ -12,7 +12,7 @@ public final class ClimberConstants {
         public static final TunableDouble TELESCOPING_TOLERANCE = TELESCOPING.getDouble("Tele Tolerance", 0.05);
         public static final TunableDouble TELESCOPING_MAX_LOADED_PERCENT = TELESCOPING.getDouble("Tele Max Loaded Output", 0.8);
         public static final TunableDouble TELESCOPING_MAX_UNLOADED_PERCENT = TELESCOPING.getDouble("Tele Max Unloaded Output", 0.5);
-        public static final TunableDouble TELESCOPING_LOADED_PERCENT_OUT = TELESCOPING.getDouble("Tele Loaded Percent Out", -0.75);
+        public static final TunableDouble TELESCOPING_LOADED_PERCENT_OUT = TELESCOPING.getDouble("Tele Loaded Percent Out", -0.65);
         public static final TunableDouble TELESCOPING_LOADED_PID_ENGAGE_PERC = TELESCOPING.getDouble("Tele Loaded Engague Percent", 0.05);
 
         public static final TunableDouble TELESCOPING_PID_KP = TELESCOPING.getDouble("kP", 0.2);
@@ -31,11 +31,11 @@ public final class ClimberConstants {
     public static final int TELESCOPING_RIGHT_MOTOR_ID_TWO = 25;
 
     private static final TuneGroup ROTATING = new TuneGroup("Rotating", ShuffleBoard.climberTab);
-        public static final TunableDouble ROTATING_MAX_PERCENT = ROTATING.getDouble("Rotating Max Output", 0.1);
-        public static final TunableDouble ROTATING_TOLERANCE = ROTATING.getDouble("Rot Tolerance", 0.1);
+        public static final TunableDouble ROTATING_MAX_PERCENT = ROTATING.getDouble("Rotating Max Output", 0.3);
+        public static final TunableDouble ROTATING_TOLERANCE = ROTATING.getDouble("Rot Tolerance", 2.0);
 
         public static final TunableDouble ROTATING_PID_KP = ROTATING.getDouble("kP", 0.15);
-        public static final TunableDouble ROTATING_PID_KI = ROTATING.getDouble("kI", 0.003);
+        public static final TunableDouble ROTATING_PID_KI = ROTATING.getDouble("kI", 0.004);
         public static final TunableDouble ROTATING_PID_KD = ROTATING.getDouble("kD", 0.001);
 
         public static final TunableDouble ROTATING_PID_LOADED_KP = ROTATING.getDouble("Loaded kP", 0.15);
@@ -58,15 +58,15 @@ public final class ClimberConstants {
 
     private static final TuneGroup STEPS = new TuneGroup("Climber Steps v2", ShuffleBoard.climberTab);
         public static final TunableDouble CLIMB_STEP_1_ROT = STEPS.getDouble("1-Rot: Base Angle", 110);
-        public static final TunableDouble CLIMB_STEP_1_TELE = STEPS.getDouble("1-Tel: Base Tele", .05);
+        public static final TunableDouble CLIMB_STEP_1_TELE = STEPS.getDouble("1-Tel: Base Tele", 0.05);
         public static final TunableDouble CLIMB_STEP_1_5_TELE = STEPS.getDouble("1.5-Tel: Extend Tele", 1.0);
         public static final TunableDouble CLIMB_STEP_2_TELE = STEPS.getDouble("2-Tel: Retract Height", 0.04);
         public static final TunableDouble CLIMB_STEP_3_ROT = STEPS.getDouble("3-Rot: Handoff Angle", 94);
         public static final TunableDouble CLIMB_STEP_4_ROT = STEPS.getDouble("4-Rot: Aim At 3 Angle", 57);
-        public static final TunableDouble CLIMB_STEP_4_5_GYRO = STEPS.getDouble("4.5-Gyro: Pressure Angle", -100000);
+        public static final TunableDouble CLIMB_STEP_4_5_GYRO = STEPS.getDouble("4.5-Gyro: Pressure Angle", -34);
         public static final TunableDouble CLIMB_STEP_4_TELE = STEPS.getDouble("4-Tel: Release Height", 0.4);
-        public static final TunableDouble CLIMB_STEP_5_TELE = STEPS.getDouble("5-Tel: Extend to 3", 0.8);
-        public static final TunableDouble CLIMB_STEP_6_ROT = STEPS.getDouble("6-Rot: Pressure On 3", 65.0);
+        public static final TunableDouble CLIMB_STEP_5_TELE = STEPS.getDouble("5-Tel: Extend to 3", 0.9);
+        public static final TunableDouble CLIMB_STEP_6_ROT = STEPS.getDouble("6-Rot: Pressure On 3", 69.0);
 
     private ClimberConstants() {
         throw new AssertionError();

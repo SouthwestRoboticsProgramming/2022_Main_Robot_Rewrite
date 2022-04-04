@@ -14,7 +14,7 @@ public final class DriveConstants {
         public static final TunableInt BACK_LEFT_MODULE = MODULES.getInt("Back Left", 4);
 
     private static final TuneGroup CONTROLS = new TuneGroup("Controls", ShuffleBoard.driveTab);
-        public static final TunableDouble MAX_VELOCITY = CONTROLS.getDouble("Max Velocity", 1.25); // Meters per Seconda
+        public static final TunableDouble MAX_VELOCITY = CONTROLS.getDouble("Max Velocity", 1.0); // Meters per Seconda
         public static final TunableDouble MAX_TURN_VELOCITY = CONTROLS.getDouble("Max Turn Velocity", 2.0); // Radians per Second
         public static final TunableDouble SLOW_MODE_MULTIPLIER = CONTROLS.getDouble("Slow Mode Multiplier", 0.5);
 
@@ -29,13 +29,13 @@ public final class DriveConstants {
         public static final TunableDouble TURN_KD = PID.getDouble("Turn KD", 0.0);
 
     private static final TuneGroup BODY_SPIN_PID = new TuneGroup("Body Spin PID", ShuffleBoard.driveTab);
-        public static final TunableDouble BODY_SPIN_KP = BODY_SPIN_PID.getDouble("kP", 0.015);
-        public static final TunableDouble BODY_SPIN_KI = BODY_SPIN_PID.getDouble("kI", 0);
-        public static final TunableDouble BODY_SPIN_KD = BODY_SPIN_PID.getDouble("kD", 0);
+        public static final TunableDouble BODY_SPIN_KP = BODY_SPIN_PID.getDouble("kP", 0.01);
+        public static final TunableDouble BODY_SPIN_KI = BODY_SPIN_PID.getDouble("kI", 0.0001);
+        public static final TunableDouble BODY_SPIN_KD = BODY_SPIN_PID.getDouble("kD", 0.0002);
 
     private static final TuneGroup LERP = new TuneGroup("Lerp", ShuffleBoard.driveTab);
-        public static final TunableDouble DRIVE_FULL_THRESHOLD = LERP.getDouble("Full Threshold", 20);
-        public static final TunableDouble DRIVE_STOP_THRESHOLD = LERP.getDouble("Stop Threshold", 60);
+        public static final TunableDouble DRIVE_FULL_THRESHOLD = LERP.getDouble("Full Threshold", 15);
+        public static final TunableDouble DRIVE_STOP_THRESHOLD = LERP.getDouble("Stop Threshold", 40);
 
     /* Hardware*/
     public static final double WHEEL_DIAMETER = 0.10;  // Meters

@@ -20,13 +20,13 @@ public final class ShooterConstants {
         public static final TunableDouble INDEX_IDLE_SPEED = INDEX.getDouble("Idle Speed", -750);
         public static final TunableDouble INDEX_KICKBACK_SPEED = INDEX.getDouble("Kickback Speed", 750);
         public static final TunableDouble INDEX_KICKBACK_TIME = INDEX.getDouble("Kickback Time", 0);
-        public static final TunableDouble INDEX_SHOOT_SPEED = INDEX.getDouble("Shoot Speed", -10000);
+        public static final TunableDouble INDEX_SHOOT_SPEED = INDEX.getDouble("Shoot Speed", -2000);
         public static final TunableDouble INDEX_SHOOT_TIME = INDEX.getDouble("Shoot Time", 0.2);
         public static final TunableDouble INDEX_EJECT_SPEED = INDEX.getDouble("Eject Speed", 10000);
         public static final TunableDouble INDEX_REINDEX_SPEED = INDEX.getDouble("Reindex Speed", 750.0);
-        public static final TunableDouble INDEX_REINDEX_TIME = INDEX.getDouble("Reindex Time", 0.2);
+        public static final TunableDouble INDEX_REINDEX_TIME = INDEX.getDouble("Reindex Time", 0.0);
 
-        public static final TunableDouble INDEX_KP = INDEX.getDouble("kP", 0.07);
+        public static final TunableDouble INDEX_KP = INDEX.getDouble("kP", 0.05);
         public static final TunableDouble INDEX_KI = INDEX.getDouble("kI", 0);
         public static final TunableDouble INDEX_KD = INDEX.getDouble("kD", 8.0);
         public static final TunableDouble INDEX_KF = INDEX.getDouble("kF", 0.005);
@@ -37,9 +37,9 @@ public final class ShooterConstants {
     private static final TuneGroup FLYWHEEL = new TuneGroup("Flywheel", ShuffleBoard.shooterTab);
         public static final TunableDouble FLYWHEEL_IDLE_SPEED = FLYWHEEL.getDouble("Idle Speed", -750);
 
-        public static final TunableDouble FLYWHEEL_KP = FLYWHEEL.getDouble("kP", 0.3);
-        public static final TunableDouble FLYWHEEL_KI = FLYWHEEL.getDouble("kI", 0.001);
-        public static final TunableDouble FLYWHEEL_KD = FLYWHEEL.getDouble("kD", 0.3);
+        public static final TunableDouble FLYWHEEL_KP = FLYWHEEL.getDouble("kP", 0.5);
+        public static final TunableDouble FLYWHEEL_KI = FLYWHEEL.getDouble("kI", 0.0015);
+        public static final TunableDouble FLYWHEEL_KD = FLYWHEEL.getDouble("kD", 10.0);
         public static final TunableDouble FLYWHEEL_KF = FLYWHEEL.getDouble("kF", 0.02);
 
     public static final int FLYWHEEL_ID = 30;
