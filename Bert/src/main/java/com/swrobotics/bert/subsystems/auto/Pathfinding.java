@@ -108,6 +108,6 @@ public final class Pathfinding implements Subsystem {
         deltaY *= speed;
 
         drive.drive(deltaX, deltaY);
-        System.out.println("Deltas: " + deltaX + ", " + deltaY);
+        // System.out.println("Deltas: " + deltaX + ", " + deltaY);
     }
 }

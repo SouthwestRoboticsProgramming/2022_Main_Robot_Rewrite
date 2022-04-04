@@ -17,7 +17,7 @@ public final class TaskManagerSetupCommand implements Command {
 
     @Override
     public void init() {
-
+        api.setTaskStdOutHandler((task, line) -> {});
     }
 
     @Override

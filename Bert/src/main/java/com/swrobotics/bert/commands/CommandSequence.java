@@ -38,6 +38,7 @@ public abstract class CommandSequence implements Command {
 
         if (running()) {
             cmds.get(index).init();
+            System.out.println("Running " + cmds.get(index));
         }
     }
 

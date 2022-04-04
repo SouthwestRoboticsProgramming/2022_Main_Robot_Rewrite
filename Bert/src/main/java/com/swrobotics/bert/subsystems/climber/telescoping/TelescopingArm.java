@@ -22,6 +22,8 @@ public final class TelescopingArm {
     private double kF;
     private double target;
 
+    private double offset = 0;
+
     public TelescopingArm(int motor1ID, int motor2ID, boolean inverted, String name) {
         this.name = name;
         motor1 = new CANSparkMax(motor1ID, MotorType.kBrushless);
@@ -89,7 +91,7 @@ public final class TelescopingArm {
     }
 
     private double encoderPerc() {
-        return Utils.map(encoder.getPosition(), TELESCOPING_MIN_TICKS.get(), TELESCOPING_MAX_TICKS.get(), 0, 1);
+        return Utils.map(getEncoder(), TELESCOPING_MIN_TICKS.get(), TELESCOPING_MAX_TICKS.get(), 0, 1);
     }
 
     private boolean isInTolarence(double tolerance) {
@@ -104,7 +106,11 @@ public final class TelescopingArm {
     }
 
     public void zero() {
-        encoder.setPosition(0);
+        offset = encoder.getPosition();
+    }
+
+    private double getEncoder() {
+        return encoder.getPosition() - offset;
     }
 
     public void update() {
@@ -116,7 +122,7 @@ public final class TelescopingArm {
                 percentOut = TELESCOPING_LOADED_PERCENT_OUT.get();
             } else {
                 double targetTicks = Utils.map(target, 0, 1, TELESCOPING_MIN_TICKS.get(), TELESCOPING_MAX_TICKS.get());
-                percentOut = pid.calculate(encoder.getPosition(), targetTicks) + kF;
+                percentOut = pid.calculate(getEncoder(), targetTicks) + kF;
             }
 
             if (loaded) {

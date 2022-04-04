@@ -83,21 +83,37 @@ public final class RobotContainer {
         // Subsystems
         {
             input = new Input();
+            sleep();
             drive = new SwerveDrive(gyro);
+            sleep();
             driveController = new SwerveDriveController(input, gyro, drive);
+            sleep();
             limelight = new Limelight();
+            sleep();
             localization = new Localization(gyro, drive, limelight, msg, input);
+            sleep();
             cameraController = new CameraController(limelight, localization, input);
+            sleep();
             ballDetector = new BallDetector();
+            sleep();
             hopper = new Hopper(ballDetector, input);
+            sleep();
             flywheel = new Flywheel();
+            sleep();
             hood = new NewHood();
+            sleep();
             intake = new Intake();
+            sleep();
             intakeController = new IntakeController(input, intake, hopper);
+            sleep();
             shooterController = new ShooterController(input, hopper, flywheel, hood, localization);
+            sleep();
             climber = new Climber(input, gyro);
+            sleep();
             lights = new Lights();
+            sleep();
             pdp = new PDP();
+            sleep();
 
             if (msg != null) {
                 pathfinding = new Pathfinding(this);
@@ -131,6 +147,14 @@ public final class RobotContainer {
             new SubsystemSwitch(autonomous,        ENABLE_AUTONOMOUS);
 
             new SubsystemSwitch(pathfinding, ENABLE_PATHFINDING);
+        }
+    }
+
+    private void sleep() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

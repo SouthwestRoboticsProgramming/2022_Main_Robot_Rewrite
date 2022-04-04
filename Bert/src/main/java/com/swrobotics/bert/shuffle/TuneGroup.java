@@ -15,6 +15,10 @@ public final class TuneGroup {
         layout = parent.layout.getLayout(name);
     }
 
+    public ShuffleboardLayout getLayout() {
+        return layout;
+    }
+
     public TunableDouble getDouble(String name, double defaultVal) {
         return new TunableDouble(layout, name, defaultVal);
     }

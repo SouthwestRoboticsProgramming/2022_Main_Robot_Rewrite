@@ -19,14 +19,20 @@ public final class ClimberController implements Subsystem {
 
     @Override
     public void teleopInit() {
-        
+        Scheduler sch = Scheduler.get();
+        if (hasStartedCommand) {
+            sch.cancelCommand(command);
+            sch.removeSubsystem(this);
+            System.out.println("Canceled the climber sequence command");
+        }
     }
 
     boolean hasStartedCommand = false;
+    ClimberSequence command = null;
     @Override
     public void teleopPeriodic() {
         if (!hasStartedCommand) {
-            Scheduler.get().addCommand(new ClimberSequence(climber, input, gyro));
+            Scheduler.get().addCommand(command = new ClimberSequence(climber, input, gyro));
             hasStartedCommand = true;
         }
 

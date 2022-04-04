@@ -12,7 +12,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
-
+import com.ctre.phoenix.sensors.CANCoderStatusFrame;
+import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.swrobotics.bert.util.Utils;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -32,13 +33,17 @@ public final class SwerveModule {
     private final CANCoder canCoder;
     private final PIDController pid;
 
+    private final double cancoderOffset;
+
     public SwerveModule(int driveID, int turnID, int cancoderID, double cancoderOffset) {
         drive = new TalonFX(driveID, CANIVORE);
         turn = new TalonSRX(turnID);
         canCoder = new CANCoder(cancoderID, CANIVORE);
+        this.cancoderOffset = cancoderOffset;
 
         drive.configFactoryDefault();
         turn.configFactoryDefault();
+        // canCoder.configFactoryDefault();
         
         TalonFXConfiguration driveConfig = new TalonFXConfiguration();
         {
@@ -67,10 +72,12 @@ public final class SwerveModule {
 
         CANCoderConfiguration canConfig = new CANCoderConfiguration();
         canConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
-        canConfig.magnetOffsetDegrees = cancoderOffset;
+        canConfig.magnetOffsetDegrees = 0;
         canConfig.sensorDirection = false;
+        canConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
 
         canCoder.configAllSettings(canConfig);
+        // canCoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 20);
 
         pid = new PIDController(TURN_KP.get(), TURN_KI.get(), TURN_KD.get());
         pid.enableContinuousInput(-90, 90);
@@ -98,7 +105,7 @@ public final class SwerveModule {
     }
 
     public SwerveModuleState getRealState() {
-        return new SwerveModuleState(drive.getSelectedSensorVelocity() / DRIVE_SPEED_TO_NATIVE_VELOCITY, Rotation2d.fromDegrees(canCoder.getAbsolutePosition()));
+        return new SwerveModuleState(drive.getSelectedSensorVelocity() / DRIVE_SPEED_TO_NATIVE_VELOCITY, Rotation2d.fromDegrees(getCANCoderAngle()));
     }
 
     private double fixCurrentAngle(double degreesAngle) {
@@ -108,7 +115,7 @@ public final class SwerveModule {
     }
 
     public double getCANCoderAngle() {
-        return canCoder.getAbsolutePosition();
+        return Utils.convertAngle0to360(canCoder.getAbsolutePosition() + cancoderOffset);
     }
 
     public boolean isAtTargetAngle() {
@@ -124,11 +131,10 @@ public final class SwerveModule {
         turn.set(ControlMode.PercentOutput, 0);
         drive.set(ControlMode.Velocity, 0);
     }
-     
 
     public void update(SwerveModuleState state) {
-        Rotation2d canRotation = new Rotation2d(Math.toRadians(canCoder.getAbsolutePosition()));
-        Rotation2d currentAngle = new Rotation2d(Math.toRadians(fixCurrentAngle(canCoder.getAbsolutePosition())));
+        Rotation2d canRotation = new Rotation2d(Math.toRadians(getCANCoderAngle()));
+        Rotation2d currentAngle = new Rotation2d(Math.toRadians(fixCurrentAngle(getCANCoderAngle())));
         SwerveModuleState moduleState = SwerveModuleState.optimize(state, canRotation);
         Rotation2d targetAngle = moduleState.angle;
 

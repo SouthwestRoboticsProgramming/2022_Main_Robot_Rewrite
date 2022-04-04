@@ -1,5 +1,6 @@
 package com.swrobotics.bert.subsystems.shooter;
 
+import com.swrobotics.bert.shuffle.ShuffleBoard;
 import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.util.TalonSRXBuilder;
 import com.swrobotics.bert.util.Utils;
@@ -54,7 +55,7 @@ public final class NewHood implements Subsystem {
     }
 
     public void setPosition(double position) {
-        targetPosition = position;
+        targetPosition = Utils.clamp(position, 0, 3);
         //System.out.println(targetPosition);
     }
 
@@ -64,16 +65,20 @@ public final class NewHood implements Subsystem {
 
     @Override
     public void robotPeriodic() {
+        ShuffleBoard.showBoolean("Hood Limit Switch", limitSwitch.get());
+
         if (isCalibrating) {
 //            System.out.println("Calibrating Hood");
-            hood.set(TalonSRXControlMode.PercentOutput, HOOD_CALIBRATE_SPEED.get());
-
             if (limitSwitch.get()) {
                 isCalibrating = false;
                 offset = -encoder.getDistance();
+                hood.set(TalonSRXControlMode.PercentOutput, 0);
+            } else {
+                hood.set(TalonSRXControlMode.PercentOutput, HOOD_CALIBRATE_SPEED.get());
             }
         } else {
-            double out = pid.calculate(encoder.getDistance() + offset, targetPosition * 588 / 3);
+            double out = pid.calculate(encoder.getDistance() + offset, Math.max(targetPosition * 588 / 3, 0));
+            ShuffleBoard.show("Hood PID Error", pid.getPositionError());
             out = Utils.clamp(out, -1, 1);
             // System.out.println("Current: " + encoder.getDistance() + " Target: " + targetPosition * 588 / 3 + " Out: " + out);
             hood.set(TalonSRXControlMode.PercentOutput, out);
@@ -82,7 +87,7 @@ public final class NewHood implements Subsystem {
 
         if (limitSwitch.get()) {
             offset = -encoder.getDistance();
-            System.out.println("Got the switch");
+            // System.out.println("Got the switch");
         }
 
 //        System.out.println("Encoder: " + hood.getSelectedSensorPosition() + ", Limit: " + limitSwitch.get() + ", calibrating: " + isCalibrating);

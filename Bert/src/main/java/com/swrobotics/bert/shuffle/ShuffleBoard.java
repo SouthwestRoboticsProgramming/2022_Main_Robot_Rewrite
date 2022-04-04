@@ -1,5 +1,8 @@
 package com.swrobotics.bert.shuffle;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -20,10 +23,17 @@ public final class ShuffleBoard {
     public static final ShuffleboardTab statusTab = Shuffleboard.getTab("Status");
         private static final ShuffleboardLayout valueDisplay = statusTab.getLayout("valueDisplay", BuiltInLayouts.kList);
 
+    private static final Map<String, NetworkTableEntry> valueDisplayEntries = new HashMap<>();
+
     public static void show(String key, Object value) {
         String str = String.valueOf(value);
 
-        NetworkTableEntry entry = valueDisplay.add(key, str).getEntry();
+        NetworkTableEntry entry = valueDisplayEntries.computeIfAbsent(key, (k) -> valueDisplay.add(k, "").getEntry());
         entry.setString(str);
+    }
+
+    public static void showBoolean(String key, boolean value) {
+        NetworkTableEntry entry = valueDisplayEntries.computeIfAbsent(key, (k) -> valueDisplay.add(k, false).getEntry());
+        entry.setBoolean(value);
     }
 }

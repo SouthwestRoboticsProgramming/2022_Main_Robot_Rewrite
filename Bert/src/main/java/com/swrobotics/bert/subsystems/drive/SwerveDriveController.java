@@ -67,7 +67,7 @@ public final class SwerveDriveController implements Subsystem {
         autoTurn = Utils.convertAngle0to360(angle);
         isAutoTurn = true;
         isAutoTurnToTarget = true;
-        System.out.println("IT IS TURNING TO " + angle);
+        // System.out.println("IT IS TURNING TO " + angle);
     }
 
     public void turn(double amount) {
