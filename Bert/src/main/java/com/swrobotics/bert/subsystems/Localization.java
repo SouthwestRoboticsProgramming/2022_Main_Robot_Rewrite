@@ -92,7 +92,7 @@ public final class Localization implements Subsystem {
 
         double angleRadians = Math.atan2(ballY - robotY, ballX - robotX);
 
-        return new Rotation2d(angleRadians);
+        return new Rotation2d(angleRadians + 0.5 * Math.PI);
     }
 
     @Override
