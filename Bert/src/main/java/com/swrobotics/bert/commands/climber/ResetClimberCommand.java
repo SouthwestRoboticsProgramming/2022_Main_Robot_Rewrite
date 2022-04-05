@@ -45,6 +45,7 @@ public final class ResetClimberCommand implements Command {
     public void end() {
         climber.zero();
         climber.manualMove(0, 0);
-        Scheduler.get().addSubsystem(controller = new ClimberController(input, climber, gyro));
+        // Scheduler.get().addSubsystem(controller = new ClimberController(input, climber, gyro));
+        Scheduler.get().addCommand(new FullClimb(climber, input, gyro));
     }
 }

@@ -50,6 +50,11 @@ public final class TelescopingArms {
         right.update();
     }
 
+    public void stop() {
+        left.stop();
+        right.stop();
+    }
+
     @Override
     public String toString() {
         return "TelescopingArms{"

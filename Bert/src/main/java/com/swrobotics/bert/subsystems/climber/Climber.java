@@ -41,6 +41,14 @@ public final class Climber implements Subsystem {
         return telescoping.isInTolarence() && rotating.isInTolerance();
     }
 
+    public TelescopingArms getTeles() {
+        return telescoping;
+    }
+
+    public RotatingArms getRots() {
+        return rotating;
+    }
+
     @Override
     public void teleopInit() {
         Scheduler.get().addCommand(new ResetClimberCommand(this, input, gyro));

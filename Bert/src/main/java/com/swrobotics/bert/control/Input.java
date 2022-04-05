@@ -57,7 +57,7 @@ public final class Input implements Subsystem {
     
     /* Climb */
     public boolean getClimberNextStep() {
-        return manipulator.x.leadingEdge();
+        return manipulator.x.isPressed();
     }
 
     public boolean getClimberPreviousStep() {

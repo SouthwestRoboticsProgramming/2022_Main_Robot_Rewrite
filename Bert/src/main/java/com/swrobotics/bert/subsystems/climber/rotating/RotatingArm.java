@@ -72,13 +72,18 @@ public final class RotatingArm {
     }
 
     public void setTargetAngleDegrees(double angle) {
-        target = angle;
+        target = Utils.clamp(angle, 40, 120);;
         manualMoving = false;
     }
 
     public void manualMove(double percentOutput) {
         manualMoving = true;
         target = percentOutput;
+    }
+
+    public void stop() {
+        manualMoving = true;
+        target =  0;
     }
 
     public boolean isInTolerance() {

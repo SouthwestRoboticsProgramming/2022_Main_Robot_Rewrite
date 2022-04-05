@@ -77,13 +77,18 @@ public final class TelescopingArm {
     }
 
     public void setTargetDistancePercent(double distance) {
-        target = distance;
+        target = Utils.clamp(distance, 0, 1);
         manualMoving = false;
     }
 
     public void manualMove(double percentOutput) {
         manualMoving = true;
         target = percentOutput;
+    }
+
+    public void stop() {
+        manualMoving = true;
+        target =  0;
     }
 
     public boolean isInTolarence() {
