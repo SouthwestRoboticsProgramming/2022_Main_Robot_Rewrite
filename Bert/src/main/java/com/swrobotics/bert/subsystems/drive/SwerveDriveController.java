@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 import static com.swrobotics.bert.constants.DriveConstants.*;
+import static com.swrobotics.bert.constants.AutonomousConstants.*;
 
 public final class SwerveDriveController implements Subsystem {
     private final AHRS gyro;
@@ -37,11 +38,13 @@ public final class SwerveDriveController implements Subsystem {
                 BODY_SPIN_KI.get(),
                 BODY_SPIN_KD.get()
         );
+        autoTurnPID.setTolerance(TURN_THRESHOLD.get());
         autoTurnPID.enableContinuousInput(0, 360); // Range to match gyro
 
         BODY_SPIN_KP.onChange(this::updateBodyPID);
         BODY_SPIN_KI.onChange(this::updateBodyPID);
         BODY_SPIN_KD.onChange(this::updateBodyPID);
+        TURN_THRESHOLD.onChange(this::updateBodyPID);
     }
 
     private void updateBodyPID() {
@@ -50,6 +53,7 @@ public final class SwerveDriveController implements Subsystem {
                 BODY_SPIN_KI.get(),
                 BODY_SPIN_KD.get()
         );
+        autoTurnPID.setTolerance(TURN_THRESHOLD.get());
     }
 
     @Override
@@ -67,7 +71,7 @@ public final class SwerveDriveController implements Subsystem {
         autoTurn = Utils.convertAngle0to360(angle);
         isAutoTurn = true;
         isAutoTurnToTarget = true;
-        // System.out.println("IT IS TURNING TO " + angle);
+        System.out.println("IT IS TURNING TO " + angle);
     }
 
     public void turn(double amount) {
@@ -78,6 +82,7 @@ public final class SwerveDriveController implements Subsystem {
 
     @Override
     public void autonomousPeriodic() {
+        isAutoTurn = true;
         teleopPeriodic();
     }
 
@@ -89,6 +94,15 @@ public final class SwerveDriveController implements Subsystem {
         double angleRadians = Math.atan2(-robotY, -robotX);
 
         return new Rotation2d(angleRadians - Math.PI / 2);
+    }
+
+    public boolean isAtTargetAngle() {
+        autoTurnPID.calculate(gyro.getRotation2d().getDegrees(), autoTurn); // make sure pid is up to date
+        return autoTurnPID.atSetpoint();
+    }
+
+    public double getAutoAngle() {
+        return gyro.getRotation2d().getDegrees();
     }
 
     @Override
@@ -113,6 +127,7 @@ public final class SwerveDriveController implements Subsystem {
         if (isAutoTurn) {
             if (isAutoTurnToTarget) {
                 driveRotControl = Utils.clamp(-autoTurnPID.calculate(gyroRotation.getDegrees(), autoTurn), -1, 1);
+                System.out.println("Auto info: gyro: " + gyroRotation.getDegrees() + " autoTurn: " + autoTurn + " at: " + isAtTargetAngle());
             } else {
                 driveRotControl = autoTurn;
             }

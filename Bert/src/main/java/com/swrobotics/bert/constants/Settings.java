@@ -8,6 +8,9 @@ public final class Settings {
     private static final TuneGroup PROFILER = new TuneGroup("Profiler", ShuffleBoard.settingsTab);
         public static final TunableBoolean DUMP_PROFILE_DATA = PROFILER.getBoolean("Dump Profile Data", false);
 
+    private static final TuneGroup LOCALIZATION = new TuneGroup("Localization", ShuffleBoard.settingsTab);
+        public static final TunableBoolean USE_LIMELIGHT = LOCALIZATION.getBoolean("Use Limelight", true);
+
 
     private Settings() {
         throw new AssertionError();

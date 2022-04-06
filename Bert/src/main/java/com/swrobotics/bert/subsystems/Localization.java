@@ -11,6 +11,8 @@ import com.swrobotics.messenger.client.MessengerClient;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
+import static com.swrobotics.bert.constants.Settings.*;
+
 public final class Localization implements Subsystem {
     private final AHRS gyro;
     private final SwerveDrive drive;
@@ -92,13 +94,13 @@ public final class Localization implements Subsystem {
 
         double angleRadians = Math.atan2(ballY - robotY, ballX - robotX);
 
-        return new Rotation2d(angleRadians + 0.5 * Math.PI);
+        return new Rotation2d(angleRadians);
     }
 
     @Override
     public void robotPeriodic() {
         // System.out.println("Y angle: " + limelight.getRealYangle() + " Distance: " + limelight.getDistance());
-        if ((isLookingAtTarget() || input.getAimOverride()) && limelight.isAccurate()) { // If the limelight finds a target and is actually pointing at the target
+        if (USE_LIMELIGHT.get() && (isLookingAtTarget() || input.getAimOverride()) && limelight.isAccurate()) { // If the limelight finds a target and is actually pointing at the target
             double visionAngle = limelight.getXangle();
             double visionDist = limelight.getDistance();
             double gyroAngle = gyro.getRotation2d().getDegrees();

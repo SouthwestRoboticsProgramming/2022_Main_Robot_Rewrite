@@ -36,12 +36,12 @@ public final class DriveToPointCommand implements Command {
                 .send();
 
         if (!pathfinder.isAtPathTarget()) {timeout++;}
-        if (timeout * PERIODIC_PER_SECOND >= timeoutSeconds) {return true;} //  Prevents whole auto failing because path can't be created
+        if (timeout / (double) PERIODIC_PER_SECOND >= timeoutSeconds) {return true;} //  Prevents whole auto failing because path can't be created
         return pathfinder.isAtPathTarget();
     }
 
     @Override
     public void end() {
-
+        
     }
 }

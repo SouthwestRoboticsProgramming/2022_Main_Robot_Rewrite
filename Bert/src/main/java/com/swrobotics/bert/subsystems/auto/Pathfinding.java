@@ -74,9 +74,9 @@ public final class Pathfinding implements Subsystem {
 
     @Override
     public void teleopPeriodic() {
-        if (robot.input.getFollowPath()) {
-            autonomousPeriodic();
-        }
+        // if (robot.input.getFollowPath()) {
+        //     autonomousPeriodic();
+        // }
     }
 
     @Override

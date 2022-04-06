@@ -25,9 +25,11 @@ public final class TurnToAngleCommand implements Command {
 
     @Override
     public boolean run() {
-        drive.turnToAngle(angle);
+        drive.turnToAngle(angle - 90);
 
-        return Utils.checkTolerance(loc.getFieldRot().getDegrees(), TURN_THRESHOLD.get());
+        boolean atAngle = drive.isAtTargetAngle();
+        // System.out.println("At angle: " + atAngle + " target: " + angle + " current: " + drive.getAutoAngle());
+        return atAngle;
     }
 
     @Override

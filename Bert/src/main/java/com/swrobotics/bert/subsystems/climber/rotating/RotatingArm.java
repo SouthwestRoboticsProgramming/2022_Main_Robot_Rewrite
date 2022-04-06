@@ -23,6 +23,7 @@ public final class RotatingArm {
     private double arm;
     private double base;
     private double rotsPerInch;
+    private double offset;
 
     public RotatingArm(int motorID, boolean inverted, String name){
         this.name = name;
@@ -31,7 +32,7 @@ public final class RotatingArm {
         motor.setInverted(inverted);
 
         encoder = motor.getEncoder();
-        encoder.setPosition(0);
+        offset = -encoder.getPosition();
 
         pid = new PIDController(
             ROTATING_PID_KP.get(),
@@ -52,7 +53,7 @@ public final class RotatingArm {
     }
 
     public void zero() {
-        encoder.setPosition(0);
+        offset = -encoder.getPosition();
     }
 
     private void updatePID() {
@@ -99,7 +100,7 @@ public final class RotatingArm {
 
     private double getCurrentAngle() {
         // Do law of cosines
-        double currentPose = encoder.getPosition() / rotsPerInch + ROTATING_STARTING_LENGTH;
+        double currentPose = (encoder.getPosition() + offset) / rotsPerInch + ROTATING_STARTING_LENGTH;
         double currentAngle = Math.acos((base*base + arm*arm - currentPose*currentPose)/(2*arm*base));
         return Math.toDegrees(currentAngle);
     }

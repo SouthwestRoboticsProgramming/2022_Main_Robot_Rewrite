@@ -45,6 +45,8 @@ public final class ClimberSequence extends CommandSequence {
 
     @Override
     public boolean run() {
+        boolean superOut = super.run();
+
         if (!(getCurrent() instanceof WaitForAngle) && input.getClimberNextStep() && climber.isInTolarence()) {
             next();
         }
@@ -52,6 +54,6 @@ public final class ClimberSequence extends CommandSequence {
             back();
         }
 
-        return super.run();
+        return superOut;
     }
 }

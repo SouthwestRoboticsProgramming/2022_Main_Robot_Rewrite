@@ -48,6 +48,7 @@ public final class ShooterController implements Subsystem {
         }
     }
 //eat foos
+
     @Override
     public void robotPeriodic() {
 

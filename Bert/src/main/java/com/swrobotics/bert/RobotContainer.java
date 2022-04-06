@@ -92,7 +92,9 @@ public final class RobotContainer {
             sleep();
             localization = new Localization(gyro, drive, limelight, msg, input);
             sleep();
-            cameraController = new CameraController(limelight, localization, input);
+            pdp = new PDP();
+            sleep();
+            cameraController = new CameraController(limelight, localization, input, pdp);
             sleep();
             ballDetector = new BallDetector();
             sleep();
@@ -111,8 +113,6 @@ public final class RobotContainer {
             climber = new Climber(input, gyro);
             sleep();
             lights = new Lights();
-            sleep();
-            pdp = new PDP();
             sleep();
 
             if (msg != null) {

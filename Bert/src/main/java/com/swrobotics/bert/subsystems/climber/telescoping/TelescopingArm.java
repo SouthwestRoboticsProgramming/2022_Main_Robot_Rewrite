@@ -102,6 +102,7 @@ public final class TelescopingArm {
     private boolean isInTolarence(double tolerance) {
         double offset = Math.abs(Math.abs(target) - Math.abs(encoderPerc()));
         boolean inTolarence = tolerance > offset;
+        // System.out.println("TelescopingArm.isInTolarence(): t " + target + " p " + encoderPerc() + " i " + inTolarence);
         if (inTolarence) {
             return true;
         } else {
@@ -141,6 +142,7 @@ public final class TelescopingArm {
     }
 
     public void setLoaded(boolean loaded) {
+        // this.loaded = false;
         this.loaded = loaded;
         updatePID();
     }

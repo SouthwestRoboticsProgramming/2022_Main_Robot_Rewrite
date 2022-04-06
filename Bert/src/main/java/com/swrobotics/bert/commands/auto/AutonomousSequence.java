@@ -6,6 +6,6 @@ import com.swrobotics.bert.commands.auto.six.SixBallOne;
 
 public final class AutonomousSequence extends CommandSequence {
     public AutonomousSequence(RobotContainer robot) {
-        append(new SixBallOne(robot));
+        append(new TwoBallAuto(robot));
     }
 }

@@ -52,7 +52,8 @@ public final class FullClimb implements Command {
     }
 
     private void updateGyro() {     previousAngle = newAngle;
-                                    newAngle = getGyro();}
+                                    newAngle = getGyro();
+                                    System.out.println("FullClimb.updateGyro() - angle: " + newAngle);}
     private double getGyro() {      return -gyro.getPitch();}
     private boolean positiveRate() {return newAngle >= previousAngle;}
     private boolean pastBar(double barAngle) {return newAngle > barAngle;}
@@ -68,66 +69,84 @@ public final class FullClimb implements Command {
         switch (climbStep) {
             case BASE_1:
                 //TELE & ROT
-                teleSetpoint = CLIMB_STEP_1_TELE.get();
-                rotSetpoint = CLIMB_STEP_1_ROT.get();
+                telescopingArms.setTargetDistancePercent(CLIMB_STEP_1_TELE.get());
+                telescopingArms.setLoaded(false);
+                rotatingArms.setTargetAngleDegrees(CLIMB_STEP_1_ROT.get());
                 if (input.getClimberNextStep()) {
-                    switchToStep(ClimbStep.PULL_UP_2);
+                    switchToStep(ClimbStep.ARMS_UP_1_5);
                 }
               break;
             case ARMS_UP_1_5:
                 //TELE
-                teleSetpoint = CLIMB_STEP_1_5_TELE.get();
-                rotSetpoint = CLIMB_STEP_1_ROT.get();
-                loaded = false;
+                telescopingArms.setTargetDistancePercent(CLIMB_STEP_1_5_TELE.get());
+                telescopingArms.setLoaded(false);
+                rotatingArms.setTargetAngleDegrees(CLIMB_STEP_1_ROT.get());
+                // teleSetpoint = CLIMB_STEP_1_5_TELE.get();
+                // rotSetpoint = CLIMB_STEP_1_ROT.get();
+                // loaded = false;
                 if (telescopingArms.isInTolarence() && input.getClimberNextStep()) {switchToStep(ClimbStep.PULL_UP_2);}
                 if (input.getClimberPreviousStep()) {switchToStep(ClimbStep.BASE_1);}
                 break;
             case PULL_UP_2:
                 //TELE
-                teleSetpoint = CLIMB_STEP_2_TELE.get();
-                rotSetpoint = CLIMB_STEP_1_ROT.get();
-                loaded = true;
+                telescopingArms.setTargetDistancePercent(CLIMB_STEP_2_TELE.get());
+                telescopingArms.setLoaded(true);
+                rotatingArms.setTargetAngleDegrees(CLIMB_STEP_1_ROT.get());
+                // teleSetpoint = CLIMB_STEP_2_TELE.get();
+                // rotSetpoint = CLIMB_STEP_1_ROT.get();
+                // loaded = true;
                 if (telescopingArms.isInTolarence() && input.getClimberNextStep()) {switchToStep(ClimbStep.LOCK_IN_3);}
                 if (input.getClimberPreviousStep()) {switchToStep(ClimbStep.ARMS_UP_1_5);}
                 break;
             case LOCK_IN_3:
                 //ROT
-                teleSetpoint = CLIMB_STEP_2_TELE.get();
-                rotSetpoint = CLIMB_STEP_3_ROT.get();
-                loaded = true;
+                telescopingArms.setTargetDistancePercent(CLIMB_STEP_2_TELE.get());
+                telescopingArms.setLoaded(true);
+                rotatingArms.setTargetAngleDegrees(CLIMB_STEP_3_ROT.get());
+                // teleSetpoint = CLIMB_STEP_2_TELE.get();
+                // rotSetpoint = CLIMB_STEP_3_ROT.get();
+                // loaded = true;
                 if (rotatingArms.isInTolerance() && input.getClimberNextStep()) {switchToStep(ClimbStep.HANDOFF_4);}
                 if (input.getClimberPreviousStep()) {switchToStep(ClimbStep.PULL_UP_2);}
                 break;
             case HANDOFF_4:
                 //TELE & ROT & ANGLE
-                teleSetpoint = CLIMB_STEP_4_TELE.get();
-                rotSetpoint = CLIMB_STEP_4_ROT.get();
-                loaded = false;
+                telescopingArms.setTargetDistancePercent(CLIMB_STEP_4_TELE.get());
+                telescopingArms.setLoaded(false);
+                rotatingArms.setTargetAngleDegrees(CLIMB_STEP_4_ROT.get());
+                // teleSetpoint = CLIMB_STEP_4_TELE.get();
+                // rotSetpoint = CLIMB_STEP_4_ROT.get();
+                // loaded = false;
+                System.out.println("FullClimb.run() - PR:" + positiveRate() + "      PB:" + pastBar(CLIMB_STEP_4_5_GYRO.get()));
                 if (rotatingArms.isInTolerance() && positiveRate() && pastBar(CLIMB_STEP_4_5_GYRO.get()) && input.getClimberNextStep()) {switchToStep(ClimbStep.EXTEND_5);}
                 if (input.getClimberPreviousStep()) {switchToStep(ClimbStep.LOCK_IN_3);}
               break;
             case EXTEND_5:
                 //TELE
-                teleSetpoint = CLIMB_STEP_5_TELE.get();
-                rotSetpoint = CLIMB_STEP_4_ROT.get();
-                loaded = false;
+                telescopingArms.setTargetDistancePercent(CLIMB_STEP_5_TELE.get());
+                telescopingArms.setLoaded(false);
+                rotatingArms.setTargetAngleDegrees(CLIMB_STEP_4_ROT.get());
+                // teleSetpoint = CLIMB_STEP_5_TELE.get();
+                // rotSetpoint = CLIMB_STEP_4_ROT.get();
+                // loaded = false;
                 if (telescopingArms.isInTolarence() && input.getClimberNextStep()) {switchToStep(ClimbStep.PRESSURE_6);}
                 if (input.getClimberPreviousStep()) {switchToStep(ClimbStep.HANDOFF_4);}
               break;
             case PRESSURE_6:
                 //ROT
-                teleSetpoint = CLIMB_STEP_5_TELE.get();
-                rotSetpoint = CLIMB_STEP_6_ROT.get();
-                loaded = false;
+                telescopingArms.setTargetDistancePercent(CLIMB_STEP_5_TELE.get());
+                telescopingArms.setLoaded(false);
+                rotatingArms.setTargetAngleDegrees(CLIMB_STEP_6_ROT.get());
+                // teleSetpoint = CLIMB_STEP_5_TELE.get();
+                // rotSetpoint = CLIMB_STEP_6_ROT.get();
+                // loaded = false;
                 if (rotatingArms.isInTolerance() && input.getClimberNextStep()) {switchToStep(ClimbStep.PULL_UP_2);}
                 if (input.getClimberPreviousStep()) {switchToStep(ClimbStep.EXTEND_5);}
               break;
-            default:
-              break;
           }
-          telescopingArms.setTargetDistancePercent(teleSetpoint);
-          telescopingArms.setLoaded(loaded);
-          rotatingArms.setTargetAngleDegrees(rotSetpoint);
+          // telescopingArms.setTargetDistancePercent(teleSetpoint);
+          // telescopingArms.setLoaded(loaded);
+          // rotatingArms.setTargetAngleDegrees(rotSetpoint);
           if (Robot.get().isDisabled()) {
             return true;
           } else {
