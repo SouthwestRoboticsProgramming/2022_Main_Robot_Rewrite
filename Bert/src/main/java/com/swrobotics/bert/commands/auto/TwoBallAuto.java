@@ -2,6 +2,7 @@ package com.swrobotics.bert.commands.auto;
 
 import com.swrobotics.bert.RobotContainer;
 import com.swrobotics.bert.commands.CommandSequence;
+import com.swrobotics.bert.commands.CommandUnion;
 import com.swrobotics.bert.commands.WaitCommand;
 import com.swrobotics.bert.commands.intake.IntakeSetCommand;
 import com.swrobotics.bert.commands.shooter.ShootCommand;
@@ -27,17 +28,19 @@ public class TwoBallAuto extends CommandSequence {
 
         // Sequence:
         // 1. Turn intake on
-        // 2. Turn towards Blue 1
-        // 3. Drive to Blue 1
-        // 4. Turn towards the target
-        // 5. Shoot blue 1 and stored ball
+        // 2. Turn towards and drive to Blue 1
+        // 3. Turn towards the target
+        // 4. Shoot blue 1 and stored ball
 
         append(new IntakeSetCommand(intake, Intake.State.ON));
-        append(new TurnToAngleCommand(drive, loc, loc.getAngleToBall(BLUE_3).getDegrees()));
-        append(new DriveToPointCommand(msg, path, BLUE_3.getX(), BLUE_3.getY(), 5));
-        append(new TurnToAngleCommand(drive, loc, loc.getAngleToTarget().getDegrees()));
+        append(new CommandUnion(
+            new TurnToAngleCommand(drive, loc, loc.getAngleToBall(BLUE_3).getDegrees()),
+            new DriveToPointCommand(msg, path, BLUE_3.getX(), BLUE_3.getY(), 5)
+        ));
+        append(new TurnTowardsTargetCommand(drive, loc));
+        append(new WaitCommand(3));
         append(new ShootCommand(hopper, input)); // Stored ball
-        append(new WaitCommand(1)); // TODO: Don't do this
+        append(new WaitCommand(3)); // TODO: Don't do this
         append(new ShootCommand(hopper, input)); // Blue 1
     }
 }

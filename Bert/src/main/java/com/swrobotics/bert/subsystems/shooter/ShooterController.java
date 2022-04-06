@@ -3,6 +3,10 @@ package com.swrobotics.bert.subsystems.shooter;
 import com.swrobotics.bert.Scheduler;
 import com.swrobotics.bert.commands.shooter.ShootCommand;
 import com.swrobotics.bert.control.Input;
+import com.swrobotics.bert.shuffle.ShuffleBoard;
+import com.swrobotics.bert.shuffle.TemporaryDouble;
+import com.swrobotics.bert.shuffle.TunableDouble;
+import com.swrobotics.bert.shuffle.TuneGroup;
 import com.swrobotics.bert.subsystems.Localization;
 import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.util.Utils;
@@ -39,13 +43,60 @@ public final class ShooterController implements Subsystem {
         }
     }
 
+    // Keys are distance in feet according to distance parameter
+    // Values are RPM
+    private final double[] RPM_TABLE_KEYS   = {6.5,  8.8,  11.25, 13.37, 15.64};
+    private final double[] RPM_TABLE_VALUES = {2300, 2425, 2550,  2593,  2750 };
+
     private double calculateRPM(double distance, boolean highGoal) {
-        if (highGoal) {
-            if (distance > 16) { return 75 * distance + 1584;}
-            return Math.max(98.4 * distance + 1584, 2058.75);
-        } else {
-            return -1000; // do something useless because TODO
+        double lowerKey = 0, higherKey = 0;
+        double lowerValue = 0, higherValue = 0;
+        boolean lowerSet = false, higherSet = false;
+
+        // Find where the distance fits into the table
+        for (int i = 0; i < RPM_TABLE_KEYS.length; i++) {
+            double key = RPM_TABLE_KEYS[i];
+            double value = RPM_TABLE_VALUES[i];
+
+            if (distance > key) {
+                lowerKey = key;
+                lowerValue = value;
+                lowerSet = true;
+            } else if (distance < key) {
+                higherKey = key;
+                higherValue = value;
+                higherSet = true;
+                break;
+            } else if (distance == key) {
+                lowerKey = higherKey = key;
+                lowerValue = higherValue = value;
+                lowerSet = higherSet = true;
+                break;
+            }
         }
+
+        double rpm;
+        if (!lowerSet) {
+            // If closer than the closest point, clamp to closest point
+            // TODO: Shoot to low goal
+            rpm = RPM_TABLE_VALUES[0];
+        } else if (!higherSet) {
+            // If farther than the farthest point, approximate using average slope of the table
+
+            double lastKey = RPM_TABLE_KEYS[RPM_TABLE_KEYS.length - 1];
+            double lastVal = RPM_TABLE_VALUES[RPM_TABLE_VALUES.length - 1];
+
+            double rise = RPM_TABLE_VALUES[0] - lastVal;
+            double run = RPM_TABLE_KEYS[0] - lastKey;
+            double slope = rise / run;
+
+            rpm = lastVal + slope * (distance - lastKey);
+        } else {
+            // If value is within the table, lerp between neighboring entries
+            rpm = Utils.map(distance, lowerKey, higherKey, lowerValue, higherValue);
+        }
+
+        return rpm;
     }
 //eat foos
 

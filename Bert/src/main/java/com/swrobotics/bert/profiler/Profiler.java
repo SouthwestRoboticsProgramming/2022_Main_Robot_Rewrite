@@ -17,6 +17,7 @@ public final class Profiler {
 
     public void push(String name) {
         ProfileNode next = new ProfileNode(name, current);
+        current.end();
         current.addChild(next);
         current = next;
         current.begin();

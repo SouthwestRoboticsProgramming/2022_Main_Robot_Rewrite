@@ -118,7 +118,7 @@ public final class Robot extends RobotBase {
         running = false;
     }
 
-    private RobotState getCurrentState() {
+    public RobotState getCurrentState() {
         if (isDisabled()) return RobotState.DISABLED;
         if (isAutonomous()) return RobotState.AUTONOMOUS;
         if (isTeleop()) return RobotState.TELEOP;

@@ -7,10 +7,10 @@ import com.swrobotics.bert.util.Utils;
 
 import static com.swrobotics.bert.constants.AutonomousConstants.*;
 
-public final class TurnToAngleCommand implements Command {
+public class TurnToAngleCommand implements Command {
     private final SwerveDriveController drive;
-    private final Localization loc;
-    private final double angle;
+    protected final Localization loc;
+    protected double angle;
 
     public TurnToAngleCommand(SwerveDriveController drive, Localization loc, double angle) {
         this.drive = drive;
@@ -25,7 +25,7 @@ public final class TurnToAngleCommand implements Command {
 
     @Override
     public boolean run() {
-        drive.turnToAngle(angle - 90);
+        drive.turnToAngle(angle);
 
         boolean atAngle = drive.isAtTargetAngle();
         // System.out.println("At angle: " + atAngle + " target: " + angle + " current: " + drive.getAutoAngle());

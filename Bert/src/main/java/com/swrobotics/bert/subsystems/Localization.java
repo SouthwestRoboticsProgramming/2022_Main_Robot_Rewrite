@@ -1,6 +1,8 @@
 package com.swrobotics.bert.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.swrobotics.bert.Robot;
+import com.swrobotics.bert.RobotState;
 import com.swrobotics.bert.constants.CameraConstants;
 import com.swrobotics.bert.constants.ball.BallLocation;
 import com.swrobotics.bert.control.Input;
@@ -66,14 +68,14 @@ public final class Localization implements Subsystem {
 
         double angleRadians = Math.atan2(-robotY, -robotX);
 
-        return new Rotation2d(angleRadians);
+        return new Rotation2d(angleRadians - Math.PI / 2);
     }
 
     public Rotation2d getLocalAngleToTarget() {
         double gyroAngle = gyro.getAngle();
         double angleToTarget = getAngleToTarget().getDegrees();
 
-        double diff = -gyroAngle - angleToTarget + 90;
+        double diff = -gyroAngle - angleToTarget;
         double normalized = Utils.normalizeRadians(Math.toRadians(diff));
 
 
@@ -94,13 +96,16 @@ public final class Localization implements Subsystem {
 
         double angleRadians = Math.atan2(ballY - robotY, ballX - robotX);
 
-        return new Rotation2d(angleRadians);
+        return new Rotation2d(angleRadians - Math.PI / 2);
     }
 
     @Override
     public void robotPeriodic() {
+        // Limelight in teleop only
+        boolean useLimelight = USE_LIMELIGHT.get() && Robot.get().getCurrentState() != RobotState.AUTONOMOUS;
+
         // System.out.println("Y angle: " + limelight.getRealYangle() + " Distance: " + limelight.getDistance());
-        if (USE_LIMELIGHT.get() && (isLookingAtTarget() || input.getAimOverride()) && limelight.isAccurate()) { // If the limelight finds a target and is actually pointing at the target
+        if (useLimelight && (isLookingAtTarget() || input.getAimOverride()) && limelight.isAccurate()) { // If the limelight finds a target and is actually pointing at the target
             double visionAngle = limelight.getXangle();
             double visionDist = limelight.getDistance();
             double gyroAngle = gyro.getRotation2d().getDegrees();

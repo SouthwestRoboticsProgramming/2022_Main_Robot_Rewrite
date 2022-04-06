@@ -127,7 +127,8 @@ public final class SwerveDriveController implements Subsystem {
         if (isAutoTurn) {
             if (isAutoTurnToTarget) {
                 driveRotControl = Utils.clamp(-autoTurnPID.calculate(gyroRotation.getDegrees(), autoTurn), -1, 1);
-                System.out.println("Auto info: gyro: " + gyroRotation.getDegrees() + " autoTurn: " + autoTurn + " at: " + isAtTargetAngle());
+                // System.out.println("Auto info: gyro: " + gyroRotation.getDegrees() + " autoTurn: " + autoTurn + " at: " + isAtTargetAngle());
+                System.out.println("Target angle: " + autoTurn + " aim angle: " + Utils.convertAngle0to360(getAngleToTarget().getDegrees()));
             } else {
                 driveRotControl = autoTurn;
             }
