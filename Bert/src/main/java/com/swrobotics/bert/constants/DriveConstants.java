@@ -58,7 +58,7 @@ public final class DriveConstants {
         new SwerveModuleInfo(4 /*Drive*/, 6 /*Cancoder*/, -218.760 + 180 /*Offset*/), // Module 2
         new SwerveModuleInfo(7 /*Drive*/, 9 /*Cancoder*/, -170.508 + 180 /*Offset*/), // Module 3
         new SwerveModuleInfo(10 /*Drive*/, 12 /*Cancoder*/, -183.779 /*Offset*/), // Module 4
-        new SwerveModuleInfo(13 /*Drive*/, 15 /*Cancoder*/, 0 /*Offset*/), // Module 5
+        new SwerveModuleInfo(13 /*Drive*/, 15 /*Cancoder*/, -206.016 /*Offset*/), // Module 5
     };
 
     public static final int TURN_ID_FRONT_LEFT = 2;
