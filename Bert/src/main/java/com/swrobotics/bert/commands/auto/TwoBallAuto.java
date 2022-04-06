@@ -40,7 +40,7 @@ public class TwoBallAuto extends CommandSequence {
         append(new TurnTowardsTargetCommand(drive, loc));
         append(new WaitCommand(3));
         append(new ShootCommand(hopper, input)); // Stored ball
-        append(new WaitCommand(3)); // TODO: Don't do this
+        append(new WaitCommand(3));
         append(new ShootCommand(hopper, input)); // Blue 1
     }
 }

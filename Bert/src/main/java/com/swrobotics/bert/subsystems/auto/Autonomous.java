@@ -21,7 +21,7 @@ public final class Autonomous implements Subsystem {
         if (robot.msg != null) {
             autoCommand = new AutonomousSequence(robot);
         } else {
-            // autoCommand = new BackupAutonomousSequence(drive);
+            autoCommand = new BackupAutonomousSequence(robot);
         }
 
         Scheduler.get().addCommand(autoCommand);
