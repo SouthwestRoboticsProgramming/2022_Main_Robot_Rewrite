@@ -19,7 +19,8 @@ public final class FullClimb implements Command {
                             HANDOFF_4,
                             SWING_4_5,
                             EXTEND_5,
-                            PRESSURE_6}
+                            PRESSURE_6,
+                            HALF_PULL_7}
     private ClimbStep climbStep = ClimbStep.BASE_1;
     // 1:   Base
     // 1.5: Arms up
@@ -140,9 +141,17 @@ public final class FullClimb implements Command {
                 // teleSetpoint = CLIMB_STEP_5_TELE.get();
                 // rotSetpoint = CLIMB_STEP_6_ROT.get();
                 // loaded = false;
-                if (rotatingArms.isInTolerance() && input.getClimberNextStep()) {switchToStep(ClimbStep.PULL_UP_2);}
+                if (rotatingArms.isInTolerance() && input.getClimberNextStep()) {switchToStep(ClimbStep.HALF_PULL_7);}
                 if (input.getClimberPreviousStep()) {switchToStep(ClimbStep.EXTEND_5);}
               break;
+            case HALF_PULL_7:
+              //TELe & ROT
+              telescopingArms.setTargetDistancePercent(CLIMB_STEP_4_TELE.get());
+              telescopingArms.setLoaded(true);
+              rotatingArms.setTargetAngleDegrees(CLIMB_STEP_1_ROT.get());
+              if (rotatingArms.isInTolerance() && input.getClimberNextStep()) {switchToStep(ClimbStep.PULL_UP_2);}
+              if (input.getClimberPreviousStep()) {switchToStep(ClimbStep.PRESSURE_6);}
+            break;
           }
           // telescopingArms.setTargetDistancePercent(teleSetpoint);
           // telescopingArms.setLoaded(loaded);
