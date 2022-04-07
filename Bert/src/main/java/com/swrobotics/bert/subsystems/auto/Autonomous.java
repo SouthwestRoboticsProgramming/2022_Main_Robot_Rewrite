@@ -7,6 +7,8 @@ import com.swrobotics.bert.commands.auto.AutonomousSequence;
 import com.swrobotics.bert.commands.auto.BackupAutonomousSequence;
 import com.swrobotics.bert.subsystems.Subsystem;
 
+import static com.swrobotics.bert.constants.AutonomousConstants.*;
+
 public final class Autonomous implements Subsystem {
     private final RobotContainer robot;
 
@@ -32,6 +34,11 @@ public final class Autonomous implements Subsystem {
         if (autoCommand != null) {
             Scheduler.get().cancelCommand(autoCommand);
         }
+    }
+
+    @Override
+    public void robotPeriodic() {
+        AUTO_MODE.get(); // Test
     }
 
     @Override

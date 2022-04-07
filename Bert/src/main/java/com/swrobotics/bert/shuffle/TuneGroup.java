@@ -34,4 +34,8 @@ public final class TuneGroup {
     public TunableDoubleArray getDoubleArray(String name, double... defaultVals) {
         return new TunableDoubleArray(layout, name, defaultVals);
     }
+
+    public <T extends Enum<T>> TunableEnum<T> getEnum(String name, Class<T> type, T defaultVal) {
+        return new TunableEnum<T>(layout, name, type, defaultVal);
+    }
 }
