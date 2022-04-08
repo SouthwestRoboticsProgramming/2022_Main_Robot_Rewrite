@@ -42,6 +42,8 @@ public final class ClimberConstants {
         public static final TunableDouble ROTATING_PID_LOADED_KI = ROTATING.getDouble("Loaded kI", 0.001);
         public static final TunableDouble ROTATING_PID_LOADED_KD = ROTATING.getDouble("Loaded kD", 0.001);
 
+        public static final TunableDouble ROTATING_ARM_ENCODER_DIFF_SHUTOFF_THRESHOLD = ROTATING.getDouble("Encoder Shutoff", 10); // FIXME
+
     private static final TuneGroup TEST = new TuneGroup("Test", ShuffleBoard.climberTab);
         public static final TunableDoubleArray TEST_ARRAY = TEST.getDoubleArray("Test Array", 1, 2, 3, 4, 5, 6, 7, 8, 9);
     

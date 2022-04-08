@@ -7,8 +7,13 @@ public final class RotatingArms {
     private final RotatingArm right;
 
     public RotatingArms() {
-        left = new RotatingArm(ROTATING_LEFT_MOTOR_ID, true, "Left Arm");
-        right = new RotatingArm(ROTATING_RIGHT_MOTOR_ID, true, "Right Arm");
+        left = new RotatingArm(ROTATING_LEFT_MOTOR_ID, true, "Left Arm", this);
+        right = new RotatingArm(ROTATING_RIGHT_MOTOR_ID, true, "Right Arm", this);
+    }
+
+    public void safetyShutoff() {
+        left.safetyShutoff();
+        right.safetyShutoff();
     }
 
     public void setTargetAngleDegrees(double angle) {

@@ -15,6 +15,7 @@ public final class RotatingArm {
     private final RelativeEncoder encoder;
     private final PIDController pid;
     private final String name;
+    private final RotatingArms armPair;
 
     private boolean manualMoving;
     private boolean loaded;
@@ -25,11 +26,14 @@ public final class RotatingArm {
     private double rotsPerInch;
     private double offset;
 
-    public RotatingArm(int motorID, boolean inverted, String name){
+    private boolean safetyDisable = false;
+
+    public RotatingArm(int motorID, boolean inverted, String name, RotatingArms armPair){
         this.name = name;
         motor = new CANSparkMax(motorID, MotorType.kBrushless);
         motor.setIdleMode(IdleMode.kBrake);
         motor.setInverted(inverted);
+        this.armPair = armPair;
 
         encoder = motor.getEncoder();
         offset = -encoder.getPosition();
@@ -106,14 +110,35 @@ public final class RotatingArm {
         }
     }
 
+    double lastEncoder = 0;
+    boolean doEncoderCheck = false;
     private double getCurrentAngle() {
+        double encoderPos = encoder.getPosition();
+
+        // if (doEncoderCheck) {
+        //     double encoderDiff = Math.abs(encoderPos - lastEncoder);
+        //     if (encoderDiff > ROTATING_ARM_ENCODER_DIFF_SHUTOFF_THRESHOLD.get()) {
+        //         armPair.safetyShutoff();
+        //         throw new RuntimeException("Test (offset " + encoderDiff + ")");
+        //     }
+        // } else {
+        //     doEncoderCheck = true;
+        // }
+        // lastEncoder = encoderPos;
+
         // Do law of cosines
-        double currentPose = (encoder.getPosition() + offset) / rotsPerInch + ROTATING_STARTING_LENGTH;
+        double currentPose = (encoderPos + offset) / rotsPerInch + ROTATING_STARTING_LENGTH;
         double currentAngle = Math.acos((base*base + arm*arm - currentPose*currentPose)/(2*arm*base));
         return Math.toDegrees(currentAngle);
     }
     
     public void update() {
+        if (safetyDisable) {
+            stopMotor();
+            System.out.println("ROTATING ARM SHUT OFF");
+            return;
+        }
+
         double percentOut;
         if (manualMoving) {
             percentOut = target;
@@ -130,5 +155,10 @@ public final class RotatingArm {
     
     public void setLoaded(boolean loaded) {
         this.loaded = loaded;
+    }
+
+    public void safetyShutoff() {
+        safetyDisable = true;
+        stopMotor();
     }
 }
