@@ -40,6 +40,10 @@ public final class RotatingArm {
             ROTATING_PID_KD.get()
         );
 
+        // DO NOT EJECT ROTATING ARMS
+        motor.set(0);
+        motor.stopMotor();
+
         ROTATING_PID_KP.onChange(this::updatePID);
         ROTATING_PID_KI.onChange(this::updatePID);
         ROTATING_PID_KD.onChange(this::updatePID);
@@ -85,6 +89,10 @@ public final class RotatingArm {
     public void stop() {
         manualMoving = true;
         target =  0;
+    }
+
+    public void stopMotor() {
+        motor.stopMotor();
     }
 
     public boolean isInTolerance() {

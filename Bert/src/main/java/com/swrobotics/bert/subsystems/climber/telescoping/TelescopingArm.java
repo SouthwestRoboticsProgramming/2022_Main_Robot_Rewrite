@@ -39,6 +39,10 @@ public final class TelescopingArm {
         encoder = motor1.getEncoder();
         encoder.setPosition(0);
 
+        // STOP
+        motor1.set(0);
+        motor2.set(0);
+
         pid = new PIDController(
             TELESCOPING_PID_KP.get(),
             TELESCOPING_PID_KI.get(),
@@ -56,6 +60,11 @@ public final class TelescopingArm {
         TELESCOPING_PID_LOADED_KF.onChange(this::updatePID);
 
         manualMoving = false;
+    }
+
+    public void stopMotor() {
+        motor1.stopMotor();
+        motor2.stopMotor();
     }
 
     private void updatePID() {

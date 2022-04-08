@@ -3,19 +3,18 @@ package com.swrobotics.bert.commands.auto;
 import com.swrobotics.bert.commands.Command;
 import com.swrobotics.bert.subsystems.Localization;
 import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
-import com.swrobotics.bert.util.Utils;
 
-import static com.swrobotics.bert.constants.AutonomousConstants.*;
+import java.util.function.DoubleSupplier;
 
 public class TurnToAngleCommand implements Command {
     private final SwerveDriveController drive;
     protected final Localization loc;
-    protected double angle;
+    private final DoubleSupplier supplier;
 
-    public TurnToAngleCommand(SwerveDriveController drive, Localization loc, double angle) {
+    public TurnToAngleCommand(SwerveDriveController drive, Localization loc, DoubleSupplier supplier) {
         this.drive = drive;
         this.loc = loc;
-        this.angle = angle;
+        this.supplier = supplier;
     }
 
     @Override
@@ -25,7 +24,7 @@ public class TurnToAngleCommand implements Command {
 
     @Override
     public boolean run() {
-        drive.turnToAngle(angle);
+        drive.turnToAngle(supplier.getAsDouble());
 
         boolean atAngle = drive.isAtTargetAngle();
         // System.out.println("At angle: " + atAngle + " target: " + angle + " current: " + drive.getAutoAngle());

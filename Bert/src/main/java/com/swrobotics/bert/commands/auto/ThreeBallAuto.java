@@ -16,8 +16,8 @@ import com.swrobotics.messenger.client.MessengerClient;
 
 import static com.swrobotics.bert.constants.ball.BallLocationConstants.*;
 
-public class TwoBallAuto extends CommandSequence {
-    public TwoBallAuto(RobotContainer robot) {
+public class ThreeBallAuto extends CommandSequence {
+    public ThreeBallAuto(RobotContainer robot) {
         Intake intake = robot.intake;
         Localization loc = robot.localization;
         SwerveDriveController drive = robot.driveController;
@@ -28,9 +28,13 @@ public class TwoBallAuto extends CommandSequence {
 
         // Sequence:
         // 1. Turn intake on
-        // 2. Turn towards and drive to Blue 1
+        // 2. Turn towards and drive to Blue 3
         // 3. Turn towards the target
-        // 4. Shoot blue 1 and stored ball
+        // 4. Shoot blue 3 and stored ball
+        // 5. Drive to a point to miss red ball
+        // 6. Turn towards and drive to Blue 2
+        // 7. Turn towards target
+        // 8. Shoot Blue 2
 
         append(new IntakeSetCommand(intake, Intake.State.ON));
         append(new CommandUnion(
@@ -38,9 +42,17 @@ public class TwoBallAuto extends CommandSequence {
             new DriveToPointCommand(msg, path, BLUE_3.getX(), BLUE_3.getY(), 5)
         ));
         append(new TurnTowardsTargetCommand(drive, loc));
-        append(new WaitCommand(3));
+        append(new WaitCommand(1.2));
         append(new ShootCommand(hopper, input)); // Stored ball
-        append(new WaitCommand(3));
+        append(new WaitCommand(1.2));
         append(new ShootCommand(hopper, input)); // Blue 1
+        append(new DriveToPointCommand(msg, path, 0, -4.8, 5));
+        append(new CommandUnion(
+            new TurnToAngleCommand(drive, loc, () -> loc.getAngleToBall(BLUE_2).getDegrees()),
+            new DriveToPointCommand(msg, path, BLUE_2.getX(), BLUE_2.getY(), 5)
+        ));
+        append(new TurnTowardsTargetCommand(drive, loc));
+        append(new WaitCommand(1.2));
+        append(new ShootCommand(hopper, input));
     }
 }

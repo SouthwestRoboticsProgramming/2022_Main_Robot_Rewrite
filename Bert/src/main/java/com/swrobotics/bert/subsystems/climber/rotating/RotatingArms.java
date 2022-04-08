@@ -31,6 +31,11 @@ public final class RotatingArms {
         right.zero();
     }
 
+    public void stopMotors() {
+        left.stopMotor();
+        right.stopMotor();
+    }
+
     public void update() {
         left.update();
         right.update();

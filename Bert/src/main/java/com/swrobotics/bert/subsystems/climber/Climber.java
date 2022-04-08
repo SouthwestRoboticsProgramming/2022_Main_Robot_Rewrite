@@ -55,9 +55,15 @@ public final class Climber implements Subsystem {
     }
 
     @Override
-    public void robotPeriodic() {
+    public void teleopPeriodic() {
         telescoping.update();
         rotating.update();
+    }
+
+    @Override
+    public void disabledInit() {
+        telescoping.stopMotors();
+        rotating.stopMotors();
     }
 
     @Override

@@ -1,10 +1,13 @@
 package com.swrobotics.bert.control;
 
+import com.swrobotics.bert.Robot;
+import com.swrobotics.bert.RobotState;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public abstract class Controller {
-    public static class Button {
+    public class Button {
         private final JoystickButton button;
 
         private boolean pressed;
@@ -28,11 +31,11 @@ public abstract class Controller {
 
         protected void update() {
             last = pressed;
-            pressed = button.get();
+            pressed = controlEnabled && button.get();
         }
     }
 
-    public static class DpadButton {
+    public class DpadButton {
         private final Joystick stick;
         private final int a, b, c;
 
@@ -62,11 +65,11 @@ public abstract class Controller {
             last = pressed;
 
             int pov = stick.getPOV();
-            pressed = pov == a || pov == b || pov == c;
+            pressed = controlEnabled && (pov == a || pov == b || pov == c);
         }
     }
 
-    public static class Axis {
+    public class Axis {
         private final Joystick stick;
         private final int axisID;
         private final boolean inverted;
@@ -85,6 +88,10 @@ public abstract class Controller {
 
         void update() {
             if (axisID < 0) return;
+            if (!controlEnabled) {
+                value = 0;
+                return;
+            }
             
             if (inverted) {
                 value = -stick.getRawAxis(axisID);
@@ -104,6 +111,8 @@ public abstract class Controller {
     public final Axis leftStickX, leftStickY;
     public final Axis rightStickX, rightStickY;
     public final Axis leftTrigger, rightTrigger;
+
+    private boolean controlEnabled;
 
     public Controller(int id, int a_, int b_, int x_, int y_, int ls, int rs, int sel, int st, int lst, int rst, int lsx, int lsy, int rsx, int rsy, int lt, int rt) {
         Joystick stick = new Joystick(id);
@@ -133,6 +142,9 @@ public abstract class Controller {
     }
 
     public void update() {
+        // Only allow controlling in teleop
+        controlEnabled = Robot.get().getCurrentState() == RobotState.TELEOP;
+
         a.update();
         b.update();
         x.update();

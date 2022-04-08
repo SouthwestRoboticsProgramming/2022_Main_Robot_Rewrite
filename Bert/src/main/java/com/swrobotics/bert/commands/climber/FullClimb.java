@@ -35,6 +35,7 @@ public final class FullClimb implements Command {
     private Boolean loaded = false;
     private double previousAngle = 0, newAngle = 0;
     private AHRS gyro;
+    private int currentBar = 1;
 
     private TelescopingArms telescopingArms;
     private RotatingArms rotatingArms;
@@ -107,7 +108,7 @@ public final class FullClimb implements Command {
                 // teleSetpoint = CLIMB_STEP_2_TELE.get();
                 // rotSetpoint = CLIMB_STEP_3_ROT.get();
                 // loaded = true;
-                if (rotatingArms.isInTolerance() && input.getClimberNextStep()) {switchToStep(ClimbStep.HANDOFF_4);}
+                if (rotatingArms.isInTolerance() && input.getClimberNextStep()) {switchToStep(ClimbStep.HANDOFF_4); currentBar++;}
                 if (input.getClimberPreviousStep()) {switchToStep(ClimbStep.PULL_UP_2);}
                 break;
             case HANDOFF_4:
@@ -119,7 +120,13 @@ public final class FullClimb implements Command {
                 // rotSetpoint = CLIMB_STEP_4_ROT.get();
                 // loaded = false;
                 System.out.println("FullClimb.run() - PR:" + positiveRate() + "      PB:" + pastBar(CLIMB_STEP_4_5_GYRO.get()));
-                if (rotatingArms.isInTolerance() && positiveRate() && pastBar(CLIMB_STEP_4_5_GYRO.get()) && input.getClimberNextStep()) {switchToStep(ClimbStep.EXTEND_5);}
+                if (rotatingArms.isInTolerance() && positiveRate() && pastBar(CLIMB_STEP_4_5_GYRO.get()) && input.getClimberNextStep()) {
+                  if (currentBar < 4) {
+                    switchToStep(ClimbStep.EXTEND_5);
+                  } else {
+                    return true;
+                  }
+                }
                 if (input.getClimberPreviousStep()) {switchToStep(ClimbStep.LOCK_IN_3);}
               break;
             case EXTEND_5:

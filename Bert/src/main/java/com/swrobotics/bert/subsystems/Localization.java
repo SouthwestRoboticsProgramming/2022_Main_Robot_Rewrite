@@ -102,7 +102,7 @@ public final class Localization implements Subsystem {
     @Override
     public void robotPeriodic() {
         // Limelight in teleop only
-        boolean useLimelight = USE_LIMELIGHT.get() && Robot.get().getCurrentState() != RobotState.AUTONOMOUS;
+        boolean useLimelight = USE_LIMELIGHT.get() && Robot.get().getCurrentState() == RobotState.TELEOP;
 
         // System.out.println("Y angle: " + limelight.getRealYangle() + " Distance: " + limelight.getDistance());
         if (useLimelight && (isLookingAtTarget() || input.getAimOverride()) && limelight.isAccurate()) { // If the limelight finds a target and is actually pointing at the target

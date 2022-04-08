@@ -39,7 +39,12 @@ public final class Scheduler {
 
     public void addCommand(Command command) {
         commands.add(new CommandTimer(command));
-        command.init();
+        try {
+            command.init();
+        } catch (Throwable t) {
+            System.err.println("Exception initializing command " + command.getClass().getName());
+            t.printStackTrace();
+        }
     }
 
     public void cancelCommand(Command command) {
@@ -51,6 +56,7 @@ public final class Scheduler {
         }
 
         if (toRemove != null) {
+            command.end();
             commands.remove(toRemove);
         }
     }
@@ -79,7 +85,12 @@ public final class Scheduler {
             if (timer <= 0) {
                 timer = command.getInterval();
 
-                return command.run();
+                try {
+                    return command.run();
+                } catch (Throwable t) {
+                    System.err.println("Exception ticking command " + command.getClass().getName());
+                    t.printStackTrace();
+                }
             }
 
             return false;
@@ -105,14 +116,24 @@ public final class Scheduler {
 
     public void robotInit() {
         for (Subsystem system : subsystems) {
-            system.robotInit();
+            try {
+                system.robotInit();
+            } catch (Throwable t) {
+                System.err.println("Exception in system " + system.getClass().getName());
+                t.printStackTrace();
+            }
         }
     }
 
     public void robotPeriodic() {
         for (Subsystem system : subsystems) {
             Profiler.get().push(system.getClass().getSimpleName());
-            system.robotPeriodic();
+            try {
+                system.robotPeriodic();
+            } catch (Throwable t) {
+                System.err.println("Exception in system " + system.getClass().getName());
+                t.printStackTrace();
+            }
             Profiler.get().pop();
         }
 
@@ -121,56 +142,96 @@ public final class Scheduler {
 
     public void disabledInit() {
         for (Subsystem system : subsystems) {
-            system.disabledInit();
+            try {
+                system.disabledInit();
+            } catch (Throwable t) {
+                System.err.println("Exception in system " + system.getClass().getName());
+                t.printStackTrace();
+            }
         }
     }
 
     public void disabledPeriodic() {
         for (Subsystem system : subsystems) {
             Profiler.get().push(system.getClass().getSimpleName());
-            system.disabledPeriodic();
+            try {
+                system.disabledPeriodic();
+            } catch (Throwable t) {
+                System.err.println("Exception in system " + system.getClass().getName());
+                t.printStackTrace();
+            }
             Profiler.get().pop();
         }
     }
 
     public void teleopInit() {
         for (Subsystem system : subsystems) {
-            system.teleopInit();
+            try {
+                system.teleopInit();
+            } catch (Throwable t) {
+                System.err.println("Exception in system " + system.getClass().getName());
+                t.printStackTrace();
+            }
         }
     }
 
     public void teleopPeriodic() {
         for (Subsystem system : subsystems) {
             Profiler.get().push(system.getClass().getSimpleName());
-            system.teleopPeriodic();
+            try {
+                system.teleopPeriodic();
+            } catch (Throwable t) {
+                System.err.println("Exception in system " + system.getClass().getName());
+                t.printStackTrace();
+            }
             Profiler.get().pop();
         }
     }
 
     public void autonomousInit() {
         for (Subsystem system : subsystems) {
-            system.autonomousInit();
+            try {
+                system.autonomousInit();
+            } catch (Throwable t) {
+                System.err.println("Exception in system " + system.getClass().getName());
+                t.printStackTrace();
+            }
         }
     }
 
     public void autonomousPeriodic() {
         for (Subsystem system : subsystems) {
             Profiler.get().push(system.getClass().getSimpleName());
-            system.autonomousPeriodic();
+            try {
+                system.autonomousPeriodic();
+            } catch (Throwable t) {
+                System.err.println("Exception in system " + system.getClass().getName());
+                t.printStackTrace();
+            }
             Profiler.get().pop();
         }
     }
 
     public void testInit() {
         for (Subsystem system : subsystems) {
-            system.testInit();
+            try {
+                system.testInit();
+            } catch (Throwable t) {
+                System.err.println("Exception in system " + system.getClass().getName());
+                t.printStackTrace();
+            }
         }
     }
 
     public void testPeriodic() {
         for (Subsystem system : subsystems) {
             Profiler.get().push(system.getClass().getSimpleName());
-            system.testPeriodic();
+            try {
+                system.testPeriodic();
+            } catch (Throwable t) {
+                System.err.println("Exception in system " + system.getClass().getName());
+                t.printStackTrace();
+            }
             Profiler.get().pop();
         }
     }
