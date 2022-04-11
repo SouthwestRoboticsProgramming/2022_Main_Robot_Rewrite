@@ -8,6 +8,7 @@ import static com.swrobotics.bert.constants.Constants.PERIODIC_PER_SECOND;
 import static com.swrobotics.bert.constants.IntakeConstants.*;
 import static com.swrobotics.bert.constants.ShooterConstants.*;
 
+// FIXME-TODO: Wait before indexing
 public final class IntakeEjectCommand implements Command {
     private final Intake intake;
     private final Hopper hopper;

@@ -86,7 +86,7 @@ public final class SwerveDriveController implements Subsystem {
         teleopPeriodic();
     }
 
-    // TODO: REmove
+    // TODO: Move to Localization
     public Rotation2d getAngleToTarget() {
         double robotX = drive.getOdometryPose().getX();
         double robotY = drive.getOdometryPose().getY();
