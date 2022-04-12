@@ -31,12 +31,15 @@ public class TwoBallAuto extends CommandSequence {
         // 2. Turn towards and drive to Blue 1
         // 3. Turn towards the target
         // 4. Shoot blue 1 and stored ball
+        
+        /* Target Ball Commands */
+        TargetAngleCommand targetThree = new TargetAngleCommand(drive, loc, () -> loc.getAngleToBall(BLUE_3).getDegrees(), 2);
 
         append(new IntakeSetCommand(intake, Intake.State.ON));
-        append(new CommandUnion(
-            new TurnToAngleCommand(drive, loc, () -> loc.getAngleToBall(BLUE_3).getDegrees()),
-            new DriveToPointCommand(msg, path, BLUE_3.getX(), BLUE_3.getY(), 5)
-        ));
+        append(new TurnToAngleCommand(drive, loc, () -> loc.getAngleToBall(BLUE_3).getDegrees()));
+        append(targetThree);
+        append(new DriveToPointCommand(msg, path, BLUE_3.getX(), BLUE_3.getY(), 5));
+        targetThree.stop();
         append(new TurnTowardsTargetCommand(drive, loc));
         append(new WaitCommand(3));
         append(new ShootCommand(hopper, input)); // Stored ball

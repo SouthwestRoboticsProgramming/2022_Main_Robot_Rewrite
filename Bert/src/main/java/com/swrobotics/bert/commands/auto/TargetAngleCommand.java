@@ -14,11 +14,18 @@ public class TargetAngleCommand implements Command {
     private final DoubleSupplier supplier;
     private int timeoutSeconds;
 
+    private boolean stop;
+
     public TargetAngleCommand(SwerveDriveController drive, Localization loc, DoubleSupplier supplier, int timoutSeconds) {
         this.drive = drive;
         this.loc = loc;
         this.supplier = supplier;
         this.timeoutSeconds = timeoutSeconds * PERIODIC_PER_SECOND;
+        stop = false;
+    }
+
+    public void stop() {
+        stop = true;
     }
 
     @Override
@@ -34,7 +41,7 @@ public class TargetAngleCommand implements Command {
 
 
 
-        return timeoutSeconds <= 0;
+        return timeoutSeconds <= 0 || stop;
     }
 
     @Override
