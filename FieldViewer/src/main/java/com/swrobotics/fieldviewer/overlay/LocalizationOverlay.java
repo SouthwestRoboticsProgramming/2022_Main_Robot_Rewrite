@@ -7,6 +7,7 @@ import processing.core.PApplet;
 
 public final class LocalizationOverlay implements FieldOverlay {
     private final float ROBOT_SIZE = Conversions.inchesToMeters(25);
+    private final float BUMPER_SIZE = Conversions.inchesToMeters(31);
     private final float ARROW_SIZE = ROBOT_SIZE / 3.0f;
 
     private final String MESSAGE = "RoboRIO:Location";
@@ -40,6 +41,7 @@ public final class LocalizationOverlay implements FieldOverlay {
         p.rotate(-PApplet.radians(posRot));
 
         p.rect(0, 0, ROBOT_SIZE, ROBOT_SIZE);
+        p.rect(0, 0, BUMPER_SIZE, BUMPER_SIZE);
 
         p.line(0, -ARROW_SIZE, 0, ARROW_SIZE);
         p.line(-ARROW_SIZE, 0, 0, ARROW_SIZE);

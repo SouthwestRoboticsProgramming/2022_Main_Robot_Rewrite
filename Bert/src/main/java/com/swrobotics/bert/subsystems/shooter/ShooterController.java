@@ -34,7 +34,10 @@ public final class ShooterController implements Subsystem {
     private double calculateHood(double distance, boolean highGoal) {
         // Mathy stuff here
         if (highGoal) {
-            return Utils.map(distance, 1, 18, 0, 3); // Remap min - max distance to min - max hood
+            double hoodPos = Utils.map(distance, 1, 18, 0, 3); // Remap min - max distance to min - max hood
+            if (distance < 10) { hoodPos -= 0.5; }
+            return hoodPos;
+
         } else {
             if (distance > 2000 /*Medium hood*/) { return 3; }
             if (distance > 1000 /*Low hood*/) { return 2; }
@@ -46,7 +49,7 @@ public final class ShooterController implements Subsystem {
     // Keys are distance in feet according to distance parameter
     // Values are RPM
     private final double[] RPM_TABLE_KEYS   = {6.5,  8.8,  11.25, 13.37, 15.64};
-    private final double[] RPM_TABLE_VALUES = {2300, 2425, 2550,  2593,  2750 };
+    private final double[] RPM_TABLE_VALUES = {2400, 2600, 2700,  2593,  2750 };
 
     private double calculateRPM(double distance, boolean highGoal) {
         double lowerKey = 0, higherKey = 0;
