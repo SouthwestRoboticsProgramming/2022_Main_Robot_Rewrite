@@ -59,6 +59,9 @@ public final class SwerveModule {
         drive.configAllSettings(driveConfig);
         drive.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
+        drive.configVoltageCompSaturation(10); // 100% is 10 volts
+        drive.enableVoltageCompensation(true);
+
         TalonSRXConfiguration turnConfig = new TalonSRXConfiguration();
         turn.configAllSettings(turnConfig);
         turn.enableVoltageCompensation(false);

@@ -2,7 +2,6 @@ package com.swrobotics.bert.commands.auto;
 
 import com.swrobotics.bert.RobotContainer;
 import com.swrobotics.bert.commands.CommandSequence;
-import com.swrobotics.bert.commands.CommandUnion;
 import com.swrobotics.bert.commands.WaitCommand;
 import com.swrobotics.bert.commands.intake.IntakeSetCommand;
 import com.swrobotics.bert.commands.shooter.ShootCommand;
