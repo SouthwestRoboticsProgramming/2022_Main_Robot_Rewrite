@@ -1,5 +1,6 @@
 package com.swrobotics.bert.subsystems.shooter;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.swrobotics.bert.shuffle.ShuffleBoard;
@@ -28,6 +29,9 @@ public final class Flywheel implements Subsystem {
         FLYWHEEL_KI.onChange(this::updatePID);
         FLYWHEEL_KD.onChange(this::updatePID);
         FLYWHEEL_KF.onChange(this::updatePID);
+
+        flywheel.setNeutralMode(NeutralMode.Coast);
+        flywheel.configVoltageCompSaturation(11);
     }
 
     private void updatePID() {
