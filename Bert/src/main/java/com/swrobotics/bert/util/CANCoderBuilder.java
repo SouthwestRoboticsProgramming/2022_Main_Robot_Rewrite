@@ -16,6 +16,7 @@ public final class CANCoderBuilder {
     private final int canID;
     private int updatePeriodMilliseconds = 10;
     private Direction direction = Direction.COUNTER_CLOCKWISE;
+    private double offsetDegrees;
 
     public CANCoderBuilder(int canID) {
         this.canID = canID;
@@ -31,11 +32,16 @@ public final class CANCoderBuilder {
         return this;
     }
 
+    public CANCoderBuilder setOffsetDegrees(double degrees) {
+        offsetDegrees = degrees;
+        return this;
+    }
+
     public CANCoder build() {
         CANCoderConfiguration config = new CANCoderConfiguration();
         config.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
         config.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
-        config.magnetOffsetDegrees = Math.toDegrees(configuration.getOffset());
+        config.magnetOffsetDegrees = offsetDegrees;
         config.sensorDirection = direction == Direction.CLOCKWISE;
 
         CANCoder encoder = new CANCoder(canID);

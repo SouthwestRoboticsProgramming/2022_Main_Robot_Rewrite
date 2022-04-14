@@ -15,6 +15,7 @@ import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.CANCoderStatusFrame;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.swrobotics.bert.util.Utils;
+import com.swrobotics.bert.util.CANCoderBuilder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -30,20 +31,24 @@ import static com.swrobotics.bert.constants.DriveConstants.*;
 public final class SwerveModule {
     private final TalonFX drive;
     private final TalonSRX turn;
-    private final CANCoder canCoder;
+    private final AbsoluteEncoder encoder;
     private final PIDController pid;
-
-    private final double cancoderOffset;
 
     public SwerveModule(int driveID, int turnID, int cancoderID, double cancoderOffset) {
         drive = new TalonFX(driveID, CANIVORE);
         turn = new TalonSRX(turnID);
-        canCoder = new CANCoder(cancoderID, CANIVORE);
-        this.cancoderOffset = cancoderOffset;
 
+        
+        CANCoder canCoder = new CANCoderBuilder(cancoderID)
+            .setOffsetDegrees(cancoderOffset);
+            .setUpdatePeriod(100) // Update period taken from SwerveDriveSpecialties
+            .build();
+
+        encoder = new AbsoluteEncoder(canCoder);
+
+        
         drive.configFactoryDefault();
         turn.configFactoryDefault();
-        // canCoder.configFactoryDefault();
         
         TalonFXConfiguration driveConfig = new TalonFXConfiguration();
         {
@@ -72,15 +77,6 @@ public final class SwerveModule {
         turn.setNeutralMode(NeutralMode.Coast);
         turn.setSelectedSensorPosition(0, 0, 30);
         turn.set(ControlMode.PercentOutput, 0);
-
-        CANCoderConfiguration canConfig = new CANCoderConfiguration();
-        canConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
-        canConfig.magnetOffsetDegrees = 0;
-        canConfig.sensorDirection = false;
-        canConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
-
-        canCoder.configAllSettings(canConfig);
-        // canCoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 20);
 
         pid = new PIDController(TURN_KP.get(), TURN_KI.get(), TURN_KD.get());
         pid.enableContinuousInput(-90, 90);
