@@ -34,13 +34,14 @@ public final class SwerveModule {
     private final AbsoluteEncoder encoder;
     private final PIDController pid;
 
-    public SwerveModule(int driveID, int turnID, int cancoderID, double cancoderOffset) {
+    public SwerveModule(int driveID, int turnID, int cancoderID, double encoderOffset) {
         drive = new TalonFX(driveID, CANIVORE);
         turn = new TalonSRX(turnID);
 
-        
+
         CANCoder canCoder = new CANCoderBuilder(cancoderID)
-            .setOffsetDegrees(cancoderOffset);
+            .setCanBus("Gerald")
+            .setOffsetDegrees(encoderOffset)
             .setUpdatePeriod(100) // Update period taken from SwerveDriveSpecialties
             .build();
 

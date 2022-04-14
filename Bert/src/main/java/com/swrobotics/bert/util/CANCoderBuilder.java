@@ -14,12 +14,18 @@ public final class CANCoderBuilder {
     }
 
     private final int canID;
+    private String canBus = "rio";
     private int updatePeriodMilliseconds = 10;
     private Direction direction = Direction.COUNTER_CLOCKWISE;
     private double offsetDegrees;
 
     public CANCoderBuilder(int canID) {
         this.canID = canID;
+    }
+
+    public CANCoderBuilder setCanBus(String canBus) {
+        this.canBus = canBus;
+        return this;
     }
 
     public CANCoderBuilder setUpdatePeriod(int periodMiliseconds) {
@@ -44,7 +50,7 @@ public final class CANCoderBuilder {
         config.magnetOffsetDegrees = offsetDegrees;
         config.sensorDirection = direction == Direction.CLOCKWISE;
 
-        CANCoder encoder = new CANCoder(canID);
+        CANCoder encoder = new CANCoder(canID, canBus);
 
         CtreUtils.checkCtreError(encoder.configAllSettings(config, 250), "Failed to configure CANCoder ID: " + canID);
 
