@@ -5,7 +5,6 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderStatusFrame;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
-import com.swrobotcs.bert.util.CtreUtils;
 
 public final class CANCoderBuilder {
     public enum Direction {
@@ -54,6 +53,8 @@ public final class CANCoderBuilder {
 
         CtreUtils.checkCtreError(encoder.configAllSettings(config, 250), "Failed to configure CANCoder ID: " + canID);
 
-        CtreUtils.checkCtreError(encoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, periodMilliseconds, 250), "Failed to configure CANCoder ID: " + canID + " update rate");
+        CtreUtils.checkCtreError(encoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, updatePeriodMilliseconds, 250), "Failed to configure CANCoder ID: " + canID + " update rate");
+
+        return encoder;
     }
 }

@@ -9,12 +9,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
-import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
-import com.ctre.phoenix.sensors.CANCoderConfiguration;
-import com.ctre.phoenix.sensors.CANCoderStatusFrame;
-import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.swrobotics.bert.util.Utils;
+import com.swrobotics.bert.util.AbsoluteEncoder;
 import com.swrobotics.bert.util.CANCoderBuilder;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -115,7 +112,7 @@ public final class SwerveModule {
     }
 
     public double getCANCoderAngle() {
-        return Utils.convertAngle0to360(canCoder.getAbsolutePosition() + cancoderOffset);
+        return Utils.convertAngle0to360(encoder.getAbsoluteAngle().getDegrees());
     }
 
     public boolean isAtTargetAngle() {
