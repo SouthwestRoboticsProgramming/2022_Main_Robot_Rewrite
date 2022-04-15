@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class FieldViewer extends PApplet {
+    // Parameters because PApplet doesn't allow explicitly calling constructor
+    public static String host;
+    public static int port;
+
     public static final float FIELD_WIDTH = Conversions.feetToMeters(27);
     public static final float FIELD_HEIGHT = Conversions.feetToMeters(54);
 
@@ -40,7 +44,7 @@ public final class FieldViewer extends PApplet {
         ellipseMode(CENTER);
 
         try {
-            msg = new MessengerClient("10.21.29.3", 5805, "FieldViewer");
+            msg = new MessengerClient(host, port, "FieldViewer");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
