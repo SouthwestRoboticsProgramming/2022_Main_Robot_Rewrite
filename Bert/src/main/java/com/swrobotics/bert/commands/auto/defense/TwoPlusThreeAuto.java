@@ -1,4 +1,4 @@
-package com.swrobotics.bert.commands.auto;
+package com.swrobotics.bert.commands.auto.defense;
 
 import com.swrobotics.bert.RobotContainer;
 import com.swrobotics.bert.commands.CommandSequence;
@@ -16,7 +16,7 @@ import com.swrobotics.messenger.client.MessengerClient;
 
 import static com.swrobotics.bert.constants.ball.BallLocationConstants.*;
 
-public class TwoPlusTwoAuto extends CommandSequence {
+public class TwoPlusThreeAuto extends CommandSequence {
     public TwoPlusTwoAuto(RobotContainer robot) {
         Intake intake = robot.intake;
         Localization loc = robot.localization;
@@ -35,11 +35,15 @@ public class TwoPlusTwoAuto extends CommandSequence {
         // 6. Turn towards and drive to red 6
         // 7. Drive to hanger
         // 8. Dispense balls into corner
+        // 9. Turn towards and drive to red 4
+        // 10. Turn towards hub
+        // 11. Eject ball towards hub
         
         /* Target Ball Commands */
         TargetAngleCommand targetThree = new TargetAngleCommand(drive, loc, () -> loc.getAngleToBall(BLUE_3).getDegrees(), 2);
         TargetAngleCommand targetRed5 = new TargetAngleCommand(drive, loc, () -> loc.getAngleToBall(RED_5).getDegrees(), 2);
         TargetAngleCommand targetRed6 = new TargetAngleCommand(drive, loc, () -> loc.getAngleToBall(RED_6).getDegrees(), 2);
+        TargetAngleCommand targetRed4 = new TargetAngleCommand(drive, loc, () -> loc.getAngleToBall(RED_4).getDegrees(), 2);
 
         append(new IntakeSetCommand(intake, Intake.State.ON));
         append(new TurnToAngleCommand(drive, loc, () -> loc.getAngleToBall(BLUE_3).getDegrees()));
@@ -75,6 +79,17 @@ public class TwoPlusTwoAuto extends CommandSequence {
         append(new TurnToAngleCommand(drive, loc, () -> 180));
         append(new IntakeEjectCommand(intake, hopper));
         append(new IntakeEjectCommand(intake, hopper));
+
+        append(new TurnToAngleCommand(drive, loc, () -> loc.getAngleToBall(RED_4).getDegrees()));
+        append(targetRed4);
+        append(new DriveToPointCommand(msg, path, RED_4.getX(), RED_4.getY(), 6));
+        append(() -> {
+            targetRed4.stop();
+            return true;
+        });
+
+        append(new TurnTowardsTargetCommand(drive, loc));
+        append(new IntajeEjectCommand(intake, hopper));
 
 
     }

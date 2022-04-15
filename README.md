@@ -1,2 +1,5 @@
 # 2022_Main_Robot_Rewrite
-No more turd polishing, the code should be clean from the start.
+
+### Auto Options
+- Two Ball Left Side 
+- Two + Two Left Side (Shoot two balls, eject two oposing balls into hanger)
