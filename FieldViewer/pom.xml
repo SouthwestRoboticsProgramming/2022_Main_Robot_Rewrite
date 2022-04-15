@@ -60,11 +60,6 @@
         </dependency>
         <dependency>
             <groupId>com.swrobotics</groupId>
-            <artifactId>Lidar-Library</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.swrobotics</groupId>
             <artifactId>Messenger-Client</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
