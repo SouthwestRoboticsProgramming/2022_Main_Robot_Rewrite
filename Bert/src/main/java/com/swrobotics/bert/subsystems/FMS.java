@@ -15,7 +15,4 @@ public final class FMS implements Subsystem {
     public boolean isRedAlliance() {
         return isRed.getBoolean(false);
     }
-
-
-
 }

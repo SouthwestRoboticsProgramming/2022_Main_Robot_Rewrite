@@ -38,7 +38,10 @@ public class TwoBallAuto extends CommandSequence {
         append(new TurnToAngleCommand(drive, loc, () -> loc.getAngleToBall(BLUE_3).getDegrees()));
         append(targetThree);
         append(new DriveToPointCommand(msg, path, BLUE_3.getX(), BLUE_3.getY(), 5));
-        targetThree.stop();
+        append(() -> {
+            targetThree.stop();
+            return true;
+        });
         append(new TurnTowardsTargetCommand(drive, loc));
         append(new WaitCommand(3));
         append(new ShootCommand(hopper, input)); // Stored ball
