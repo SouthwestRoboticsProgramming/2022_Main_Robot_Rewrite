@@ -24,14 +24,13 @@ public final class BallLocationConstants {
     public static final BallLocation BLUE_6 = new BallLocation(3.219, 2.369);
     public static final BallLocation BLUE_7 = new BallLocation(3.044, -7.169);
 
-    // TODO: TODO: TODO: TODO: to do: do this (that means do it) FIXME: also fix it
-    public static final BallLocation RED_1 = new BallLocation(0, 0);
-    public static final BallLocation RED_2 = new BallLocation(0, 0);
-    public static final BallLocation RED_3 = new BallLocation(0, 0);
-    public static final BallLocation RED_4 = new BallLocation(0, 0);
-    public static final BallLocation RED_5 = new BallLocation(0, 0);
-    public static final BallLocation RED_6 = new BallLocation(0, 0);
-    public static final BallLocation RED_7 = new BallLocation(0, 0);
+    public static final BallLocation RED_1 = new BallLocation(-3.869, 0.756);
+    public static final BallLocation RED_2 = new BallLocation(-2.256, 3.306);
+    public static final BallLocation RED_3 = new BallLocation(2.094, 3.419);
+    public static final BallLocation RED_4 = new BallLocation(3.831, 0.956);
+    public static final BallLocation RED_5 = new BallLocation(0.869, -3.744);
+    public static final BallLocation RED_6 = new BallLocation(-3.206, -2.184);
+    public static final BallLocation RED_7 = new BallLocation(-3.019, 7.344);
 
 
     private BallLocationConstants() {
