@@ -1,6 +1,7 @@
 package com.swrobotics.bert.commands.intake;
 
 import com.swrobotics.bert.commands.CommandSequence;
+import com.swrobotics.bert.commands.WaitCommand;
 import com.swrobotics.bert.commands.shooter.IndexCommand;
 import com.swrobotics.bert.subsystems.intake.Intake;
 import com.swrobotics.bert.subsystems.intake.Intake.State;
@@ -17,6 +18,7 @@ public final class IntakeEjectCommand extends CommandSequence {
         }
 
         append(new IntakeSetCommand(intake, State.EJECT));
+        append(new WaitCommand(0.5));
         append(new IndexCommand(hopper, INDEX_EJECT_SPEED.get(), EJECT_TIME.get()));
         append(new IntakeSetCommand(intake, savedState));
     }
