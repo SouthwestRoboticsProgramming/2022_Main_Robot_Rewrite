@@ -6,9 +6,8 @@ import com.swrobotics.bert.shuffle.TunableDouble;
 import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.util.TalonFXBuilder;
 
-import static com.swrobotics.bert.constants.Constants.CANIVORE;
+import static com.swrobotics.bert.constants.Constants.*;
 import static com.swrobotics.bert.constants.IntakeConstants.*;
-import static com.swrobotics.bert.constants.DriveConstants.TALON_FX_NATIVE_SENSOR_UNITS_PER_ROTATION;
 
 public final class Intake implements Subsystem {
     public enum State {
@@ -67,7 +66,7 @@ public final class Intake implements Subsystem {
         System.out.println("Setting run state: " + state);
 
         if (state != this.state) {
-            motor.set(ControlMode.Velocity, state.getSpeed() * TALON_FX_NATIVE_SENSOR_UNITS_PER_ROTATION);
+            motor.set(ControlMode.Velocity, state.getSpeed() * RPM_TO_FX_VELOCITY);
         }
         this.state = state;
         System.out.println(state);
