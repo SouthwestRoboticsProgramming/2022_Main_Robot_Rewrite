@@ -12,9 +12,9 @@ public final class IntakeConstants {
         public static final TunableDouble INTAKE_KF = PID.getDouble("kF", 0);
 
     private static final TuneGroup TUNE = new TuneGroup("Tune", ShuffleBoard.intakeTab);
-        public static final TunableDouble INTAKE_SPEED = TUNE.getDouble("Intake Speed", -13);
+        public static final TunableDouble INTAKE_SPEED = TUNE.getDouble("Intake Speed", -6500);
         public static final TunableDouble IDLE_SPEED = TUNE.getDouble("Idle Speed", 0);
-        public static final TunableDouble EJECT_SPEED = TUNE.getDouble("Eject Speed", 15.0);
+        public static final TunableDouble EJECT_SPEED = TUNE.getDouble("Eject Speed", 3000);
         public static final TunableDouble EJECT_TIME = TUNE.getDouble("Eject Time", 1);
 
     public static final int INTAKE_MOTOR_ID = 40;
