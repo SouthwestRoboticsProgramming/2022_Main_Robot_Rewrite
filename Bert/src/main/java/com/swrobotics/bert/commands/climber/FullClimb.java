@@ -55,7 +55,7 @@ public final class FullClimb implements Command {
 
     private void updateGyro() {     previousAngle = newAngle;
                                     newAngle = getGyro();
-                                    System.out.println("FullClimb.updateGyro() - angle: " + newAngle);}
+                                    }
     private double getGyro() {      return -gyro.getPitch();}
     private boolean positiveRate() {return newAngle >= previousAngle;}
     private boolean pastBar(double barAngle) {return newAngle > barAngle;}

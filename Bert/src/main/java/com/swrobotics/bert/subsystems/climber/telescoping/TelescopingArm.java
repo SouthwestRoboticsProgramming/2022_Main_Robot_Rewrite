@@ -146,8 +146,9 @@ public final class TelescopingArm {
                 percentOut = Utils.clamp(percentOut, -TELESCOPING_MAX_UNLOADED_PERCENT.get(), TELESCOPING_MAX_UNLOADED_PERCENT.get());
             }
         }
-        motor1.set(percentOut);
-        motor2.set(percentOut);
+
+       motor1.set(percentOut);
+       motor2.set(percentOut);
     }
 
     public void setLoaded(boolean loaded) {

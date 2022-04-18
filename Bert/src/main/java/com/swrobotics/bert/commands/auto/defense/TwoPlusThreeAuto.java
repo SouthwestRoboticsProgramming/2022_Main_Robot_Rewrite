@@ -3,6 +3,10 @@ package com.swrobotics.bert.commands.auto.defense;
 import com.swrobotics.bert.RobotContainer;
 import com.swrobotics.bert.commands.CommandSequence;
 import com.swrobotics.bert.commands.WaitCommand;
+import com.swrobotics.bert.commands.auto.DriveToPointCommand;
+import com.swrobotics.bert.commands.auto.TargetAngleCommand;
+import com.swrobotics.bert.commands.auto.TurnToAngleCommand;
+import com.swrobotics.bert.commands.auto.TurnTowardsTargetCommand;
 import com.swrobotics.bert.commands.intake.IntakeEjectCommand;
 import com.swrobotics.bert.commands.intake.IntakeSetCommand;
 import com.swrobotics.bert.commands.shooter.ShootCommand;
@@ -17,7 +21,7 @@ import com.swrobotics.messenger.client.MessengerClient;
 import static com.swrobotics.bert.constants.ball.BallLocationConstants.*;
 
 public class TwoPlusThreeAuto extends CommandSequence {
-    public TwoPlusTwoAuto(RobotContainer robot) {
+    public TwoPlusThreeAuto(RobotContainer robot) {
         Intake intake = robot.intake;
         Localization loc = robot.localization;
         SwerveDriveController drive = robot.driveController;
@@ -89,7 +93,7 @@ public class TwoPlusThreeAuto extends CommandSequence {
         });
 
         append(new TurnTowardsTargetCommand(drive, loc));
-        append(new IntajeEjectCommand(intake, hopper));
+        append(new IntakeEjectCommand(intake, hopper));
 
 
     }
