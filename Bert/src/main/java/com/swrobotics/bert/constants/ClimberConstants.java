@@ -8,7 +8,7 @@ import com.swrobotics.bert.shuffle.TuneGroup;
 public final class ClimberConstants {
     private static final TuneGroup TELESCOPING = new TuneGroup("Telescoping", ShuffleBoard.climberTab);
         public static final TunableDouble TELESCOPING_MIN_TICKS = TELESCOPING.getDouble("Min Ticks", 0);
-        public static final TunableDouble TELESCOPING_MAX_TICKS = TELESCOPING.getDouble("Max Ticks", 50.0);
+        public static final TunableDouble TELESCOPING_MAX_TICKS = TELESCOPING.getDouble("Max Ticks", 60.0);
         public static final TunableDouble TELESCOPING_TOLERANCE = TELESCOPING.getDouble("Tele Tolerance", 0.05);
         public static final TunableDouble TELESCOPING_MAX_LOADED_PERCENT = TELESCOPING.getDouble("Tele Max Loaded Output", 0.8);
         public static final TunableDouble TELESCOPING_MAX_UNLOADED_PERCENT = TELESCOPING.getDouble("Tele Max Unloaded Output", 0.5);
