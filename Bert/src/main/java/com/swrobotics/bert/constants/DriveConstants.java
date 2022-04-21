@@ -1,6 +1,7 @@
 package com.swrobotics.bert.constants;
 
 import com.swrobotics.bert.shuffle.ShuffleBoard;
+import com.swrobotics.bert.shuffle.TunableBoolean;
 import com.swrobotics.bert.shuffle.TunableDouble;
 import com.swrobotics.bert.shuffle.TunableInt;
 import com.swrobotics.bert.shuffle.TuneGroup;
@@ -17,6 +18,7 @@ public final class DriveConstants {
         public static final TunableDouble MAX_VELOCITY = CONTROLS.getDouble("Max Velocity", 1.0); // Meters per Seconda
         public static final TunableDouble MAX_TURN_VELOCITY = CONTROLS.getDouble("Max Turn Velocity", 2.0); // Radians per Second
         public static final TunableDouble SLOW_MODE_MULTIPLIER = CONTROLS.getDouble("Slow Mode Multiplier", 0.5);
+        public static final TunableBoolean LIMIT_DRIVE_CURRENT = CONTROLS.getBoolean("Limit Drive Current", true);
 
     private static final TuneGroup PID = new TuneGroup("PID", ShuffleBoard.driveTab);
         public static final TunableDouble DRIVE_KP = PID.getDouble("Drive KP", 0.05);

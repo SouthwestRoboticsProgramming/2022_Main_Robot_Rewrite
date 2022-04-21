@@ -63,12 +63,8 @@ public final class SwerveModule {
         drive.configVoltageCompSaturation(10); // 100% is 10 volts
         drive.enableVoltageCompensation(true);
 
-        drive.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(
-            true, /* enabled */
-            40, /* limit amps */
-            45, /* threshold amps */
-            0.1 /* seconds over trigger */
-        ));
+        LIMIT_DRIVE_CURRENT.onChange(this::updateCurrentLimit);
+        updateCurrentLimit();
 
         TalonSRXConfiguration turnConfig = new TalonSRXConfiguration();
         turn.configAllSettings(turnConfig);
@@ -113,6 +109,15 @@ public final class SwerveModule {
 
     private void updateTurnPID() {
         pid.setPID(TURN_KP.get(), TURN_KP.get(), TURN_KD.get());
+    }
+
+    private void updateCurrentLimit() {
+        drive.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(
+            LIMIT_DRIVE_CURRENT.get(), /* enabled */
+            40, /* limit amps */
+            45, /* threshold amps */
+            0.1 /* seconds over trigger */
+        ));
     }
 
     public SwerveModuleState getRealState() {
