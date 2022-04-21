@@ -3,6 +3,7 @@ package com.swrobotics.bert.subsystems.drive;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -61,6 +62,13 @@ public final class SwerveModule {
 
         drive.configVoltageCompSaturation(10); // 100% is 10 volts
         drive.enableVoltageCompensation(true);
+
+        drive.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(
+            true, /* enabled */
+            40, /* limit amps */
+            45, /* threshold amps */
+            0.1 /* seconds over trigger */
+        ));
 
         TalonSRXConfiguration turnConfig = new TalonSRXConfiguration();
         turn.configAllSettings(turnConfig);
