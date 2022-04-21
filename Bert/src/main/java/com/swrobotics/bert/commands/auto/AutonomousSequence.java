@@ -2,6 +2,8 @@ package com.swrobotics.bert.commands.auto;
 
 import com.swrobotics.bert.RobotContainer;
 import com.swrobotics.bert.commands.CommandSequence;
+import com.swrobotics.bert.commands.auto.defense.TwoPlusThreeAuto;
+import com.swrobotics.bert.commands.auto.defense.TwoPlusTwoAuto;
 
 import static com.swrobotics.bert.constants.AutonomousConstants.*;
 
@@ -19,6 +21,12 @@ public final class AutonomousSequence extends CommandSequence {
                 break;
             case THREE_BALL:
                 append(new ThreeBallAuto(robot));
+                break;
+            case TWO_PLUS_TWO:
+                append(new TwoPlusTwoAuto(robot));
+                break;
+            case TWO_PLUS_THREE:
+                append(new TwoPlusThreeAuto(robot));
                 break;
             case TAXI:
                 append(new TaxiSequence(robot));

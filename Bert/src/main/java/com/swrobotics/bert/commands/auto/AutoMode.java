@@ -5,5 +5,7 @@ public enum AutoMode {
     BACK_UP,
     TWO_BALL,
     THREE_BALL,
+    TWO_PLUS_TWO,
+    TWO_PLUS_THREE,
     TAXI
 }
