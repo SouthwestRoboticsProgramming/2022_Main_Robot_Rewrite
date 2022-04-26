@@ -23,6 +23,7 @@ public final class RemoteClient implements Client, Runnable {
     private final DataInputStream in;
     private final DataOutputStream out;
     private final Set<String> listening;
+    private final Set<String> wildcards;
 
     private boolean connected = true;
     private String name = "[Unknown]";
@@ -35,6 +36,7 @@ public final class RemoteClient implements Client, Runnable {
         out = new DataOutputStream(socket.getOutputStream());
 
         listening = Collections.synchronizedSet(new HashSet<>());
+        wildcards = Collections.synchronizedSet(new HashSet<>());
         lastHeartbeatTime = System.currentTimeMillis();
     }
 
@@ -54,7 +56,11 @@ public final class RemoteClient implements Client, Runnable {
                 String listenType = in.readUTF();
                 System.out.println("Client " + name + " listening to " + listenType);
                 MessengerServer.get().getLog().logEvent("_Listen", name, listenType);
-                listening.add(listenType);
+                if (listenType.charAt(listenType.length() - 1) == '*') {
+                    wildcards.add(listenType.substring(0, listenType.length() - 1));
+                } else {
+                    listening.add(listenType);
+                }
                 break;
             }
             case UNLISTEN: {
@@ -62,6 +68,7 @@ public final class RemoteClient implements Client, Runnable {
                 System.out.println("Client " + name + " no longer listening to " + unlistenType);
                 MessengerServer.get().getLog().logEvent("_Unlisten", name, unlistenType);
                 listening.remove(unlistenType);
+                wildcards.remove(unlistenType.substring(0, unlistenType.length() - 1));
                 break;
             }
             case DISCONNECT: {
@@ -145,6 +152,15 @@ public final class RemoteClient implements Client, Runnable {
 
     @Override
     public boolean listensTo(String type) {
-        return listening.contains(type);
+        if (listening.contains(type))
+            return true;
+
+        for (String wildcard : wildcards) {
+            if (type.startsWith(wildcard)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
