@@ -7,5 +7,6 @@ public enum AutoMode {
     THREE_BALL,
     TWO_PLUS_TWO,
     TWO_PLUS_THREE,
-    TAXI
+    TAXI,
+    ONE_BALL
 }

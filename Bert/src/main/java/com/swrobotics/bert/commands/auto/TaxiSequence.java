@@ -14,12 +14,16 @@ public final class TaxiSequence extends CommandSequence {
         MessengerClient msg = robot.msg;
         Pathfinding path = robot.pathfinding;
 
-        double taxiDistance = 2;
+        double taxiDistance = 3;
 
-        Rotation2d angleToTarget = loc.getAngleToTarget();
-        double targetX = -taxiDistance * angleToTarget.getCos();
-        double targetY = -taxiDistance * angleToTarget.getSin();
+        double locX = loc.getFieldX();
+        double locY = loc.getFieldY();
+        double len = Math.sqrt(locX * locX + locY * locY);
+        locX /= len;
+        locY /= len;
+        locX *= taxiDistance;
+        locY *= taxiDistance;
 
-        append(new DriveToPointCommand(msg, path, targetX, targetY, 15));
+        append(new DriveToPointCommand(msg, path, locX, locY, 7));
     }
 }

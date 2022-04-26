@@ -31,6 +31,9 @@ public final class AutonomousSequence extends CommandSequence {
             case TAXI:
                 append(new TaxiSequence(robot));
                 break;
+            case ONE_BALL:
+                append(new OneBallAuto(robot));
+                break;
         }
     }
 }
