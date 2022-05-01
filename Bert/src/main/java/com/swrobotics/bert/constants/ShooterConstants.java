@@ -42,6 +42,10 @@ public final class ShooterConstants {
         public static final TunableDouble FLYWHEEL_KD = FLYWHEEL.getDouble("kD", 10.0);
         public static final TunableDouble FLYWHEEL_KF = FLYWHEEL.getDouble("kF", 0.02);
 
+        public static final TunableDouble FLYWHEEL_KS = FLYWHEEL.getDouble("kS", 0.05);
+        public static final TunableDouble FLYWHEEL_KV = FLYWHEEL.getDouble("kV", 0.18);
+        public static final TunableDouble FLYWHEEL_KA = FLYWHEEL.getDouble("kA", 0.09);
+
     public static final int FLYWHEEL_ID = 30;
     public static final double FLYWHEEL_GEAR_RATIO = 1; // 1:1
 

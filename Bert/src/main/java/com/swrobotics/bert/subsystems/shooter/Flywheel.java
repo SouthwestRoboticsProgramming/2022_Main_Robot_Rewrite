@@ -1,5 +1,6 @@
 package com.swrobotics.bert.subsystems.shooter;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -7,11 +8,16 @@ import com.swrobotics.bert.shuffle.ShuffleBoard;
 import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.util.TalonFXBuilder;
 
+import edu.wpi.first.math.controller.BangBangController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+
 import static com.swrobotics.bert.constants.ShooterConstants.*;
 import static com.swrobotics.bert.constants.Constants.*;
 
 public final class Flywheel implements Subsystem {
     private final TalonFX flywheel;
+    private final BangBangController bangBang;
+    private final SimpleMotorFeedforward feedforward;
 
     public Flywheel() {
         flywheel = new TalonFXBuilder(FLYWHEEL_ID)
@@ -32,6 +38,10 @@ public final class Flywheel implements Subsystem {
 
         flywheel.setNeutralMode(NeutralMode.Coast);
         flywheel.configVoltageCompSaturation(11);
+
+        bangBang = new BangBangController();
+        feedforward = new SimpleMotorFeedforward(FLYWHEEL_KS.get(), FLYWHEEL_KV.get(),FLYWHEEL_KA.get());
+
     }
 
     private void updatePID() {
@@ -52,9 +62,18 @@ public final class Flywheel implements Subsystem {
         ShuffleBoard.show("Flywheel Temp (C)", flywheel.getTemperature());
     }
 
+    public double getRPM() {
+        return flywheel.getSelectedSensorVelocity() / RPM_TO_FX_VELOCITY / FLYWHEEL_GEAR_RATIO;
+    }
+
     public void setFlywheelSpeed(double rpm) {
-        // System.out.println("Flywheel: " + rpm + " Actual: " + flywheel.getSelectedSensorVelocity() / RPM_TO_FX_VELOCITY / FLYWHEEL_GEAR_RATIO);
-        flywheel.set(TalonFXControlMode.Velocity, rpm * RPM_TO_FX_VELOCITY * FLYWHEEL_GEAR_RATIO);
+        double feed = feedforward.calculate(rpm);
+        double bang = bangBang.calculate(getRPM(),rpm);
+
+        flywheel.set(TalonFXControlMode.PercentOutput, bang + 0.9 * feed);
+
+        System.out.println("Flywheel: " + rpm + " Actual: " + getRPM());
+        // flywheel.set(TalonFXControlMode.Velocity, rpm * RPM_TO_FX_VELOCITY * FLYWHEEL_GEAR_RATIO);
 //    System.out.println("Current: " + flywheel.getSelectedSensorVelocity() /
 //    RPM_TO_FX_VELOCITY / FLYWHEEL_GEAR_RATIO + " Target: " + rpm);
     }
