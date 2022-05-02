@@ -1,6 +1,5 @@
 package com.swrobotics.bert.subsystems.shooter;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -17,7 +16,7 @@ import static com.swrobotics.bert.constants.Constants.*;
 public final class Flywheel implements Subsystem {
     private final TalonFX flywheel;
     private final BangBangController bangBang;
-    private final SimpleMotorFeedforward feedforward;
+    private SimpleMotorFeedforward feedforward;
 
     public Flywheel() {
         flywheel = new TalonFXBuilder(FLYWHEEL_ID)
@@ -36,6 +35,10 @@ public final class Flywheel implements Subsystem {
         FLYWHEEL_KD.onChange(this::updatePID);
         FLYWHEEL_KF.onChange(this::updatePID);
 
+        FLYWHEEL_KS.onChange(this::updateFeedforward);
+        FLYWHEEL_KV.onChange(this::updateFeedforward);
+        FLYWHEEL_KA.onChange(this::updateFeedforward);
+
         flywheel.setNeutralMode(NeutralMode.Coast);
         flywheel.configVoltageCompSaturation(11);
 
@@ -52,29 +55,29 @@ public final class Flywheel implements Subsystem {
         flywheel.setIntegralAccumulator(0);
     }
 
-
-    @Override
-    public void robotPeriodic() {
-        // flywheel.set(TalonFXControlMode.PercentOutput, 1);
-        // System.out.println(flywheel.getTemperature());
-        // System.out.println(flywheel.getIntegralAccumulator());
-
-        ShuffleBoard.show("Flywheel Temp (C)", flywheel.getTemperature());
+    private void updateFeedforward() {
+        feedforward = new SimpleMotorFeedforward(FLYWHEEL_KS.get(), FLYWHEEL_KV.get(), FLYWHEEL_KA.get());
     }
-
+    
     public double getRPM() {
         return flywheel.getSelectedSensorVelocity() / RPM_TO_FX_VELOCITY / FLYWHEEL_GEAR_RATIO;
     }
-
+    
     public void setFlywheelSpeed(double rpm) {
         double feed = feedforward.calculate(rpm);
         double bang = bangBang.calculate(getRPM(),rpm);
-
+        
         flywheel.set(TalonFXControlMode.PercentOutput, bang + 0.9 * feed);
-
+        
         System.out.println("Flywheel: " + rpm + " Actual: " + getRPM());
+        
         // flywheel.set(TalonFXControlMode.Velocity, rpm * RPM_TO_FX_VELOCITY * FLYWHEEL_GEAR_RATIO);
-//    System.out.println("Current: " + flywheel.getSelectedSensorVelocity() /
-//    RPM_TO_FX_VELOCITY / FLYWHEEL_GEAR_RATIO + " Target: " + rpm);
+        //    System.out.println("Current: " + flywheel.getSelectedSensorVelocity() /
+        //    RPM_TO_FX_VELOCITY / FLYWHEEL_GEAR_RATIO + " Target: " + rpm);
+    }
+
+    @Override
+    public void robotPeriodic() {
+        ShuffleBoard.show("Flywheel Temp (C)", flywheel.getTemperature());
     }
 }
