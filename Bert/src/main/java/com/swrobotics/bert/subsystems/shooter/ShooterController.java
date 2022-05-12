@@ -3,10 +3,6 @@ package com.swrobotics.bert.subsystems.shooter;
 import com.swrobotics.bert.Scheduler;
 import com.swrobotics.bert.commands.shooter.ShootCommand;
 import com.swrobotics.bert.control.Input;
-import com.swrobotics.bert.shuffle.ShuffleBoard;
-import com.swrobotics.bert.shuffle.TemporaryDouble;
-import com.swrobotics.bert.shuffle.TunableDouble;
-import com.swrobotics.bert.shuffle.TuneGroup;
 import com.swrobotics.bert.subsystems.Localization;
 import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.util.Utils;
@@ -39,23 +35,18 @@ public final class ShooterController implements Subsystem {
             return hoodPos;
 
         } else {
-            if (distance > 2000 /*Medium hood*/) { return 3; }
-            if (distance > 1000 /*Low hood*/) { return 2; }
-            if (distance > 500 /*Lower hood*/) { return 1; }
-            return 0; /*Lowest hood*/
+            double hoodPos = Utils.map(distance, 0, 18, 0, 3); //FIXME: Calculate min and max hood for bottom goal
+            return hoodPos;
         }
     }
 
     // Keys are distance in feet according to distance parameter
     // Values are RPM
-    private final double[] RPM_TABLE_KEYS   = {2.95, 5.4,  7.3,  9.58};
-    private final double[] RPM_TABLE_VALUES = {2275, 2450, 2590, 2680};
 
-    // TunableDouble RPM_TUNE = new TuneGroup("tests", ShuffleBoard.shooterTab).getDouble("RPM", 0);
-    // private double calculateRPM(double distance, boolean highGoal) {
-    //     System.out.println("Distance: " + distance);
-    //     return RPM_TUNE.get();
-    // }
+    //FIXME: What if the number of values in these two arrays are different? Prevent crash
+    private final double[] RPM_TABLE_KEYS   = {2.95, 5.4,  7.3,  9.58}; // Distance
+    private final double[] RPM_TABLE_VALUES = {2275, 2450, 2590, 2680}; // RPM
+
     private double calculateRPM(double distance, boolean highGoal) {
         double lowerKey = 0, higherKey = 0;
         double lowerValue = 0, higherValue = 0;
@@ -70,6 +61,7 @@ public final class ShooterController implements Subsystem {
                 lowerKey = key;
                 lowerValue = value;
                 lowerSet = true;
+                break;
             } else if (distance < key) {
                 higherKey = key;
                 higherValue = value;
@@ -89,13 +81,16 @@ public final class ShooterController implements Subsystem {
             // TODO: Shoot to low goal
             rpm = RPM_TABLE_VALUES[0];
         } else if (!higherSet) {
-            // If farther than the farthest point, approximate using average slope of the table
+            // If farther than the farthest point, approximate using average slope of the last two points
 
             double lastKey = RPM_TABLE_KEYS[RPM_TABLE_KEYS.length - 1];
             double lastVal = RPM_TABLE_VALUES[RPM_TABLE_VALUES.length - 1];
 
-            double rise = RPM_TABLE_VALUES[0] - lastVal;
-            double run = RPM_TABLE_KEYS[0] - lastKey;
+            double secondLastKey = RPM_TABLE_KEYS[RPM_TABLE_KEYS.length -2];
+            double secondLastVal = RPM_TABLE_VALUES[RPM_TABLE_VALUES.length -2];
+
+            double rise = lastKey - secondLastKey;
+            double run = lastVal - secondLastVal;
             double slope = rise / run;
 
             rpm = lastVal + slope * (distance - lastKey);
