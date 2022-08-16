@@ -60,6 +60,11 @@ public final class TelescopingArms {
         right.stop();
     }
 
+    public void disable() {
+        left.disable();
+        right.disable();
+    }
+
     @Override
     public String toString() {
         return "TelescopingArms{"

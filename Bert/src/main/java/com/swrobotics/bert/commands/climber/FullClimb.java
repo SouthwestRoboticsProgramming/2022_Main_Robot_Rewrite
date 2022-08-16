@@ -12,15 +12,19 @@ import static com.swrobotics.bert.constants.ClimberConstants.*;
 import com.kauailabs.navx.frc.AHRS;
 
 public final class FullClimb implements Command {
-    private enum ClimbStep {BASE_1, 
-                            ARMS_UP_1_5, 
-                            PULL_UP_2,
-                            LOCK_IN_3,
-                            HANDOFF_4,
-                            SWING_4_5,
-                            EXTEND_5,
-                            PRESSURE_6,
-                            HALF_PULL_7}
+    private enum ClimbStep {
+      BASE_1, 
+      ARMS_UP_1_5, 
+      PULL_UP_2,
+      LOCK_IN_3,
+      HANDOFF_4,
+      SWING_4_5,
+      EXTEND_5,
+      PRESSURE_6,
+      SMALL_PULL_7,
+      HALF_PULL_8,
+      STOP_9
+    }
     private ClimbStep climbStep = ClimbStep.BASE_1;
     // 1:   Base
     // 1.5: Arms up
@@ -36,6 +40,7 @@ public final class FullClimb implements Command {
     private double previousAngle = 0, newAngle = 0;
     private AHRS gyro;
     private int currentBar = 1;
+    private boolean isGoingTo4th = false;
 
     private TelescopingArms telescopingArms;
     private RotatingArms rotatingArms;
@@ -148,17 +153,31 @@ public final class FullClimb implements Command {
                 // teleSetpoint = CLIMB_STEP_5_TELE.get();
                 // rotSetpoint = CLIMB_STEP_6_ROT.get();
                 // loaded = false;
-                if (rotatingArms.isInTolerance() && input.getClimberNextStep()) {switchToStep(ClimbStep.HALF_PULL_7);}
+                if (rotatingArms.isInTolerance() && input.getClimberNextStep()) {switchToStep(ClimbStep.SMALL_PULL_7);}
                 if (input.getClimberPreviousStep()) {switchToStep(ClimbStep.EXTEND_5);}
               break;
-            case HALF_PULL_7:
+            case SMALL_PULL_7:
+                telescopingArms.setTargetDistancePercent(CLIMB_STEP_SMALL_PULL_TELE.get());
+                telescopingArms.setLoaded(true);
+                rotatingArms.setTargetAngleDegrees(CLIMB_STEP_6_ROT.get());
+                if (telescopingArms.isInTolarence() && input.getClimberNextStep()) {switchToStep(ClimbStep.HALF_PULL_8);}
+                if (input.getClimberPreviousStep()) {switchToStep(ClimbStep.PRESSURE_6);}
+              break;
+            case HALF_PULL_8:
               //TELe & ROT
               telescopingArms.setTargetDistancePercent(CLIMB_STEP_4_TELE.get());
               telescopingArms.setLoaded(true);
               rotatingArms.setTargetAngleDegrees(CLIMB_STEP_1_ROT.get());
-              if (rotatingArms.isInTolerance() && input.getClimberNextStep()) {switchToStep(ClimbStep.PULL_UP_2);}
-              if (input.getClimberPreviousStep()) {switchToStep(ClimbStep.PRESSURE_6);}
-            break;
+              if (rotatingArms.isInTolerance() && input.getClimberNextStep()) {
+                switchToStep(isGoingTo4th ? ClimbStep.STOP_9 : ClimbStep.PULL_UP_2);
+                isGoingTo4th = true;
+              }
+              if (input.getClimberPreviousStep()) {switchToStep(ClimbStep.SMALL_PULL_7);}
+              break;
+            case STOP_9:
+              telescopingArms.disable();
+              rotatingArms.disable();
+              break;
           }
           // telescopingArms.setTargetDistancePercent(teleSetpoint);
           // telescopingArms.setLoaded(loaded);

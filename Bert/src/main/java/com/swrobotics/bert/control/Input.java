@@ -4,6 +4,9 @@ import static com.swrobotics.bert.constants.InputConstants.*;
 
 import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.util.Utils;
+import com.team2129.lib.math.Angle;
+import com.team2129.lib.math.Vec2d;
+import com.team2129.lib.utils.InputUtils;
 
 // Note: The Y axes on the sticks are backwards from what you would expect: up is negative
 public final class Input implements Subsystem {
@@ -15,21 +18,34 @@ public final class Input implements Subsystem {
         manipulator = new XboxController(MANIPULATOR_CONTROLLER_ID);
     }
 
+    public void setRumble(boolean rumble) {
+        drive.setRumble(rumble);
+        manipulator.setRumble(rumble);
+    }
+
+    private static final double DEADBAND = 0.2;
+
     /* Drive */
-    public double getDriveX() {
-        return deadzone(drive.leftStickX.get());
+    public Vec2d getDriveTranslation() {
+        // Apply deadband
+        double x = InputUtils.applyDeadband(drive.leftStickX.get(), DEADBAND);
+        double y = -InputUtils.applyDeadband(drive.leftStickY.get(), DEADBAND);
+
+        System.out.println(new Vec2d(x, y).mul(2));
+
+        return new Vec2d(x, y).mul(2);
     }
 
-    public double getDriveY() {
-        return deadzone(drive.leftStickY.get());
+    public Angle getDriveRotation() {
+        return Angle.cwRad(InputUtils.applyDeadband(drive.rightStickX.get(), DEADBAND) * Math.PI);
     }
 
-    public double getDriveRot() {
-        return deadzone(drive.rightStickX.get());
+    public boolean getFieldRelative() {
+        return !(drive.leftTrigger.get() > 1.0 - DEADBAND);
     }
 
     public boolean getSlowMode() {
-        return drive.leftShoulder.isPressed();
+        return drive.rightShoulder.isPressed();
     }
 
     
@@ -84,5 +100,10 @@ public final class Input implements Subsystem {
     public void robotPeriodic() {
         drive.update();
         manipulator.update();
+    }
+
+    @Override
+    public void disabledInit() {
+        setRumble(false);
     }
 }

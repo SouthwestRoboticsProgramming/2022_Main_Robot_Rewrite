@@ -4,6 +4,7 @@ import com.swrobotics.bert.Robot;
 import com.swrobotics.bert.RobotState;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public abstract class Controller {
@@ -112,10 +113,11 @@ public abstract class Controller {
     public final Axis rightStickX, rightStickY;
     public final Axis leftTrigger, rightTrigger;
 
+    private final Joystick stick;
     private boolean controlEnabled;
 
     public Controller(int id, int a_, int b_, int x_, int y_, int ls, int rs, int sel, int st, int lst, int rst, int lsx, int lsy, int rsx, int rsy, int lt, int rt) {
-        Joystick stick = new Joystick(id);
+        stick = new Joystick(id);
 
         a             = new Button(stick, a_);
         b             = new Button(stick, b_);
@@ -139,6 +141,12 @@ public abstract class Controller {
         rightStickY  = new Axis(stick, rsy, true);
         leftTrigger  = new Axis(stick, lt, false);
         rightTrigger = new Axis(stick, rt, false);
+    }
+
+    public void setRumble(boolean rumble) {
+        double value = rumble ? 1 : 0;
+        stick.setRumble(RumbleType.kLeftRumble, value);
+        stick.setRumble(RumbleType.kRightRumble, value);
     }
 
     public void update() {

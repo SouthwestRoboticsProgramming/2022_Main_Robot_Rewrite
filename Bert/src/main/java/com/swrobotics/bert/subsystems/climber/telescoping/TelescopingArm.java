@@ -21,6 +21,7 @@ public final class TelescopingArm {
     private boolean loaded;
     private double kF;
     private double target;
+    private boolean disabled = false;
 
     private double offset = 0;
 
@@ -129,11 +130,17 @@ public final class TelescopingArm {
     }
 
     public void update() {
+        if (disabled) {
+            motor1.set(0);
+            motor2.set(0);
+            return;
+        }
+
         double percentOut;
         if (manualMoving) {
             percentOut = target;
         } else {
-            if (loaded && isInTolarence(TELESCOPING_LOADED_PID_ENGAGE_PERC.get())) {
+            if (loaded /*&& isInTolarence(TELESCOPING_LOADED_PID_ENGAGE_PERC.get())*/) {
                 percentOut = TELESCOPING_LOADED_PERCENT_OUT.get();
             } else {
                 double targetTicks = Utils.map(target, 0, 1, TELESCOPING_MIN_TICKS.get(), TELESCOPING_MAX_TICKS.get());
@@ -155,5 +162,9 @@ public final class TelescopingArm {
         // this.loaded = false;
         this.loaded = loaded;
         updatePID();
+    }
+
+    public void disable() {
+        disabled = true;
     }
 }

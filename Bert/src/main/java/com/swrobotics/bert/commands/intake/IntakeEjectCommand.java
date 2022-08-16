@@ -1,4 +1,4 @@
-package com.swrobotics.bert.commands.intake;
+  package com.swrobotics.bert.commands.intake;
 
 import com.swrobotics.bert.commands.CommandSequence;
 import com.swrobotics.bert.commands.WaitCommand;

@@ -108,6 +108,8 @@ public final class ShooterController implements Subsystem {
     }
 //eat foos
 
+    private int turnOffTimer = 0;
+    private boolean lastBallDetected = false;
     @Override
     public void robotPeriodic() {
 
@@ -120,21 +122,45 @@ public final class ShooterController implements Subsystem {
 
         // System.out.println("Local angle: " + loc.getLocalAngleToTarget());
 
-        // HOOD
-        if (loc.isLookingAtTarget() || input.getAim() || input.getAimOverride()) {
-//            System.out.println("I'm supposed to be shooting");
-            hood.setPosition(calculateHood(distance, AIM_HIGH_GOAL.get()));
-            flywheel.setFlywheelSpeed(calculateRPM(distance, AIM_HIGH_GOAL.get()));
-            // System.out.println("Full speed");
-        } else if (hopper.isBallDetected()){
+        boolean ballDetected = hopper.isBallDetected();
+        if (lastBallDetected && !ballDetected)
+            turnOffTimer = 50; // TODO: Make tunable constant
+        lastBallDetected = ballDetected;
+
+        if (ballDetected || turnOffTimer != 0) {
+            if (loc.isLookingAtTarget() || input.getAim() || input.getAimOverride()) {
+                // System.out.println("Shooting");
+                hood.setPosition(calculateHood(distance, AIM_HIGH_GOAL.get()));
+                flywheel.setFlywheelSpeed(calculateRPM(distance, AIM_HIGH_GOAL.get()));
+            } else {
+                // System.out.println("Idling");
+                hood.calibrate();
+                flywheel.setFlywheelSpeed(FLYWHEEL_IDLE_SPEED.get());
+            }
+        } else {
+            // System.out.println("Not moving");
             hood.calibrate();
-            flywheel.setFlywheelSpeed(FLYWHEEL_IDLE_SPEED.get());
-            // System.out.println("Idle speed");
-        }else { // Don't spin the falcon when there is no ball
-            hood.calibrate();
-            flywheel.setFlywheelSpeed(0);
-            // System.out.println("No speed");
+            flywheel.stop();
         }
+
+        if (turnOffTimer > 0)
+                turnOffTimer--;
+
+        // HOOD
+//         if (loc.isLookingAtTarget() || input.getAim() || input.getAimOverride()) {
+// //            System.out.println("I'm supposed to be shooting");
+//             hood.setPosition(calculateHood(distance, AIM_HIGH_GOAL.get()));
+//             flywheel.setFlywheelSpeed(calculateRPM(distance, AIM_HIGH_GOAL.get()));
+//             // System.out.println("Full speed");
+//         } else if (hopper.isBallDetected()){
+//             hood.calibrate();
+//             flywheel.setFlywheelSpeed(FLYWHEEL_IDLE_SPEED.get());
+//             // System.out.println("Idle speed");
+//         }else { // Don't spin the falcon when there is no ball
+//             hood.calibrate();
+//             flywheel.setFlywheelSpeed(0);
+//             // System.out.println("No speed");
+//         }
 
         if (input.getShoot() && (shoot == null || !Scheduler.get().isCommandRunning(shoot))) {
             Scheduler.get().addCommand(shoot = new ShootCommand(hopper, input));

@@ -52,6 +52,10 @@ public final class Flywheel implements Subsystem {
         ShuffleBoard.show("Flywheel Temp (C)", flywheel.getTemperature());
     }
 
+    public void stop() {
+        flywheel.set(TalonFXControlMode.PercentOutput, 0);
+    }
+
     public void setFlywheelSpeed(double rpm) {
         // System.out.println("Flywheel: " + rpm + " Actual: " + flywheel.getSelectedSensorVelocity() / RPM_TO_FX_VELOCITY / FLYWHEEL_GEAR_RATIO);
         flywheel.set(TalonFXControlMode.Velocity, rpm * RPM_TO_FX_VELOCITY * FLYWHEEL_GEAR_RATIO);

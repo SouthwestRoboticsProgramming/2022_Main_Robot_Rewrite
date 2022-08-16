@@ -32,7 +32,7 @@ public final class ShooterConstants {
         public static final TunableDouble INDEX_KF = INDEX.getDouble("kF", 0.005);
 
     public static final int BALL_DETECTOR_ID = 9;
-    public static final int INDEX_ID = 33;
+    public static final int INDEX_ID = 12;
 
     private static final TuneGroup FLYWHEEL = new TuneGroup("Flywheel", ShuffleBoard.shooterTab);
         public static final TunableDouble FLYWHEEL_IDLE_SPEED = FLYWHEEL.getDouble("Idle Speed", -750);
@@ -42,7 +42,7 @@ public final class ShooterConstants {
         public static final TunableDouble FLYWHEEL_KD = FLYWHEEL.getDouble("kD", 10.0);
         public static final TunableDouble FLYWHEEL_KF = FLYWHEEL.getDouble("kF", 0.02);
 
-    public static final int FLYWHEEL_ID = 30;
+    public static final int FLYWHEEL_ID = 13;
     public static final double FLYWHEEL_GEAR_RATIO = 1; // 1:1
 
     private static final TuneGroup HOOD = new TuneGroup("HOOD", ShuffleBoard.shooterTab);
@@ -56,7 +56,7 @@ public final class ShooterConstants {
 
         public static final TunableDouble HOOD_CALIBRATE_SPEED = HOOD.getDouble("Calibration Speed", -0.5);
 
-    public static final int HOOD_ID = 31;
+    public static final int HOOD_ID = 5;
     public static final int HOOD_LIMIT_ID = 0;
 
     public static final int HOOD_ENCODER_ID_1 = 8;

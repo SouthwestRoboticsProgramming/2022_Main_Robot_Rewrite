@@ -4,16 +4,13 @@ import com.swrobotics.bert.commands.MessengerReadCommand;
 import com.swrobotics.bert.commands.PublishLocalizationCommand;
 import com.swrobotics.bert.commands.taskmanager.TaskManagerSetupCommand;
 import com.swrobotics.bert.control.Input;
+import com.swrobotics.bert.good_drive.drive.BadCode;
 import com.swrobotics.bert.subsystems.Lights;
 import com.swrobotics.bert.subsystems.Localization;
 import com.swrobotics.bert.subsystems.PDP;
-import com.swrobotics.bert.subsystems.auto.Autonomous;
-import com.swrobotics.bert.subsystems.auto.Pathfinding;
 import com.swrobotics.bert.subsystems.camera.CameraController;
 import com.swrobotics.bert.subsystems.camera.Limelight;
 import com.swrobotics.bert.subsystems.climber.Climber;
-import com.swrobotics.bert.subsystems.drive.SwerveDrive;
-import com.swrobotics.bert.subsystems.drive.SwerveDriveController;
 import com.swrobotics.bert.subsystems.intake.Intake;
 import com.swrobotics.bert.subsystems.intake.IntakeController;
 import com.swrobotics.bert.subsystems.shooter.BallDetector;
@@ -42,8 +39,6 @@ public final class RobotContainer {
     public final AHRS gyro;
 
     public final Input input;
-    public final SwerveDrive drive;
-    public final SwerveDriveController driveController;
     public final Limelight limelight;
     public final Localization localization;
     public final CameraController cameraController;
@@ -57,23 +52,13 @@ public final class RobotContainer {
     public final Climber climber;
     public final Lights lights;
     public final PDP pdp;
-    public final Autonomous autonomous;
+    public final BadCode badCode;
 
     // Messenger-dependent subsystems
-    public final Pathfinding pathfinding;
 
     public RobotContainer() {
-        // Messenger & TaskManager setup
-        {
-            msg = connectToMessenger();
-            if (msg != null) {
-                Scheduler.get().addCommand(new MessengerReadCommand(msg));
-                raspberryPi = new TaskManagerAPI(msg, RASPBERRY_PI_PREFIX);
-                Scheduler.get().addCommand(new TaskManagerSetupCommand(raspberryPi, "Pathfinding"));
-            } else {
-                raspberryPi = null;
-            }
-        }
+        msg = null;
+        raspberryPi = null;
 
         // Sensors
         {
@@ -84,13 +69,10 @@ public final class RobotContainer {
         {
             input = new Input();
             sleep();
-            drive = new SwerveDrive(gyro);
-            sleep();
-            driveController = new SwerveDriveController(input, gyro, drive);
-            sleep();
+            badCode = new BadCode(input, gyro);
             limelight = new Limelight();
             sleep();
-            localization = new Localization(gyro, drive, limelight, msg, input);
+            localization = new Localization(gyro, limelight, msg, input);
             sleep();
             pdp = new PDP();
             sleep();
@@ -104,7 +86,7 @@ public final class RobotContainer {
             sleep();
             hood = new NewHood();
             sleep();
-            intake = new Intake();
+            intake = new Intake(input);
             sleep();
             intakeController = new IntakeController(input, intake, hopper);
             sleep();
@@ -114,23 +96,12 @@ public final class RobotContainer {
             sleep();
             lights = new Lights();
             sleep();
-
-            if (msg != null) {
-                pathfinding = new Pathfinding(this);
-                Scheduler.get().addCommand(new PublishLocalizationCommand(msg, localization));
-            } else {
-                pathfinding = null;
-            }
-
-            autonomous = new Autonomous(this);
         }
 
 
         // Switches
         {
             new SubsystemSwitch(input,             ENABLE_INPUT);
-            new SubsystemSwitch(drive,             ENABLE_DRIVE);
-            new SubsystemSwitch(driveController,   ENABLE_DRIVE_CONTROLLER);
             new SubsystemSwitch(limelight,         ENABLE_LIMELIGHT);
             new SubsystemSwitch(localization,      ENABLE_LOCALIZATION);
             new SubsystemSwitch(cameraController,  ENABLE_CAMERA_CONTROLLER);
@@ -144,9 +115,8 @@ public final class RobotContainer {
             new SubsystemSwitch(climber,           ENABLE_CLIMBER);
             new SubsystemSwitch(lights,            ENABLE_LIGHTS);
             new SubsystemSwitch(pdp,               ENABLE_PDP);
-            new SubsystemSwitch(autonomous,        ENABLE_AUTONOMOUS);
+            new SubsystemSwitch(badCode, ENABLE_DRIVE);
 
-            new SubsystemSwitch(pathfinding, ENABLE_PATHFINDING);
         }
     }
 

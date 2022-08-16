@@ -7,7 +7,6 @@ import com.swrobotics.bert.constants.CameraConstants;
 import com.swrobotics.bert.constants.ball.BallLocation;
 import com.swrobotics.bert.control.Input;
 import com.swrobotics.bert.subsystems.camera.Limelight;
-import com.swrobotics.bert.subsystems.drive.SwerveDrive;
 import com.swrobotics.bert.util.Utils;
 import com.swrobotics.messenger.client.MessengerClient;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -17,28 +16,26 @@ import static com.swrobotics.bert.constants.Settings.*;
 
 public final class Localization implements Subsystem {
     private final AHRS gyro;
-    private final SwerveDrive drive;
     private final Limelight limelight;
     private final Input input;
     private double fieldX, fieldY;
 
-    public Localization(AHRS gyro, SwerveDrive drive, Limelight limelight, MessengerClient msg, Input input) {
+    public Localization(AHRS gyro, Limelight limelight, MessengerClient msg, Input input) {
         this.gyro = gyro;
-        this.drive = drive;
         this.limelight = limelight;
         this.input = input;
 
-        if (msg != null) {
-            msg.makeHandler()
-                    .listen("Config:SetLocation")
-                    .setHandler((type, in) -> {
-                        fieldX = in.readDouble(); // x in meters
-                        fieldY = in.readDouble(); // y in meters
-                        drive.calibrateOdometry(fieldX, fieldY);
+        // if (msg != null) {
+        //     msg.makeHandler()
+        //             .listen("Config:SetLocation")
+        //             .setHandler((type, in) -> {
+        //                 fieldX = in.readDouble(); // x in meters
+        //                 fieldY = in.readDouble(); // y in meters
+        //                 drive.calibrateOdometry(fieldX, fieldY);
 
-                        // gyro not settable yet
-                    });
-        }
+        //                 // gyro not settable yet
+        //             });
+        // }
     }
 
     public double getFieldX() {
@@ -54,19 +51,20 @@ public final class Localization implements Subsystem {
     }
 
     public double getDistanceToTarget() {
-        double robotX = drive.getOdometryPose().getX();
-        double robotY = drive.getOdometryPose().getY();
+        // double robotX = drive.getOdometryPose().getX();
+        // double robotY = drive.getOdometryPose().getY();
 
-        /* Distance Formula */
-        double distance = Math.sqrt(robotX * robotX + robotY * robotY);
-        return distance;
+        // /* Distance Formula */
+        // double distance = Math.sqrt(robotX * robotX + robotY * robotY);
+        // return distance;
+        return 4;
     }
 
     public Rotation2d getAngleToTarget() {
-        double robotX = drive.getOdometryPose().getX();
-        double robotY = drive.getOdometryPose().getY();
+        // double robotX = drive.getOdometryPose().getX();
+        // double robotY = drive.getOdometryPose().getY();
 
-        double angleRadians = Math.atan2(-robotY, -robotX);
+        double angleRadians = 0;//Math.atan2(-robotY, -robotX);
 
         return new Rotation2d(angleRadians - Math.PI / 2);
     }
@@ -88,13 +86,13 @@ public final class Localization implements Subsystem {
     }
 
     public Rotation2d getAngleToBall(BallLocation ball) {
-        double robotX = drive.getOdometryPose().getX();
-        double robotY = drive.getOdometryPose().getY();
+        // double robotX = drive.getOdometryPose().getX();
+        // double robotY = drive.getOdometryPose().getY();
 
         double ballX = ball.getX();
         double ballY = ball.getY();
 
-        double angleRadians = Math.atan2(ballY - robotY, ballX - robotX);
+        double angleRadians = 0;//Math.atan2(ballY - robotY, ballX - robotX);
 
         return new Rotation2d(angleRadians - Math.PI / 2);
     }
@@ -118,12 +116,12 @@ public final class Localization implements Subsystem {
             fieldX = visionDist * Math.cos(angleDiff);
             fieldY = visionDist * Math.sin(angleDiff);
 
-            drive.calibrateOdometry(fieldX, fieldY);
+            // drive.calibrateOdometry(fieldX, fieldY);
         } else {
-            Pose2d odometry = drive.getOdometryPose();
+            // Pose2d odometry = drive.getOdometryPose();
 
-            fieldX = odometry.getX();
-            fieldY = odometry.getY();
+            // fieldX = odometry.getX();
+            // fieldY = odometry.getY();
         }
     }
 }

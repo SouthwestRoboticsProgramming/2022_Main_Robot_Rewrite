@@ -69,6 +69,7 @@ public final class ClimberConstants {
         public static final TunableDouble CLIMB_STEP_4_TELE = STEPS.getDouble("4-Tel: Release Height", 0.4);
         public static final TunableDouble CLIMB_STEP_5_TELE = STEPS.getDouble("5-Tel: Extend to 3", 0.9);
         public static final TunableDouble CLIMB_STEP_6_ROT = STEPS.getDouble("6-Rot: Pressure On 3", 69.0);
+        public static final TunableDouble CLIMB_STEP_SMALL_PULL_TELE = STEPS.getDouble("Small Pull Tele", 0.9);
 
     private ClimberConstants() {
         throw new AssertionError();

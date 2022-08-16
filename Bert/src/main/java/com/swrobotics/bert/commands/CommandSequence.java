@@ -63,7 +63,7 @@ public abstract class CommandSequence implements Command {
             next();
         }
 
-        return false;
+        return !running();
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.swrobotics.bert;
 import com.swrobotics.bert.constants.Settings;
 import com.swrobotics.bert.profiler.ProfileNode;
 import com.swrobotics.bert.profiler.Profiler;
+import com.team2129.lib.wpilib.AbstractRobot;
+
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.RobotBase;
 
@@ -24,6 +26,11 @@ public final class Robot extends RobotBase {
 
     @Override
     public void startCompetition() {
+        AbstractRobot fakeRobot = new AbstractRobot(50) {
+            @Override
+            public void addSubsystems() {}
+        };
+
         running = true;
 
         RobotContainer container = new RobotContainer();

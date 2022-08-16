@@ -51,6 +51,11 @@ public final class RotatingArms {
         right.stop();
     }
 
+    public void disable() {
+        left.disable();
+        right.disable();
+    }
+
     public boolean isInTolerance() {
         return left.isInTolerance() && right.isInTolerance();
     }

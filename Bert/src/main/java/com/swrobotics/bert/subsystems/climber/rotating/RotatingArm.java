@@ -135,7 +135,6 @@ public final class RotatingArm {
     public void update() {
         if (safetyDisable) {
             stopMotor();
-            System.out.println("ROTATING ARM SHUT OFF");
             return;
         }
 
@@ -160,5 +159,9 @@ public final class RotatingArm {
     public void safetyShutoff() {
         safetyDisable = true;
         stopMotor();
+    }
+
+    public void disable() {
+        safetyDisable = true;
     }
 }

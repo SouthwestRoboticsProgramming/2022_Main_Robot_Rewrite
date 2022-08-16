@@ -2,6 +2,7 @@ package com.swrobotics.bert.subsystems.intake;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.swrobotics.bert.control.Input;
 import com.swrobotics.bert.shuffle.TunableDouble;
 import com.swrobotics.bert.subsystems.Subsystem;
 import com.swrobotics.bert.util.TalonFXBuilder;
@@ -27,9 +28,11 @@ public final class Intake implements Subsystem {
     }
 
     private final TalonFX motor;
+    private final Input input;
     private State state;
 
-    public Intake() {
+    public Intake(Input input) {
+        this.input = input;
         motor = new TalonFXBuilder(INTAKE_MOTOR_ID)
                 .setCANBus(CANIVORE)
                 .setPIDF(
@@ -62,11 +65,30 @@ public final class Intake implements Subsystem {
         return state;
     }
 
+    @Override
+    public void teleopPeriodic() {
+        double speed = state.getSpeed();
+        if (input.getAim()) {
+            speed = 0;
+        }
+
+        if (speed == 0) {
+            motor.set(ControlMode.PercentOutput, 0);
+        } else {
+            motor.set(ControlMode.Velocity, state.getSpeed() * RPM_TO_FX_VELOCITY);
+        }
+    }
+
+    @Override
+    public void autonomousPeriodic() {
+        teleopPeriodic();
+    }
+
     public void setState(State state) {
         System.out.println("Setting run state: " + state);
 
         if (state != this.state) {
-            motor.set(ControlMode.Velocity, state.getSpeed() * RPM_TO_FX_VELOCITY);
+
         }
         this.state = state;
         System.out.println(state);
