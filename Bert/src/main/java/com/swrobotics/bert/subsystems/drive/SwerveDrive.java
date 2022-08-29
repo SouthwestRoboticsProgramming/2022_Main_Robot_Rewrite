@@ -61,8 +61,8 @@ public final class SwerveDrive implements Subsystem {
 
         frontLeft = new SwerveModule(flInfo.getDriveID(), TURN_ID_FRONT_LEFT, flInfo.getCancoderID(), flInfo.getCancoderOffset() - 0);
         frontRight = new SwerveModule(frInfo.getDriveID(), TURN_ID_FRONT_RIGHT, frInfo.getCancoderID(), frInfo.getCancoderOffset() - 90);
-        backRight = new SwerveModule(brInfo.getDriveID(), TURN_ID_BACK_RIGHT, brInfo.getCancoderID(), brInfo.getCancoderOffset() - 180);
-        backLeft = new SwerveModule(blInfo.getDriveID(), TURN_ID_BACK_LEFT, blInfo.getCancoderID(), blInfo.getCancoderOffset() - 270);
+        backLeft = new SwerveModule(brInfo.getDriveID(), TURN_ID_BACK_RIGHT, brInfo.getCancoderID(), brInfo.getCancoderOffset() - 180);
+        backRight = new SwerveModule(blInfo.getDriveID(), TURN_ID_BACK_LEFT, blInfo.getCancoderID(), blInfo.getCancoderOffset() - 270);
 
         odometry = new SwerveDriveOdometry(kinematics, gyro.getRotation2d());
     }

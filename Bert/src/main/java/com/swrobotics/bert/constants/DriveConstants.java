@@ -56,11 +56,11 @@ public final class DriveConstants {
 
     // Device IDs and offsets
     public static final SwerveModuleInfo[] SWERVE_INFO = {
-        new SwerveModuleInfo(1 /*Drive*/, 6 /*Cancoder*/, -224.121 + 180 + 0.5 /*Offset*/), // Module 1
+        new SwerveModuleInfo(1 /*Drive*/, 6 /*Cancoder*/, -224.121 + 0.5 - 70.37 /*Offset*/), // Module 1
         new SwerveModuleInfo(2 /*Drive*/, 7 /*Cancoder*/, -39.184 + 1 /*Offset*/), // Module 2
         new SwerveModuleInfo(3 /*Drive*/, 8 /*Cancoder*/, -348.135 - 0.33 /*Offset*/), // Module 3
         new SwerveModuleInfo(4 /*Drive*/, 9 /*Cancoder*/, -2.549 + 180 - 0.263/*Offset*/), // Module 4
-        new SwerveModuleInfo(5 /*Drive*/, 10 /*Cancoder*/, 0 /*Offset*/), // Module 5
+        new SwerveModuleInfo(5 /*Drive*/, 10 /*Cancoder*/, 0 - 133.6 /*Offset*/), // Module 5
     };
 
     public static final int TURN_ID_FRONT_LEFT = 1;

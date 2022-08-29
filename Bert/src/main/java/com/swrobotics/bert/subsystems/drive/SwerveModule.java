@@ -36,11 +36,15 @@ public final class SwerveModule {
 
     private final double cancoderOffset;
 
+    private final int driveID;
+
     public SwerveModule(int driveID, int turnID, int cancoderID, double cancoderOffset) {
+        System.out.println(driveID);
         drive = new TalonFX(driveID, CANIVORE);
         turn = new TalonSRX(turnID);
         canCoder = new CANCoder(cancoderID, CANIVORE);
         this.cancoderOffset = cancoderOffset;
+        this.driveID = driveID;
 
         drive.configFactoryDefault();
         turn.configFactoryDefault();
@@ -161,6 +165,8 @@ public final class SwerveModule {
         // Spin the motors
         turn.set(TalonSRXControlMode.PercentOutput, turnAmount); 
         drive.set(TalonFXControlMode.Velocity, moduleState.speedMetersPerSecond * DRIVE_SPEED_TO_NATIVE_VELOCITY);
+
+        System.out.println("ID: " + driveID + " Current: " + canRotation.getDegrees());
     }
 
     public void resetPID() {
