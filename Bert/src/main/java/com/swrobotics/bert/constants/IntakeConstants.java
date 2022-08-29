@@ -17,7 +17,7 @@ public final class IntakeConstants {
         public static final TunableDouble EJECT_SPEED = TUNE.getDouble("Eject Speed", 3000);
         public static final TunableDouble EJECT_TIME = TUNE.getDouble("Eject Time", 1);
 
-    public static final int INTAKE_MOTOR_ID = 40;
+    public static final int INTAKE_MOTOR_ID = 11;
 
     private IntakeConstants() {
         throw new AssertionError();
