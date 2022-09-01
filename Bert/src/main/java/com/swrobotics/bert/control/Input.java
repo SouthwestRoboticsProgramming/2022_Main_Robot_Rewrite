@@ -52,7 +52,7 @@ public final class Input implements Subsystem {
     }
 
     public boolean getAimOverride() { // Both drive and manipulator
-        return drive.select.leadingEdge() || manipulator.select.leadingEdge();
+        return drive.select.isPressed() || manipulator.select.isPressed();
     }
     
     /* Climb */
